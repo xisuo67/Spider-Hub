@@ -13,6 +13,7 @@ import {
   Settings2Icon,
   SettingsIcon,
   UsersRoundIcon,
+  SmartphoneIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { websiteConfig } from './website';
@@ -38,6 +39,12 @@ export function getSidebarLinks(): NestedMenuItem[] {
       title: t('dashboard.title'),
       icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
       href: Routes.Dashboard,
+      external: false,
+    },
+    {
+      title: t('apps.title'),
+      icon: <SmartphoneIcon className="size-4 shrink-0" />,
+      href: Routes.Apps,
       external: false,
     },
     {
