@@ -72,7 +72,7 @@ export default async function HomePage(props: HomePageProps) {
 
         {/* <TestimonialsSection /> */}
 
-        <NewsletterCard />
+        {/* <NewsletterCard /> */}
 
         <CrispChat />
       </div>

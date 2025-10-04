@@ -223,9 +223,9 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
       )}
 
       {/* newsletter */}
-      <div className="flex items-center justify-start my-8">
+      {/* <div className="flex items-center justify-start my-8">
         <NewsletterCard />
-      </div>
+      </div> */}
     </div>
   );
 }
