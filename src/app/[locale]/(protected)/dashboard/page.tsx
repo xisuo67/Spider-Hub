@@ -3,7 +3,7 @@ import { AppsSection } from '@/components/apps/apps-section';
 import { useTranslations } from 'next-intl';
 
 /**
- * Apps page - displays social media platforms and apps
+ * Dashboard page - displays social media platforms and apps
  */
 export default function AppsPage() {
   const t = useTranslations('Dashboard.apps');
@@ -29,3 +29,5 @@ export default function AppsPage() {
     </>
   );
 }
+
+

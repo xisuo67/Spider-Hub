@@ -36,8 +36,8 @@ export function getSidebarLinks(): NestedMenuItem[] {
 
   return [
     {
-      title: t('apps.title'),
-      icon: <SmartphoneIcon className="size-4 shrink-0" />,
+      title: t('dashboard.title'),
+      icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
       href: Routes.Apps,
       external: false,
     },
