@@ -38,7 +38,7 @@ export function getSidebarLinks(): NestedMenuItem[] {
     {
       title: t('dashboard.title'),
       icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
-      href: Routes.Apps,
+      href: Routes.Dashboard,
       external: false,
     },
     {
@@ -49,7 +49,7 @@ export function getSidebarLinks(): NestedMenuItem[] {
         {
           title: t('dashboard.title'),
           icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
-          href: Routes.Dashboard,
+          href: Routes.AdminDashboard,
           external: false,
         },
         {
