@@ -25,7 +25,7 @@ export function getAvatarLinks(): MenuItem[] {
   return [
     {
       title: t('dashboard'),
-      href: Routes.Dashboard,
+      href: Routes.Apps,
       icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
     },
     {

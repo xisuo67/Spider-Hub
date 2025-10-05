@@ -29,7 +29,7 @@ export enum Routes {
   ResetPassword = '/auth/reset-password',
 
   // dashboard routes
-  Dashboard = '/dashboard',
+  Dashboard = '/admin/dashboard',
   Apps = '/apps',
   AdminUsers = '/admin/users',
   SettingsProfile = '/settings/profile',

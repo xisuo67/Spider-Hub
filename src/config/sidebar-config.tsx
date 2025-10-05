@@ -36,12 +36,6 @@ export function getSidebarLinks(): NestedMenuItem[] {
 
   return [
     {
-      title: t('dashboard.title'),
-      icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
-      href: Routes.Dashboard,
-      external: false,
-    },
-    {
       title: t('apps.title'),
       icon: <SmartphoneIcon className="size-4 shrink-0" />,
       href: Routes.Apps,
@@ -52,6 +46,12 @@ export function getSidebarLinks(): NestedMenuItem[] {
       icon: <SettingsIcon className="size-4 shrink-0" />,
       authorizeOnly: isDemo ? ['admin', 'user'] : ['admin'],
       items: [
+        {
+          title: t('dashboard.title'),
+          icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
+          href: Routes.Dashboard,
+          external: false,
+        },
         {
           title: t('admin.users.title'),
           icon: <UsersRoundIcon className="size-4 shrink-0" />,
