@@ -1,4 +1,4 @@
-import { boolean, integer, pgTable, text, timestamp, index } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, timestamp, index, bigserial, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -62,6 +62,46 @@ export const verification = pgTable("verification", {
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')
 });
+
+// -----------------------------------------------------------------------------
+// App Items
+// -----------------------------------------------------------------------------
+export const appItem = pgTable("app_item", {
+  id: text("id").primaryKey(),
+  key: text("key"),
+  title: text("title").notNull(),
+  description: text("description").notNull(), // limit 200 enforced at application layer
+  enable: boolean("enable").notNull().default(false),
+  icon: text("icon"), // long text for serialized icon markup or JSON
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  appItemSortIdx: index("app_item_sort_idx").on(table.sortOrder),
+  appItemEnableIdx: index("app_item_enable_idx").on(table.enable),
+}));
+
+// -----------------------------------------------------------------------------
+// i18n Translations
+// -----------------------------------------------------------------------------
+export const i18nTranslation = pgTable(
+  "i18n_translation",
+  {
+    id: bigserial("id", { mode: 'number' }).primaryKey(),
+    key: text("key").notNull(),
+    languageCode: text("language_code").notNull(),
+    value: text("value").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    i18nKeyLangUnique: uniqueIndex("i18n_translation_key_lang_unique").on(
+      table.key,
+      table.languageCode,
+    ),
+    i18nKeyIdx: index("i18n_translation_key_idx").on(table.key),
+  })
+);
 
 export const payment = pgTable("payment", {
 	id: text("id").primaryKey(),

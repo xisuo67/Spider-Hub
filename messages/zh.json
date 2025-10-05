@@ -516,6 +516,30 @@
     },
     "admin": {
       "title": "系统管理",
+      "appItems": {
+        "title": "应用项",
+        "new": "新增",
+        "edit": "编辑应用项",
+        "create": "创建",
+        "save": "保存",
+        "cancel": "取消",
+        "columns": {
+          "title": "标题",
+          "description": "描述",
+          "enable": "启用",
+          "icon": "图标",
+          "sortOrder": "排序",
+          "actions": "操作"
+        },
+        "form": {
+          "title": "标题",
+          "description": "描述（最多200字）",
+          "enable": "启用",
+          "icon": "图标（文本）",
+          "sortOrder": "排序值"
+        },
+        "noResults": "无结果"
+      },
       "users": {
         "title": "用户管理",
         "fakeData": "注：只为演示功能，数据为假数据，封禁功能不可用",

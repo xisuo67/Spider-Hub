@@ -479,7 +479,7 @@
       "title": "Dashboard"
     },
     "apps": {
-      "title": "Apps",
+      "title": "Dashboard",
       "subtitle": "Social Media Platforms",
       "description": "Explore and manage your favorite social media platforms and applications",
       "learnMore": "Learn More",
@@ -516,6 +516,30 @@
     },
     "admin": {
       "title": "Admin",
+      "appItems": {
+        "title": "App Items",
+        "new": "New",
+        "edit": "Edit App Item",
+        "create": "Create",
+        "save": "Save",
+        "cancel": "Cancel",
+        "columns": {
+          "title": "Title",
+          "description": "Description",
+          "enable": "Enable",
+          "icon": "Icon",
+          "sortOrder": "Sort",
+          "actions": "Actions"
+        },
+        "form": {
+          "title": "Title",
+          "description": "Description (max 200)",
+          "enable": "Enable",
+          "icon": "Icon (text)",
+          "sortOrder": "Sort Order"
+        },
+        "noResults": "No results."
+      },
       "users": {
         "title": "Users",
         "fakeData": "Note: Faked data for demonstration, some features are disabled",

@@ -53,6 +53,18 @@ export function getSidebarLinks(): NestedMenuItem[] {
           external: false,
         },
         {
+          title: 'App Items',
+          icon: <SmartphoneIcon className="size-4 shrink-0" />,
+          href: Routes.AdminAppItems,
+          external: false,
+        },
+        {
+          title: 'I18n Translations',
+          icon: <Settings2Icon className="size-4 shrink-0" />,
+          href: Routes.AdminI18nTranslations,
+          external: false,
+        },
+        {
           title: t('admin.users.title'),
           icon: <UsersRoundIcon className="size-4 shrink-0" />,
           href: Routes.AdminUsers,
