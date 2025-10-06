@@ -542,6 +542,31 @@
         },
         "noResults": "No results."
       },
+      "i18nTranslations": {
+        "new": "New",
+        "edit": "Edit Translation",
+        "create": "Create",
+        "save": "Save",
+        "cancel": "Cancel",
+        "columns": {
+          "key": "Key",
+          "language": "Language",
+          "value": "Value",
+          "actions": "Actions"
+        },
+        "noResults": "No results.",
+        "form": {
+          "key": "Key",
+          "language": "Language",
+          "value": "Value"
+        },
+        "import": "Import",
+        "export": "Export",
+        "importing": "Importing...",
+        "importDone": "Import completed: inserted {inserted}, skipped {skipped}.",
+        "importFailed": "Import failed. Please check file format.",
+        "delete": "Delete"
+      },
       "users": {
         "title": "Users",
         "fakeData": "Note: Faked data for demonstration, some features are disabled",

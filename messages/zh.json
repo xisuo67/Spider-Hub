@@ -542,6 +542,31 @@
         },
         "noResults": "无结果"
       },
+      "i18nTranslations": {
+        "new": "新增",
+        "edit": "编辑翻译",
+        "create": "创建",
+        "save": "保存",
+        "cancel": "取消",
+        "columns": {
+          "key": "键",
+          "language": "语言",
+          "value": "值",
+          "actions": "操作"
+        },
+        "noResults": "无结果",
+        "form": {
+          "key": "键",
+          "language": "语言",
+          "value": "值"
+        },
+        "import": "导入",
+        "export": "导出",
+        "importing": "正在导入...",
+        "importDone": "导入完成：新增 {inserted} 条，跳过 {skipped} 条",
+        "importFailed": "导入失败，请检查文件格式",
+        "delete": "删除"
+      },
       "users": {
         "title": "用户管理",
         "fakeData": "注：只为演示功能，数据为假数据，封禁功能不可用",

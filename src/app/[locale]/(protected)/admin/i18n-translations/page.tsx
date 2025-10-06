@@ -22,22 +22,24 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { importI18nTranslationsAction, exportI18nTranslationsAction } from '@/actions/i18n-translations';
 import { toast } from 'sonner';
-import { Loader2Icon } from 'lucide-react';
+import { Loader2Icon, ChevronRightIcon, ChevronDownIcon } from 'lucide-react';
 
 type T = { id: number; key: string; languageCode: string; value: string };
 
 export default function AdminI18nTranslationsPage() {
   const tCommon = useTranslations('Common');
+  const t = useTranslations('Dashboard.admin.i18nTranslations');
   const [items, setItems] = useState<T[]>([]);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<T | null>(null);
   const [languageCode, setLanguageCode] = useState<string>('all');
   const [importing, setImporting] = useState(false);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   const fetchItems = async (lc: string = languageCode) => {
     const res = await listI18nTranslationsAction({
       pageIndex: 0,
-      pageSize: 100,
+      pageSize: 10000,
       search: '',
       languageCode: lc === 'all' ? undefined : lc,
     });
@@ -102,7 +104,7 @@ export default function AdminI18nTranslationsPage() {
               URL.revokeObjectURL(url);
             }}
           >
-            {languageCode === 'all' ? 'Export' : `导出 ${languageCode}.json`}
+            {languageCode === 'all' ? t('export') : `${t('export')} ${languageCode}.json`}
           </Button>
           <Button
             variant="outline"
@@ -125,11 +127,11 @@ export default function AdminI18nTranslationsPage() {
                   const res = await importI18nTranslationsAction({ languageCode: languageCode as string, entries });
                   const inserted = res?.data?.data?.inserted ?? 0;
                   const skipped = res?.data?.data?.skipped ?? 0;
-                  toast.success(`导入完成：新增 ${inserted} 条，跳过 ${skipped} 条`);
+                  toast.success(t('importDone', { inserted, skipped }));
                   await fetchItems(languageCode);
                 } catch (e) {
                   console.error(e);
-                  toast.error('导入失败，请检查文件格式');
+                  toast.error(t('importFailed'));
                 } finally {
                   setImporting(false);
                 }
@@ -139,10 +141,10 @@ export default function AdminI18nTranslationsPage() {
           >
             {importing ? (
               <>
-                <Loader2Icon className="size-4 animate-spin" /> 正在导入...
+                <Loader2Icon className="size-4 animate-spin" /> {t('importing')}
               </>
             ) : (
-              languageCode === 'all' ? 'Import' : `导入 ${languageCode}.json`
+              languageCode === 'all' ? t('import') : `${t('import')} ${languageCode}.json`
             )}
           </Button>
           <Button variant="outline" size="sm">
@@ -152,12 +154,12 @@ export default function AdminI18nTranslationsPage() {
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button size="sm" onClick={() => setEditing(null)}>
-                New
+                {t('new')}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>{editing ? 'Edit Translation' : 'New Translation'}</DialogTitle>
+                <DialogTitle>{editing ? t('edit') : t('new')}</DialogTitle>
               </DialogHeader>
               <TranslationForm
                 initial={editing}
@@ -176,35 +178,30 @@ export default function AdminI18nTranslationsPage() {
           <Table>
             <TableHeader className="bg-muted sticky top-0 z-10">
               <TableRow>
-                <TableHead>Key</TableHead>
-                <TableHead>Language</TableHead>
-                <TableHead>Value</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('columns.key')}</TableHead>
+                <TableHead>{t('columns.language')}</TableHead>
+                <TableHead>{t('columns.value')}</TableHead>
+                <TableHead>{t('columns.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {items.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={4} className="h-24 text-center">
-                    No results.
+                    {t('noResults')}
                   </TableCell>
                 </TableRow>
               ) : (
-                items.map((it) => (
-                  <TableRow key={it.id}>
-                    <TableCell className="font-mono text-xs">{it.key}</TableCell>
-                    <TableCell>{it.languageCode}</TableCell>
-                    <TableCell className="max-w-[480px] truncate">{it.value}</TableCell>
-                    <TableCell className="space-x-2">
-                      <Button size="sm" variant="outline" onClick={() => onEdit(it)}>
-                        Edit
-                      </Button>
-                      <Button size="sm" variant="destructive" onClick={() => onDelete(it.id)}>
-                        Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
+                buildTreeRows(items, {
+                  expanded,
+                  onToggle: (path) => setExpanded((prev) => ({ ...prev, [path]: !prev[path] })),
+                  onEdit: (node) => onEdit({ id: 0, key: node.fullPath, languageCode: node.languageCode!, value: node.value! }),
+                  onDelete: async (node) => {
+                    const target = items.find((x) => x.key === node.fullPath && x.languageCode === node.languageCode);
+                    if (target) await onDelete(target.id);
+                  },
+                  t: (k: string) => t(k as any),
+                })
               )}
             </TableBody>
           </Table>
@@ -245,7 +242,87 @@ function flattenObjectToEntries(obj: Record<string, any>, prefix = ''): { key: s
   return out;
 }
 
+type TreeNode = { name: string; fullPath: string; children: Record<string, TreeNode>; value?: string; languageCode?: string };
+
+function buildTreeRows(
+  list: { key: string; value: string; languageCode: string }[],
+  ctx: {
+    expanded: Record<string, boolean>;
+    onToggle: (path: string) => void;
+    onEdit: (node: { fullPath: string; value: string; languageCode: string }) => void;
+    onDelete: (node: { fullPath: string; languageCode: string }) => void;
+    t: (key: string) => string;
+  }
+) {
+  const root: TreeNode = { name: '', fullPath: '', children: {} };
+  for (const item of list) {
+    const parts = item.key.split('.');
+    let cur = root;
+    let path = '';
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i]!;
+      path = path ? `${path}.${part}` : part;
+      if (!cur.children[part]) cur.children[part] = { name: part, fullPath: path, children: {} };
+      cur = cur.children[part]!;
+      if (i === parts.length - 1) {
+        cur.value = item.value;
+        cur.languageCode = item.languageCode;
+      }
+    }
+  }
+
+  const rows: React.ReactNode[] = [];
+  function walk(node: TreeNode, depth: number, isRoot = false) {
+    const keys = Object.keys(node.children);
+    const hasChildren = keys.length > 0;
+    if (!isRoot) {
+      if (hasChildren && node.value === undefined) {
+        rows.push(
+          <TableRow key={`folder-${node.fullPath}`}>
+            <TableCell colSpan={4}>
+              <div className="flex items-center gap-2" style={{ paddingLeft: depth * 16 }}>
+                <button type="button" onClick={() => ctx.onToggle(node.fullPath)} className="flex items-center gap-1">
+                  {ctx.expanded[node.fullPath] ? <ChevronDownIcon className="size-4" /> : <ChevronRightIcon className="size-4" />}
+                </button>
+                <span className="font-medium">{node.name}</span>
+              </div>
+            </TableCell>
+          </TableRow>
+        );
+      }
+      if (node.value !== undefined) {
+        rows.push(
+          <TableRow key={`leaf-${node.fullPath}`}>
+            <TableCell className="font-mono text-xs">
+              <div style={{ paddingLeft: depth * 16 }}>{node.name}</div>
+            </TableCell>
+            <TableCell>{node.languageCode}</TableCell>
+            <TableCell className="max-w-[480px] truncate">{node.value}</TableCell>
+            <TableCell className="space-x-2">
+              <Button size="sm" variant="outline" onClick={() => ctx.onEdit({ fullPath: node.fullPath, value: node.value!, languageCode: node.languageCode! })}>
+                {ctx.t('edit')}
+              </Button>
+              <Button size="sm" variant="destructive" onClick={() => ctx.onDelete({ fullPath: node.fullPath, languageCode: node.languageCode! })}>
+                {ctx.t('delete')}
+              </Button>
+            </TableCell>
+          </TableRow>
+        );
+      }
+    }
+    const expandedHere = ctx.expanded[node.fullPath] ?? false;
+    if (hasChildren && (isRoot || expandedHere)) {
+      for (const k of keys) {
+        walk(node.children[k], isRoot ? 0 : depth + 1);
+      }
+    }
+  }
+  walk(root, 0, true);
+  return rows;
+}
+
 function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmitted: () => Promise<void> }) {
+  const t = useTranslations('Dashboard.admin.i18nTranslations');
   const Schema = z.object({
     key: z.string().min(1),
     languageCode: z.string().min(1).max(10),
@@ -286,7 +363,7 @@ function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmit
           name="key"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Key</FormLabel>
+              <FormLabel>{t('form.key')}</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="e.g. dashboard.title" className="font-mono" />
               </FormControl>
@@ -299,7 +376,7 @@ function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmit
           name="languageCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Language</FormLabel>
+              <FormLabel>{t('form.language')}</FormLabel>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
@@ -320,7 +397,7 @@ function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmit
           name="value"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Value</FormLabel>
+              <FormLabel>{t('form.value')}</FormLabel>
               <FormControl>
                 <Textarea {...field} rows={4} />
               </FormControl>
@@ -330,9 +407,9 @@ function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmit
         />
         <div className="flex justify-end gap-2">
           <Button type="button" variant="secondary" onClick={() => form.reset()}>
-            Cancel
+            {t('cancel')}
           </Button>
-          <Button type="submit">{initial ? 'Save' : 'Create'}</Button>
+          <Button type="submit">{initial ? t('save') : t('create')}</Button>
         </div>
       </form>
     </Form>

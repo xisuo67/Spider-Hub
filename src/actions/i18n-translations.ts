@@ -15,8 +15,8 @@ const baseSchema = z.object({
 export const listI18nTranslationsAction = adminActionClient
   .schema(
     z.object({
-      pageIndex: z.number().min(0).default(0),
-      pageSize: z.number().min(1).max(100).default(10),
+      pageIndex: z.number().min(0).optional(),
+      pageSize: z.number().min(1).optional(),
       search: z.string().optional().default(''),
       languageCode: z.string().optional(),
     })
@@ -27,16 +27,19 @@ export const listI18nTranslationsAction = adminActionClient
     if (search) conditions.push(ilike(i18nTranslation.key, `%${search}%`));
     if (languageCode) conditions.push(eq(i18nTranslation.languageCode, languageCode));
     const where = conditions.length ? and(...conditions) : undefined;
-    const offset = pageIndex * pageSize;
     const db = await getDb();
+
+    const usePagination = typeof pageIndex === 'number' && typeof pageSize === 'number';
+    const baseQuery = db
+      .select()
+      .from(i18nTranslation)
+      .where(where)
+      .orderBy(i18nTranslation.key);
+    const itemsPromise = usePagination
+      ? baseQuery.limit(pageSize!).offset(pageIndex! * pageSize!)
+      : baseQuery;
     const [items, [{ count }]] = await Promise.all([
-      db
-        .select()
-        .from(i18nTranslation)
-        .where(where)
-        .orderBy(i18nTranslation.key)
-        .limit(pageSize)
-        .offset(offset),
+      itemsPromise,
       db.select({ count: sql`count(*)` }).from(i18nTranslation).where(where),
     ]);
     return { success: true, data: { items, total: Number(count) } };
