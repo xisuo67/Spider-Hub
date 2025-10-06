@@ -3,7 +3,7 @@
 import { getDb } from '@/db';
 import { i18nTranslation } from '@/db/schema';
 import { adminActionClient } from '@/lib/safe-action';
-import { and, eq, ilike, sql } from 'drizzle-orm';
+import { and, eq, ilike, inArray, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 const baseSchema = z.object({
@@ -40,6 +40,53 @@ export const listI18nTranslationsAction = adminActionClient
       db.select({ count: sql`count(*)` }).from(i18nTranslation).where(where),
     ]);
     return { success: true, data: { items, total: Number(count) } };
+  });
+
+// -----------------------------------------------------------------------------
+// Import translations (skip existing key+languageCode)
+// -----------------------------------------------------------------------------
+export const importI18nTranslationsAction = adminActionClient
+  .schema(
+    z.object({
+      languageCode: z.string().min(1).max(10),
+      entries: z.array(z.object({ key: z.string().min(1), value: z.string().min(1) })).min(1),
+    })
+  )
+  .action(async ({ parsedInput }) => {
+    const db = await getDb();
+    const { languageCode, entries } = parsedInput;
+
+    const keys = entries.map((e) => e.key);
+    const existing = await db
+      .select({ key: i18nTranslation.key })
+      .from(i18nTranslation)
+      .where(and(eq(i18nTranslation.languageCode, languageCode), inArray(i18nTranslation.key, keys)));
+    const existingSet = new Set(existing.map((e) => e.key));
+
+    const toInsert = entries
+      .filter((e) => !existingSet.has(e.key))
+      .map((e) => ({ key: e.key, languageCode, value: e.value }));
+
+    if (toInsert.length > 0) {
+      await db.insert(i18nTranslation).values(toInsert);
+    }
+
+    return { success: true, data: { inserted: toInsert.length, skipped: entries.length - toInsert.length } };
+  });
+
+// -----------------------------------------------------------------------------
+// Export translations by language
+// -----------------------------------------------------------------------------
+export const exportI18nTranslationsAction = adminActionClient
+  .schema(z.object({ languageCode: z.string().min(1).max(10) }))
+  .action(async ({ parsedInput }) => {
+    const db = await getDb();
+    const items = await db
+      .select({ key: i18nTranslation.key, value: i18nTranslation.value })
+      .from(i18nTranslation)
+      .where(eq(i18nTranslation.languageCode, parsedInput.languageCode))
+      .orderBy(i18nTranslation.key);
+    return { success: true, data: { items } };
   });
 
 export const createI18nTranslationAction = adminActionClient

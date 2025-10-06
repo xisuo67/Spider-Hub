@@ -20,6 +20,9 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { importI18nTranslationsAction, exportI18nTranslationsAction } from '@/actions/i18n-translations';
+import { toast } from 'sonner';
+import { Loader2Icon } from 'lucide-react';
 
 type T = { id: number; key: string; languageCode: string; value: string };
 
@@ -29,6 +32,7 @@ export default function AdminI18nTranslationsPage() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<T | null>(null);
   const [languageCode, setLanguageCode] = useState<string>('all');
+  const [importing, setImporting] = useState(false);
 
   const fetchItems = async (lc: string = languageCode) => {
     const res = await listI18nTranslationsAction({
@@ -76,6 +80,71 @@ export default function AdminI18nTranslationsPage() {
           </TabsList>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={languageCode === 'all'}
+            onClick={async () => {
+              if (languageCode === 'all') return;
+              const lc = languageCode as string;
+              const res = await exportI18nTranslationsAction({ languageCode: lc });
+              if (!res?.data?.success) return;
+              const flat: Record<string, string> = Object.fromEntries(
+                res.data.data.items.map((it) => [it.key, it.value])
+              );
+              const nested = unflattenKeysToObject(flat);
+              const blob = new Blob([JSON.stringify(nested, null, 2)], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${lc}.json`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+          >
+            {languageCode === 'all' ? 'Export' : `导出 ${languageCode}.json`}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={languageCode === 'all' || importing}
+            onClick={async () => {
+              if (languageCode === 'all') return;
+              if (importing) return;
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.accept = 'application/json';
+              input.onchange = async () => {
+                const file = input.files?.[0];
+                if (!file) return;
+                try {
+                  setImporting(true);
+                  const text = await file.text();
+                  const obj = JSON.parse(text) as Record<string, any>;
+                  const entries = flattenObjectToEntries(obj).map(({ key, value }) => ({ key, value }));
+                  const res = await importI18nTranslationsAction({ languageCode: languageCode as string, entries });
+                  const inserted = res?.data?.data?.inserted ?? 0;
+                  const skipped = res?.data?.data?.skipped ?? 0;
+                  toast.success(`导入完成：新增 ${inserted} 条，跳过 ${skipped} 条`);
+                  await fetchItems(languageCode);
+                } catch (e) {
+                  console.error(e);
+                  toast.error('导入失败，请检查文件格式');
+                } finally {
+                  setImporting(false);
+                }
+              };
+              input.click();
+            }}
+          >
+            {importing ? (
+              <>
+                <Loader2Icon className="size-4 animate-spin" /> 正在导入...
+              </>
+            ) : (
+              languageCode === 'all' ? 'Import' : `导入 ${languageCode}.json`
+            )}
+          </Button>
           <Button variant="outline" size="sm">
             <span className="hidden lg:inline">{tCommon('table.columns')}</span>
             <span className="lg:hidden">{tCommon('table.columns')}</span>
@@ -143,6 +212,37 @@ export default function AdminI18nTranslationsPage() {
       </div>
     </Tabs>
   );
+}
+
+function unflattenKeysToObject(flat: Record<string, string>): Record<string, any> {
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(flat)) {
+    const parts = key.split('.');
+    let cur: Record<string, any> = result;
+    for (let i = 0; i < parts.length; i++) {
+      const p = parts[i]!;
+      if (i === parts.length - 1) {
+        cur[p] = value;
+      } else {
+        cur[p] = cur[p] ?? {};
+        cur = cur[p];
+      }
+    }
+  }
+  return result;
+}
+
+function flattenObjectToEntries(obj: Record<string, any>, prefix = ''): { key: string; value: string }[] {
+  const out: { key: string; value: string }[] = [];
+  for (const [k, v] of Object.entries(obj)) {
+    const key = prefix ? `${prefix}.${k}` : k;
+    if (v !== null && typeof v === 'object' && !Array.isArray(v)) {
+      out.push(...flattenObjectToEntries(v, key));
+    } else {
+      out.push({ key, value: String(v) });
+    }
+  }
+  return out;
 }
 
 function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmitted: () => Promise<void> }) {
