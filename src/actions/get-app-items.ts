@@ -22,6 +22,7 @@ const getAppItemsSchema = z.object({
 });
 
 const sortFieldMap = {
+  key: appItem.key,
   title: appItem.title,
   enable: appItem.enable,
   sortOrder: appItem.sortOrder,

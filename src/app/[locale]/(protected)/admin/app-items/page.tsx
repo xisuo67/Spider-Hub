@@ -23,6 +23,7 @@ import { z } from 'zod';
 
 type AppItem = {
   id: string;
+  key?: string | null;
   title: string;
   description: string | null;
   enable: boolean;
@@ -81,7 +82,7 @@ export default function AdminAppItemsPage() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>{editing ? t('edit') : t('new')}</DialogTitle>
+                <DialogTitle>{editing ? `${editing.key ? editing.key + ' - ' : ''}${editing.title}` : t('new')}</DialogTitle>
               </DialogHeader>
               <AppItemForm
                 initial={editing}
@@ -100,6 +101,7 @@ export default function AdminAppItemsPage() {
           <Table>
             <TableHeader className="bg-muted sticky top-0 z-10">
               <TableRow>
+                <TableHead>{t('columns.key')}</TableHead>
                 <TableHead>{t('columns.title')}</TableHead>
                 <TableHead>{t('columns.description')}</TableHead>
                 <TableHead>{t('columns.enable')}</TableHead>
@@ -111,12 +113,13 @@ export default function AdminAppItemsPage() {
             <TableBody>
               {items.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">{t('noResults')}</TableCell>
+                  <TableCell colSpan={7} className="h-24 text-center">{t('noResults')}</TableCell>
                 </TableRow>
               ) : (
                 items.map((it) => (
                   <TableRow key={it.id}>
-                    <TableCell>{it.title}</TableCell>
+                    <TableCell>{it.key}</TableCell>
+                    <TableCell>{`${it.key ? it.key + ' - ' : ''}${it.title}`}</TableCell>
                     <TableCell className="max-w-[420px] truncate">{it.description}</TableCell>
                     <TableCell>
                       <Switch checked={it.enable} onCheckedChange={(v) => onToggleEnable(it.id, v)} />
@@ -142,6 +145,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
   const t = useTranslations('Dashboard.admin.appItems');
 
   const Schema = z.object({
+    key: z.string().min(1).optional(),
     title: z.string().min(1),
     description: z.string().max(200).optional().default(''),
     enable: z.boolean().optional().default(false),
@@ -155,6 +159,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
   const form = useForm<z.infer<typeof Schema>>({
     resolver: zodResolver(Schema),
     defaultValues: {
+      key: initial?.key ?? '',
       title: initial?.title ?? '',
       description: initial?.description ?? '',
       enable: initial?.enable ?? false,
@@ -165,6 +170,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
 
   useEffect(() => {
     form.reset({
+      key: initial?.key ?? '',
       title: initial?.title ?? '',
       description: initial?.description ?? '',
       enable: initial?.enable ?? false,
@@ -177,6 +183,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
     if (initial) {
       await updateAppItemAction({
         id: initial.id,
+        key: values.key ?? undefined,
         title: values.title,
         description: values.description ?? '',
         enable: values.enable ?? false,
@@ -185,6 +192,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       });
     } else {
       await createAppItemAction({
+        key: values.key ?? undefined,
         title: values.title,
         description: values.description ?? '',
         enable: values.enable ?? false,
@@ -198,6 +206,19 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="key"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t('form.key') || 'Key'}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="title"

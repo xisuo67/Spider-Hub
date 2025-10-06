@@ -524,6 +524,7 @@
         "save": "Save",
         "cancel": "Cancel",
         "columns": {
+          "key": "Key",
           "title": "Title",
           "description": "Description",
           "enable": "Enable",
@@ -532,6 +533,7 @@
           "actions": "Actions"
         },
         "form": {
+          "key": "Key",
           "title": "Title",
           "description": "Description (max 200)",
           "enable": "Enable",

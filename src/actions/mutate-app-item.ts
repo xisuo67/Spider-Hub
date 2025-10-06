@@ -7,6 +7,7 @@ import { and, eq, max } from 'drizzle-orm';
 import { z } from 'zod';
 
 const baseSchema = z.object({
+  key: z.string().min(1).optional(),
   title: z.string().min(1),
   description: z.string().max(200).optional().default(''),
   enable: z.boolean().optional().default(false),
@@ -31,6 +32,7 @@ export const createAppItemAction = adminActionClient
       .insert(appItem)
       .values({
         id: crypto.randomUUID(),
+        key: parsedInput.key ?? null,
         title: parsedInput.title,
         description: parsedInput.description ?? '',
         enable: parsedInput.enable ?? false,
@@ -54,6 +56,7 @@ export const updateAppItemAction = adminActionClient
     const [updated] = await db
       .update(appItem)
       .set({
+        key: parsedInput.key ?? null,
         title: parsedInput.title,
         description: parsedInput.description ?? '',
         enable: parsedInput.enable ?? false,

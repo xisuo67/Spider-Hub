@@ -524,6 +524,7 @@
         "save": "保存",
         "cancel": "取消",
         "columns": {
+          "key": "标识",
           "title": "标题",
           "description": "描述",
           "enable": "启用",
@@ -532,6 +533,7 @@
           "actions": "操作"
         },
         "form": {
+          "key": "标识",
           "title": "标题",
           "description": "描述（最多200字）",
           "enable": "启用",
