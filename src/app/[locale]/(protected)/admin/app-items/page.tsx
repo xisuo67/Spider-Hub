@@ -42,7 +42,7 @@ export default function AdminAppItemsPage() {
   const fetchItems = async () => {
     setLoading(true);
     const res = await getAppItemsAction({ pageIndex: 0, pageSize: 100, search: '' });
-    if (res?.success) setItems(res.data.items as AppItem[]);
+    if (res?.data?.success) setItems(res.data.data.items as AppItem[]);
     setLoading(false);
   };
 
@@ -66,7 +66,7 @@ export default function AdminAppItemsPage() {
   };
 
   return (
-    <div className="w-full flex-col justify-start gap-6">
+    <div className="w-full flex flex-col justify-start gap-6">
       <div className="flex items-center justify-between px-4 lg:px-6">
         <div />
         <div className="flex items-center gap-2">
@@ -150,10 +150,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
     description: z.string().max(200).optional().default(''),
     enable: z.boolean().optional().default(false),
     icon: z.string().optional().default(''),
-    sortOrder: z
-      .union([z.number().int().min(0), z.literal('')])
-      .transform((v) => (v === '' ? undefined : v))
-      .optional(),
+    sortOrder: z.number().int().min(0).optional(),
   });
 
   const form = useForm<z.infer<typeof Schema>>({
@@ -164,7 +161,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       description: initial?.description ?? '',
       enable: initial?.enable ?? false,
       icon: initial?.icon ?? '',
-      sortOrder: initial?.sortOrder ?? '',
+      sortOrder: initial?.sortOrder,
     },
   });
 
@@ -175,7 +172,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       description: initial?.description ?? '',
       enable: initial?.enable ?? false,
       icon: initial?.icon ?? '',
-      sortOrder: initial?.sortOrder ?? '',
+      sortOrder: initial?.sortOrder,
     });
   }, [initial]);
 
@@ -279,8 +276,11 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
               <FormControl>
                 <Input
                   type="number"
-                  value={field.value as any}
-                  onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
+                  value={field.value ?? ''}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    field.onChange(v === '' ? undefined : Number(v));
+                  }}
                 />
               </FormControl>
               <FormMessage />

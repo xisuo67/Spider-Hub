@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,15 +28,21 @@ export default function AdminI18nTranslationsPage() {
   const [items, setItems] = useState<T[]>([]);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<T | null>(null);
+  const [languageCode, setLanguageCode] = useState<string>('all');
 
-  const fetchItems = async () => {
-    const res = await listI18nTranslationsAction({ pageIndex: 0, pageSize: 100, search: '' });
-    if (res?.success) setItems(res.data.items as T[]);
+  const fetchItems = async (lc: string = languageCode) => {
+    const res = await listI18nTranslationsAction({
+      pageIndex: 0,
+      pageSize: 100,
+      search: '',
+      languageCode: lc === 'all' ? undefined : lc,
+    });
+    if (res?.data?.success) setItems(res.data.data.items as T[]);
   };
 
   useEffect(() => {
-    void fetchItems();
-  }, []);
+    void fetchItems(languageCode);
+  }, [languageCode]);
 
   const onEdit = (item: T) => {
     setEditing(item);
@@ -47,9 +55,26 @@ export default function AdminI18nTranslationsPage() {
   };
 
   return (
-    <div className="w-full flex-col justify-start gap-6">
+    <Tabs value={languageCode} onValueChange={setLanguageCode} className="w-full flex-col justify-start gap-6">
       <div className="flex items-center justify-between px-4 lg:px-6">
-        <div />
+        <div className="flex items-center gap-2">
+          <Label htmlFor="lang-selector" className="sr-only">Language</Label>
+          <Select value={languageCode} onValueChange={setLanguageCode}>
+            <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="lang-selector">
+              <SelectValue placeholder="Select a language" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="en">en</SelectItem>
+              <SelectItem value="zh">zh</SelectItem>
+            </SelectContent>
+          </Select>
+          <TabsList className="hidden @4xl/main:flex">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="en">en</TabsTrigger>
+            <TabsTrigger value="zh">zh</TabsTrigger>
+          </TabsList>
+        </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
             <span className="hidden lg:inline">{tCommon('table.columns')}</span>
@@ -116,7 +141,7 @@ export default function AdminI18nTranslationsPage() {
           </Table>
         </div>
       </div>
-    </div>
+    </Tabs>
   );
 }
 

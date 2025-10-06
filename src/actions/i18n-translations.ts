@@ -18,13 +18,15 @@ export const listI18nTranslationsAction = adminActionClient
       pageIndex: z.number().min(0).default(0),
       pageSize: z.number().min(1).max(100).default(10),
       search: z.string().optional().default(''),
+      languageCode: z.string().optional(),
     })
   )
   .action(async ({ parsedInput }) => {
-    const { pageIndex, pageSize, search } = parsedInput;
-    const where = search
-      ? ilike(i18nTranslation.key, `%${search}%`)
-      : undefined;
+    const { pageIndex, pageSize, search, languageCode } = parsedInput;
+    const conditions = [] as any[];
+    if (search) conditions.push(ilike(i18nTranslation.key, `%${search}%`));
+    if (languageCode) conditions.push(eq(i18nTranslation.languageCode, languageCode));
+    const where = conditions.length ? and(...conditions) : undefined;
     const offset = pageIndex * pageSize;
     const db = await getDb();
     const [items, [{ count }]] = await Promise.all([
