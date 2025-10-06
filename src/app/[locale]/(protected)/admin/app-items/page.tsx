@@ -147,9 +147,9 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
   const Schema = z.object({
     key: z.string().min(1).optional(),
     title: z.string().min(1),
-    description: z.string().max(200).optional().default(''),
-    enable: z.boolean().optional().default(false),
-    icon: z.string().optional().default(''),
+    description: z.string().max(200).optional(),
+    enable: z.boolean().optional(),
+    icon: z.string().optional(),
     sortOrder: z.number().int().min(0).optional(),
   });
 
@@ -158,9 +158,9 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
     defaultValues: {
       key: initial?.key ?? '',
       title: initial?.title ?? '',
-      description: initial?.description ?? '',
+      description: initial?.description ?? undefined,
       enable: initial?.enable ?? false,
-      icon: initial?.icon ?? '',
+      icon: initial?.icon ?? undefined,
       sortOrder: initial?.sortOrder,
     },
   });
@@ -169,9 +169,9 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
     form.reset({
       key: initial?.key ?? '',
       title: initial?.title ?? '',
-      description: initial?.description ?? '',
+      description: initial?.description ?? undefined,
       enable: initial?.enable ?? false,
-      icon: initial?.icon ?? '',
+      icon: initial?.icon ?? undefined,
       sortOrder: initial?.sortOrder,
     });
   }, [initial]);
