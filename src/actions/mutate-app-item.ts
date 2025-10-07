@@ -15,10 +15,10 @@ const baseSchema = z.object({
   link: z
     .union([
       z.string().url(), // absolute URL
-      z.string().regex(/^\/[\S]*$/, { message: 'relative path must start with /' }), // relative path
+      z.string().regex(/^\/[\S]*$/), // relative path starting with /
+      z.literal(''), // allow empty string
     ])
-    .optional()
-    .default(''),
+    .optional(),
   sortOrder: z.number().int().min(0).optional(),
 });
 
@@ -34,12 +34,13 @@ export const createAppItemAction = adminActionClient
         .from(appItem);
       sortOrder = (maxSort ?? 0) + 1;
     }
+    const newId = crypto.randomUUID();
 
     const [created] = await db
       .insert(appItem)
       .values({
-        id: crypto.randomUUID(),
-        key: parsedInput.key ?? null,
+        id: newId,
+        key: (parsedInput.key && parsedInput.key.trim()) || newId,
         title: parsedInput.title,
         description: parsedInput.description ?? '',
         enable: parsedInput.enable ?? false,
@@ -61,17 +62,21 @@ export const updateAppItemAction = adminActionClient
   .action(async ({ parsedInput }) => {
     const db = await getDb();
 
+    const updateData: any = {
+      title: parsedInput.title,
+      description: parsedInput.description ?? '',
+      enable: parsedInput.enable ?? false,
+      icon: parsedInput.icon ?? '',
+      link: parsedInput.link ?? '',
+      sortOrder: parsedInput.sortOrder ?? undefined,
+    };
+    if (typeof parsedInput.key !== 'undefined') {
+      updateData.key = parsedInput.key; // rely on schema to validate if provided
+    }
+
     const [updated] = await db
       .update(appItem)
-      .set({
-        key: parsedInput.key ?? null,
-        title: parsedInput.title,
-        description: parsedInput.description ?? '',
-        enable: parsedInput.enable ?? false,
-        icon: parsedInput.icon ?? '',
-        link: parsedInput.link ?? '',
-        sortOrder: parsedInput.sortOrder ?? undefined,
-      })
+      .set(updateData)
       .where(eq(appItem.id, parsedInput.id))
       .returning();
 

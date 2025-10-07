@@ -512,7 +512,18 @@
           "link": "Link URL",
           "sortOrder": "Sort Order"
         },
-        "noResults": "No results."
+        "noResults": "No results.",
+        "toast": {
+          "createSuccess": "Created successfully",
+          "createFail": "Creation failed",
+          "saveSuccess": "Saved successfully",
+          "saveFail": "Save failed",
+          "deleteSuccess": "Deleted successfully",
+          "deleteFail": "Delete failed",
+          "updateSuccess": "Status updated",
+          "updateFail": "Update failed",
+          "actionFail": "Action failed"
+        }
       },
       "i18nTranslations": {
         "new": "New",

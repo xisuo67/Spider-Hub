@@ -512,7 +512,18 @@
           "link": "链接地址",
           "sortOrder": "排序值"
         },
-        "noResults": "无结果"
+        "noResults": "无结果",
+        "toast": {
+          "createSuccess": "创建成功",
+          "createFail": "创建失败",
+          "saveSuccess": "保存成功",
+          "saveFail": "保存失败",
+          "deleteSuccess": "删除成功",
+          "deleteFail": "删除失败",
+          "updateSuccess": "状态已更新",
+          "updateFail": "更新失败",
+          "actionFail": "操作失败"
+        }
       },
       "i18nTranslations": {
         "new": "新增",

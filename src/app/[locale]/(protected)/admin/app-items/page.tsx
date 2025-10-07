@@ -16,6 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -57,13 +58,33 @@ export default function AdminAppItemsPage() {
   };
 
   const onDelete = async (id: string) => {
-    await deleteAppItemAction({ id });
-    await fetchItems();
+    try {
+      const res = await deleteAppItemAction({ id });
+      if (res?.data?.success || (res as any)?.success) {
+        toast.success(t('toast.deleteSuccess'));
+      } else {
+        toast.error(t('toast.deleteFail'));
+      }
+    } catch (e) {
+      toast.error(t('toast.deleteFail'));
+    } finally {
+      await fetchItems();
+    }
   };
 
   const onToggleEnable = async (id: string, enable: boolean) => {
-    await toggleEnableAppItemAction({ id, enable });
-    await fetchItems();
+    try {
+      const res = await toggleEnableAppItemAction({ id, enable });
+      if (res?.data?.success || (res as any)?.success) {
+        toast.success(t('toast.updateSuccess'));
+      } else {
+        toast.error(t('toast.updateFail'));
+      }
+    } catch (e) {
+      toast.error(t('toast.updateFail'));
+    } finally {
+      await fetchItems();
+    }
   };
 
   return (
@@ -153,7 +174,13 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
     description: z.string().max(200).optional(),
     enable: z.boolean().optional(),
     icon: z.string().optional(),
-    link: z.string().url().optional(),
+    link: z
+      .union([
+        z.string().url(), // 绝对 URL
+        z.string().regex(/^\/[\S]*$/), // 以 / 开头的相对路径
+        z.literal(''), // 允许空字符串
+      ])
+      .optional(),
     sortOrder: z.number().int().min(0).optional(),
   });
 
@@ -165,7 +192,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       description: initial?.description ?? undefined,
       enable: initial?.enable ?? false,
       icon: initial?.icon ?? undefined,
-      link: initial?.link ?? undefined,
+      link: initial?.link ?? '',
       sortOrder: initial?.sortOrder,
     },
   });
@@ -177,35 +204,51 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       description: initial?.description ?? undefined,
       enable: initial?.enable ?? false,
       icon: initial?.icon ?? undefined,
-      link: initial?.link ?? undefined,
+      link: initial?.link ?? '',
       sortOrder: initial?.sortOrder,
     });
   }, [initial]);
 
   const onSubmit = async (values: z.infer<typeof Schema>) => {
-    if (initial) {
-      await updateAppItemAction({
-        id: initial.id,
-        key: values.key ?? undefined,
-        title: values.title,
-        description: values.description ?? '',
-        enable: values.enable ?? false,
-        icon: values.icon ?? '',
-        link: values.link ?? '',
-        sortOrder: values.sortOrder as number | undefined,
-      });
-    } else {
-      await createAppItemAction({
-        key: values.key ?? undefined,
-        title: values.title,
-        description: values.description ?? '',
-        enable: values.enable ?? false,
-        icon: values.icon ?? '',
-        link: values.link ?? '',
-        sortOrder: values.sortOrder as number | undefined,
-      });
+    try {
+      if (initial) {
+        const res = await updateAppItemAction({
+          id: initial.id,
+          key: values.key ?? undefined,
+          title: values.title,
+          description: values.description ?? '',
+          enable: values.enable ?? false,
+          icon: values.icon ?? '',
+          link: values.link ?? '',
+          sortOrder: values.sortOrder as number | undefined,
+        });
+        if (res?.data?.success || (res as any)?.success) {
+          toast.success(t('toast.saveSuccess'));
+        } else {
+          toast.error(t('toast.saveFail'));
+          return;
+        }
+      } else {
+        const res = await createAppItemAction({
+          key: values.key ?? undefined,
+          title: values.title,
+          description: values.description ?? '',
+          enable: values.enable ?? false,
+          icon: values.icon ?? '',
+          link: values.link ?? '',
+          sortOrder: values.sortOrder as number | undefined,
+        });
+        if (res?.data?.success || (res as any)?.success) {
+          toast.success(t('toast.createSuccess'));
+        } else {
+          toast.error(t('toast.createFail'));
+          return;
+        }
+      }
+      await onSubmitted();
+    } catch (e) {
+      toast.error(t('toast.actionFail'));
     }
-    await onSubmitted();
   };
 
   return (

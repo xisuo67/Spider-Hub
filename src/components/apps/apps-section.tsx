@@ -59,7 +59,7 @@ const AppsCard = ({
   return (
     <Card className="p-6 bg-transparent hover:bg-accent dark:hover:bg-card">
       <div className="relative">
-        <div className="flex items-center justify-center h-10 w-10 rounded-md bg-muted overflow-hidden">
+        <div className="flex items-center justify-center h-14 w-14 overflow-hidden">
           {renderIcon(icon, title)}
         </div>
 
@@ -92,17 +92,17 @@ function renderIcon(icon: string | undefined, title: string) {
   if (icon && icon.trim().startsWith('<')) {
     return (
       <div
-        className="h-10 w-10 [&_svg]:h-10 [&_svg]:w-10"
+        className="h-14 w-14 [&_svg]:h-14 [&_svg]:w-14"
         dangerouslySetInnerHTML={{ __html: icon }}
       />
     );
   }
   if (icon && /^(https?:|data:)/.test(icon)) {
-    return <img src={icon} alt={title} className="h-10 w-10 object-contain" />;
+    return <img src={icon} alt={title} className="h-14 w-14 object-contain" />;
   }
   const initial = (title?.[0] || '?').toUpperCase();
   return (
-    <div className="h-10 w-10 flex items-center justify-center text-sm font-medium text-muted-foreground">
+    <div className="h-14 w-14 flex items-center justify-center text-base font-medium">
       {initial}
     </div>
   );
