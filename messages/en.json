@@ -555,6 +555,7 @@
         "title": "Settings",
         "new": "New",
         "edit": "Edit Setting",
+        "delete": "Delete",
         "create": "Create",
         "save": "Save",
         "cancel": "Cancel",

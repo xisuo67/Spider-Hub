@@ -555,6 +555,7 @@
         "title": "系统设置",
         "new": "新增",
         "edit": "编辑设置",
+        "delete": "删除",
         "create": "创建",
         "save": "保存",
         "cancel": "取消",
