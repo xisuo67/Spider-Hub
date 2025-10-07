@@ -17,6 +17,7 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +26,7 @@ import { z } from 'zod';
 type AppItem = {
   id: string;
   key?: string | null;
+  parentId?: string | null;
   title: string;
   description: string | null;
   enable: boolean;
@@ -40,6 +42,7 @@ export default function AdminAppItemsPage() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<AppItem | null>(null);
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   const fetchItems = async () => {
     setLoading(true);
@@ -108,6 +111,7 @@ export default function AdminAppItemsPage() {
               </DialogHeader>
               <AppItemForm
                 initial={editing}
+                parents={items.filter((x) => !x.parentId)}
                 onSubmitted={async () => {
                   setOpen(false);
                   await fetchItems();
@@ -139,23 +143,15 @@ export default function AdminAppItemsPage() {
                   <TableCell colSpan={7} className="h-24 text-center">{t('noResults')}</TableCell>
                 </TableRow>
               ) : (
-                items.map((it) => (
-                  <TableRow key={it.id}>
-                    <TableCell>{it.key}</TableCell>
-                    <TableCell>{it.title}</TableCell>
-                    <TableCell className="max-w-[420px] truncate">{it.description}</TableCell>
-                    <TableCell>
-                      <Switch checked={it.enable} onCheckedChange={(v) => onToggleEnable(it.id, v)} />
-                    </TableCell>
-                    <TableCell className="max-w-[240px] truncate">{it.icon}</TableCell>
-                    <TableCell className="max-w-[240px] truncate">{it.link}</TableCell>
-                    <TableCell>{it.sortOrder}</TableCell>
-                    <TableCell className="space-x-2">
-                      <Button size="sm" variant="outline" onClick={() => onEdit(it)}>{t('edit')}</Button>
-                      <Button size="sm" variant="destructive" onClick={() => onDelete(it.id)}>Delete</Button>
-                    </TableCell>
-                  </TableRow>
-                ))
+                renderTreeRows(
+                  items,
+                  expanded,
+                  (id) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] })),
+                  onEdit,
+                  onDelete,
+                  onToggleEnable,
+                  (k: string) => t(k as any),
+                )
               )}
             </TableBody>
           </Table>
@@ -165,7 +161,69 @@ export default function AdminAppItemsPage() {
   );
 }
 
-function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubmitted: () => Promise<void> }) {
+function renderTreeRows(
+  items: { id: string; parentId?: string | null; key?: string | null; title: string; description: string | null; enable: boolean; icon: string | null; link?: string | null; sortOrder: number }[],
+  expanded: Record<string, boolean>,
+  toggle: (id: string) => void,
+  onEdit: (it: any) => void,
+  onDelete: (id: string) => void,
+  onToggleEnable: (id: string, enable: boolean) => void,
+  t: (k: string) => string,
+) {
+  const byParent: Record<string, typeof items> = {} as any;
+  for (const it of items) {
+    const pid = it.parentId || '__root__';
+    (byParent[pid] = byParent[pid] || []).push(it);
+  }
+  for (const k of Object.keys(byParent)) {
+    byParent[k]!.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  }
+
+  const rows: React.ReactNode[] = [];
+  const renderBranch = (parentId: string | null, depth: number) => {
+    const pid = parentId || '__root__';
+    const children = byParent[pid] || [];
+    for (const it of children) {
+      const isFolder = (byParent[it.id] || []).length > 0;
+      rows.push(
+        <TableRow key={it.id}>
+          <TableCell className="font-mono text-xs">
+            <div className="flex items-center gap-2" style={{ paddingLeft: depth * 16 }}>
+              {isFolder ? (
+                <button type="button" onClick={() => toggle(it.id)} className="inline-flex items-center">
+                  {expanded[it.id] ? <ChevronDownIcon className="size-4" /> : <ChevronRightIcon className="size-4" />}
+                </button>
+              ) : (
+                <span className="inline-block w-4" />
+              )}
+              <span>{it.key}</span>
+            </div>
+          </TableCell>
+          <TableCell>{it.title}</TableCell>
+          <TableCell className="max-w-[420px] truncate">{it.description}</TableCell>
+          <TableCell>
+            <Switch checked={it.enable} onCheckedChange={(v) => onToggleEnable(it.id, v)} />
+          </TableCell>
+          <TableCell className="max-w-[240px] truncate">{it.icon}</TableCell>
+          <TableCell className="max-w-[240px] truncate">{it.link}</TableCell>
+          <TableCell>{it.sortOrder}</TableCell>
+          <TableCell className="space-x-2">
+            <Button size="sm" variant="outline" onClick={() => onEdit(it)}>{t('edit')}</Button>
+            <Button size="sm" variant="destructive" onClick={() => onDelete(it.id)}>Delete</Button>
+          </TableCell>
+        </TableRow>
+      );
+      const hasKids = (byParent[it.id] || []).length > 0;
+      if (hasKids && (expanded[it.id] ?? false)) {
+        renderBranch(it.id, depth + 1);
+      }
+    }
+  };
+  renderBranch(null, 0);
+  return rows;
+}
+
+function AppItemForm({ initial, onSubmitted, parents }: { initial: AppItem | null; onSubmitted: () => Promise<void>; parents: AppItem[] }) {
   const t = useTranslations('Dashboard.admin.appItems');
 
   const Schema = z.object({
@@ -182,6 +240,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       ])
       .optional(),
     sortOrder: z.number().int().min(0).optional(),
+    parentId: z.string().optional().nullable(),
   });
 
   const form = useForm<z.infer<typeof Schema>>({
@@ -194,6 +253,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       icon: initial?.icon ?? undefined,
       link: initial?.link ?? '',
       sortOrder: initial?.sortOrder,
+      parentId: (initial as any)?.parentId ?? null,
     },
   });
 
@@ -206,6 +266,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       icon: initial?.icon ?? undefined,
       link: initial?.link ?? '',
       sortOrder: initial?.sortOrder,
+      parentId: (initial as any)?.parentId ?? null,
     });
   }, [initial]);
 
@@ -221,6 +282,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
           icon: values.icon ?? '',
           link: values.link ?? '',
           sortOrder: values.sortOrder as number | undefined,
+          parentId: values.parentId ?? null,
         });
         if (res?.data?.success || (res as any)?.success) {
           toast.success(t('toast.saveSuccess'));
@@ -237,6 +299,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
           icon: values.icon ?? '',
           link: values.link ?? '',
           sortOrder: values.sortOrder as number | undefined,
+          parentId: values.parentId ?? null,
         });
         if (res?.data?.success || (res as any)?.success) {
           toast.success(t('toast.createSuccess'));
@@ -314,6 +377,32 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
               <FormLabel>{t('form.link') || 'Link'}</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="https://example.com/path" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="parentId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Parent</FormLabel>
+              <FormControl>
+                <select
+                  className="h-9 px-2 border rounded"
+                  value={(field.value as any) ?? ''}
+                  onChange={(e) => field.onChange(e.target.value === '' ? null : e.target.value)}
+                >
+                  <option value="">(None)</option>
+                  {parents
+                    .filter((p) => !initial || p.id !== initial.id)
+                    .map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.title}
+                      </option>
+                    ))}
+                </select>
               </FormControl>
               <FormMessage />
             </FormItem>

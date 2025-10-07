@@ -79,6 +79,7 @@ export const settings = pgTable("settings", {
 export const appItem = pgTable("app_item", {
   id: text("id").primaryKey(),
   key: text("key"),
+  parentId: text("parent_id"),
   title: text("title").notNull(),
   description: text("description").notNull(), // limit 200 enforced at application layer
   enable: boolean("enable").notNull().default(false),
@@ -90,6 +91,7 @@ export const appItem = pgTable("app_item", {
 }, (table) => ({
   appItemSortIdx: index("app_item_sort_idx").on(table.sortOrder),
   appItemEnableIdx: index("app_item_enable_idx").on(table.enable),
+  appItemParentSortIdx: index("app_item_parent_sort_idx").on(table.parentId, table.sortOrder),
 }));
 
 // -----------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 import { getDb } from '@/db';
 import { appItem, i18nTranslation } from '@/db/schema';
 import { adminActionClient } from '@/lib/safe-action';
-import { and, asc, eq, inArray } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNull } from 'drizzle-orm';
 import { z } from 'zod';
 
 export const getDashboardAppsAction = adminActionClient
@@ -17,7 +17,7 @@ export const getDashboardAppsAction = adminActionClient
     const items = await db
       .select()
       .from(appItem)
-      .where(eq(appItem.enable, true))
+      .where(and(eq(appItem.enable, true), isNull(appItem.parentId)))
       .orderBy(asc(appItem.sortOrder));
 
     const lang = parsedInput.languageCode;

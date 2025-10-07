@@ -20,6 +20,7 @@ const baseSchema = z.object({
     ])
     .optional(),
   sortOrder: z.number().int().min(0).optional(),
+  parentId: z.string().optional().nullable(),
 });
 
 export const createAppItemAction = adminActionClient
@@ -41,6 +42,7 @@ export const createAppItemAction = adminActionClient
       .values({
         id: newId,
         key: (parsedInput.key && parsedInput.key.trim()) || newId,
+        parentId: parsedInput.parentId ?? null,
         title: parsedInput.title,
         description: parsedInput.description ?? '',
         enable: parsedInput.enable ?? false,
@@ -72,6 +74,9 @@ export const updateAppItemAction = adminActionClient
     };
     if (typeof parsedInput.key !== 'undefined') {
       updateData.key = parsedInput.key; // rely on schema to validate if provided
+    }
+    if (typeof parsedInput.parentId !== 'undefined') {
+      updateData.parentId = parsedInput.parentId ?? null;
     }
 
     const [updated] = await db
