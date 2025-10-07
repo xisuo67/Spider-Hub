@@ -551,6 +551,32 @@
         "importFailed": "导入失败，请检查文件格式",
         "delete": "删除"
       },
+      "settings": {
+        "title": "系统设置",
+        "new": "新增",
+        "edit": "编辑设置",
+        "create": "创建",
+        "save": "保存",
+        "cancel": "取消",
+        "columns": {
+          "key": "键",
+          "value": "值",
+          "actions": "操作"
+        },
+        "noResults": "无结果",
+        "form": {
+          "key": "键",
+          "value": "值"
+        },
+        "toast": {
+          "createSuccess": "创建成功",
+          "createFail": "创建失败",
+          "saveSuccess": "保存成功",
+          "saveFail": "保存失败",
+          "deleteSuccess": "删除成功",
+          "deleteFail": "删除失败"
+        }
+      },
       "users": {
         "title": "用户管理",
         "fakeData": "注：只为演示功能，数据为假数据，封禁功能不可用",

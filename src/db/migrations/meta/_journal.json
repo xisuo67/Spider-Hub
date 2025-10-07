@@ -50,6 +50,13 @@
       "when": 1759826451689,
       "tag": "0006_vengeful_randall_flagg",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1759833700400,
+      "tag": "0007_cheerful_echo",
+      "breakpoints": true
     }
   ]
 }

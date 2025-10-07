@@ -70,6 +70,12 @@ export function getSidebarLinks(): NestedMenuItem[] {
           href: Routes.AdminUsers,
           external: false,
         },
+        {
+          title: t('admin.settings.title'),
+          icon: <Settings2Icon className="size-4 shrink-0" />,
+          href: '/admin/settings',
+          external: false,
+        },
       ],
     },
     {

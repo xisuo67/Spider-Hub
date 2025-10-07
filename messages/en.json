@@ -551,6 +551,32 @@
         "importFailed": "Import failed. Please check file format.",
         "delete": "Delete"
       },
+      "settings": {
+        "title": "Settings",
+        "new": "New",
+        "edit": "Edit Setting",
+        "create": "Create",
+        "save": "Save",
+        "cancel": "Cancel",
+        "columns": {
+          "key": "Key",
+          "value": "Value",
+          "actions": "Actions"
+        },
+        "noResults": "No results.",
+        "form": {
+          "key": "Key",
+          "value": "Value"
+        },
+        "toast": {
+          "createSuccess": "Created successfully",
+          "createFail": "Creation failed",
+          "saveSuccess": "Saved successfully",
+          "saveFail": "Save failed",
+          "deleteSuccess": "Deleted successfully",
+          "deleteFail": "Delete failed"
+        }
+      },
       "users": {
         "title": "Users",
         "fakeData": "Note: Faked data for demonstration, some features are disabled",

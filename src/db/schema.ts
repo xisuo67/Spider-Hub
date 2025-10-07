@@ -64,6 +64,16 @@ export const verification = pgTable("verification", {
 });
 
 // -----------------------------------------------------------------------------
+// Settings
+// -----------------------------------------------------------------------------
+export const settings = pgTable("settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// -----------------------------------------------------------------------------
 // App Items
 // -----------------------------------------------------------------------------
 export const appItem = pgTable("app_item", {
