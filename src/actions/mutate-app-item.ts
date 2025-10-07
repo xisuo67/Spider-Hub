@@ -12,6 +12,13 @@ const baseSchema = z.object({
   description: z.string().max(200).optional().default(''),
   enable: z.boolean().optional().default(false),
   icon: z.string().optional().default(''),
+  link: z
+    .union([
+      z.string().url(), // absolute URL
+      z.string().regex(/^\/[\S]*$/, { message: 'relative path must start with /' }), // relative path
+    ])
+    .optional()
+    .default(''),
   sortOrder: z.number().int().min(0).optional(),
 });
 
@@ -37,6 +44,7 @@ export const createAppItemAction = adminActionClient
         description: parsedInput.description ?? '',
         enable: parsedInput.enable ?? false,
         icon: parsedInput.icon ?? '',
+        link: parsedInput.link ?? '',
         sortOrder,
       })
       .returning();
@@ -61,6 +69,7 @@ export const updateAppItemAction = adminActionClient
         description: parsedInput.description ?? '',
         enable: parsedInput.enable ?? false,
         icon: parsedInput.icon ?? '',
+        link: parsedInput.link ?? '',
         sortOrder: parsedInput.sortOrder ?? undefined,
       })
       .where(eq(appItem.id, parsedInput.id))

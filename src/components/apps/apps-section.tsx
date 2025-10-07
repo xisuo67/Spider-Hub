@@ -1,22 +1,18 @@
 import { HeaderSection } from '@/components/layout/header-section';
-import {
-  Xiaohongshu,
-  Douyin,
-  TikTok,
-  X,
-  Instagram,
-  Weibo,
-  YouTube,
-} from '@/components/tailark/logos';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { LocaleLink } from '@/i18n/navigation';
 import { ChevronRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { getDashboardAppsAction } from '@/actions/get-dashboard-apps';
 import type * as React from 'react';
 
-export function AppsSection() {
-  const t = useTranslations('Dashboard.apps');
+export async function AppsSection() {
+  const t = await getTranslations('Dashboard.apps');
+  const locale = await getLocale();
+  const res = await getDashboardAppsAction({ languageCode: locale });
+  const apps = res?.data?.data ?? [] as { id: string; key?: string; title: string; description: string; icon: string; link: string }[];
+  const learnMore = t('learnMore');
 
   return (
     <section className="px-4">
@@ -30,61 +26,16 @@ export function AppsSection() {
         />
 
         <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <AppsCard
-            title={t('items.xiaohongshu.title')}
-            description={t('items.xiaohongshu.description')}
-            link="https://www.xiaohongshu.com"
-          >
-            <Xiaohongshu />
-          </AppsCard>
-
-          <AppsCard
-            title={t('items.douyin.title')}
-            description={t('items.douyin.description')}
-            link="https://www.douyin.com"
-          >
-            <Douyin />
-          </AppsCard>
-
-          <AppsCard
-            title={t('items.tiktok.title')}
-            description={t('items.tiktok.description')}
-            link="https://www.tiktok.com"
-          >
-            <TikTok />
-          </AppsCard>
-
-          <AppsCard
-            title={t('items.x.title')}
-            description={t('items.x.description')}
-            link="https://x.com"
-          >
-            <X />
-          </AppsCard>
-
-          <AppsCard
-            title={t('items.instagram.title')}
-            description={t('items.instagram.description')}
-            link="https://www.instagram.com"
-          >
-            <Instagram />
-          </AppsCard>
-
-          <AppsCard
-            title={t('items.weibo.title')}
-            description={t('items.weibo.description')}
-            link="https://weibo.com"
-          >
-            <Weibo />
-          </AppsCard>
-
-          <AppsCard
-            title={t('items.youtube.title')}
-            description={t('items.youtube.description')}
-            link="https://www.youtube.com"
-          >
-            <YouTube />
-          </AppsCard>
+          {apps.map((app) => (
+            <AppsCard
+              key={app.id}
+              title={app.title}
+              description={app.description}
+              link={app.link || '#'}
+              icon={app.icon}
+              learnMoreLabel={learnMore}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -94,20 +45,23 @@ export function AppsSection() {
 const AppsCard = ({
   title,
   description,
-  children,
+  icon,
   link = '#',
+  learnMoreLabel,
 }: {
   title: string;
   description: string;
-  children: React.ReactNode;
+  icon?: string;
   link?: string;
+  learnMoreLabel: string;
 }) => {
-  const t = useTranslations('Dashboard.apps');
 
   return (
     <Card className="p-6 bg-transparent hover:bg-accent dark:hover:bg-card">
       <div className="relative">
-        <div className="*:size-10">{children}</div>
+        <div className="flex items-center justify-center h-10 w-10 rounded-md bg-muted overflow-hidden">
+          {renderIcon(icon, title)}
+        </div>
 
         <div className="space-y-2 py-6">
           <h3 className="text-base font-medium">{title}</h3>
@@ -124,7 +78,7 @@ const AppsCard = ({
             className="gap-1 pr-2 shadow-none"
           >
             <LocaleLink href={link}>
-              {t('learnMore')}
+              {learnMoreLabel}
               <ChevronRight className="ml-0 !size-3.5 opacity-50" />
             </LocaleLink>
           </Button>
@@ -133,3 +87,23 @@ const AppsCard = ({
     </Card>
   );
 };
+
+function renderIcon(icon: string | undefined, title: string) {
+  if (icon && icon.trim().startsWith('<')) {
+    return (
+      <div
+        className="h-10 w-10 [&_svg]:h-10 [&_svg]:w-10"
+        dangerouslySetInnerHTML={{ __html: icon }}
+      />
+    );
+  }
+  if (icon && /^(https?:|data:)/.test(icon)) {
+    return <img src={icon} alt={title} className="h-10 w-10 object-contain" />;
+  }
+  const initial = (title?.[0] || '?').toUpperCase();
+  return (
+    <div className="h-10 w-10 flex items-center justify-center text-sm font-medium text-muted-foreground">
+      {initial}
+    </div>
+  );
+}

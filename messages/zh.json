@@ -482,37 +482,7 @@
       "title": "应用",
       "subtitle": "社交媒体平台",
       "description": "探索和管理您喜爱的社交媒体平台和应用程序",
-      "learnMore": "了解更多",
-      "items": {
-        "xiaohongshu": {
-          "title": "小红书",
-          "description": "在中国领先的生活方式平台上发现生活方式内容、美妆技巧和旅行体验"
-        },
-        "douyin": {
-          "title": "抖音",
-          "description": "在中国最受欢迎的视频平台上与数百万用户创建和分享短视频"
-        },
-        "tiktok": {
-          "title": "TikTok",
-          "description": "通过创意短视频表达自己，与全球社区建立联系"
-        },
-        "x": {
-          "title": "X (Twitter)",
-          "description": "实时了解来自世界各地的新闻、趋势和对话"
-        },
-        "instagram": {
-          "title": "Instagram",
-          "description": "分享照片和视频，发现新内容，与朋友和影响者建立联系"
-        },
-        "weibo": {
-          "title": "微博",
-          "description": "加入中国最大的微博平台，获取新闻、娱乐和社交网络信息"
-        },
-        "youtube": {
-          "title": "YouTube",
-          "description": "在全球最大的视频分享平台上观看、分享和发现视频"
-        }
-      }
+      "learnMore": "了解更多"
     },
     "admin": {
       "title": "系统管理",
@@ -529,6 +499,7 @@
           "description": "描述",
           "enable": "启用",
           "icon": "图标",
+          "link": "链接",
           "sortOrder": "排序",
           "actions": "操作"
         },
@@ -538,6 +509,7 @@
           "description": "描述（最多200字）",
           "enable": "启用",
           "icon": "图标（文本）",
+          "link": "链接地址",
           "sortOrder": "排序值"
         },
         "noResults": "无结果"

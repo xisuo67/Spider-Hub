@@ -482,37 +482,7 @@
       "title": "Dashboard",
       "subtitle": "Social Media Platforms",
       "description": "Explore and manage your favorite social media platforms and applications",
-      "learnMore": "Learn More",
-      "items": {
-        "xiaohongshu": {
-          "title": "Xiaohongshu",
-          "description": "Discover lifestyle content, beauty tips, and travel experiences on China's leading lifestyle platform"
-        },
-        "douyin": {
-          "title": "Douyin",
-          "description": "Create and share short videos with millions of users on China's most popular video platform"
-        },
-        "tiktok": {
-          "title": "TikTok",
-          "description": "Express yourself through creative short videos and connect with a global community"
-        },
-        "x": {
-          "title": "X (Twitter)",
-          "description": "Stay updated with real-time news, trends, and conversations from around the world"
-        },
-        "instagram": {
-          "title": "Instagram",
-          "description": "Share photos and videos, discover new content, and connect with friends and influencers"
-        },
-        "weibo": {
-          "title": "Weibo",
-          "description": "Join China's largest microblogging platform for news, entertainment, and social networking"
-        },
-        "youtube": {
-          "title": "YouTube",
-          "description": "Watch, share, and discover videos on the world's largest video-sharing platform"
-        }
-      }
+      "learnMore": "Learn More"
     },
     "admin": {
       "title": "Admin",
@@ -529,6 +499,7 @@
           "description": "Description",
           "enable": "Enable",
           "icon": "Icon",
+          "link": "Link",
           "sortOrder": "Sort",
           "actions": "Actions"
         },
@@ -538,6 +509,7 @@
           "description": "Description (max 200)",
           "enable": "Enable",
           "icon": "Icon (text)",
+          "link": "Link URL",
           "sortOrder": "Sort Order"
         },
         "noResults": "No results."

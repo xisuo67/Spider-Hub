@@ -73,6 +73,7 @@ export const appItem = pgTable("app_item", {
   description: text("description").notNull(), // limit 200 enforced at application layer
   enable: boolean("enable").notNull().default(false),
   icon: text("icon"), // long text for serialized icon markup or JSON
+  link: text("link"),
   sortOrder: integer("sort_order").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),

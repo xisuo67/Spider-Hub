@@ -43,6 +43,13 @@
       "when": 1759739060951,
       "tag": "0005_burly_the_hood",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1759826451689,
+      "tag": "0006_vengeful_randall_flagg",
+      "breakpoints": true
     }
   ]
 }

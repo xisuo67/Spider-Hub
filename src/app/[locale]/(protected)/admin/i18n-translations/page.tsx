@@ -163,6 +163,7 @@ export default function AdminI18nTranslationsPage() {
               </DialogHeader>
               <TranslationForm
                 initial={editing}
+                defaultLanguage={languageCode === 'all' ? 'en' : languageCode}
                 onSubmitted={async () => {
                   setOpen(false);
                   await fetchItems();
@@ -321,7 +322,7 @@ function buildTreeRows(
   return rows;
 }
 
-function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmitted: () => Promise<void> }) {
+function TranslationForm({ initial, onSubmitted, defaultLanguage }: { initial: T | null; onSubmitted: () => Promise<void>; defaultLanguage?: string }) {
   const t = useTranslations('Dashboard.admin.i18nTranslations');
   const Schema = z.object({
     key: z.string().min(1),
@@ -333,7 +334,7 @@ function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmit
     resolver: zodResolver(Schema),
     defaultValues: {
       key: initial?.key ?? '',
-      languageCode: initial?.languageCode ?? 'en',
+      languageCode: initial?.languageCode ?? (defaultLanguage as string) ?? 'en',
       value: initial?.value ?? '',
     },
   });
@@ -341,10 +342,10 @@ function TranslationForm({ initial, onSubmitted }: { initial: T | null; onSubmit
   useEffect(() => {
     form.reset({
       key: initial?.key ?? '',
-      languageCode: initial?.languageCode ?? 'en',
+      languageCode: initial?.languageCode ?? (defaultLanguage as string) ?? 'en',
       value: initial?.value ?? '',
     });
-  }, [initial]);
+  }, [initial, defaultLanguage]);
 
   const onSubmit = async (values: z.infer<typeof Schema>) => {
     if (initial) {

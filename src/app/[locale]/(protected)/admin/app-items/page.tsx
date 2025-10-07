@@ -28,6 +28,7 @@ type AppItem = {
   description: string | null;
   enable: boolean;
   icon: string | null;
+  link?: string | null;
   sortOrder: number;
 };
 
@@ -106,6 +107,7 @@ export default function AdminAppItemsPage() {
                 <TableHead>{t('columns.description')}</TableHead>
                 <TableHead>{t('columns.enable')}</TableHead>
                 <TableHead>{t('columns.icon')}</TableHead>
+                <TableHead>{t('columns.link') || 'Link'}</TableHead>
                 <TableHead>{t('columns.sortOrder')}</TableHead>
                 <TableHead>{t('columns.actions')}</TableHead>
               </TableRow>
@@ -119,12 +121,13 @@ export default function AdminAppItemsPage() {
                 items.map((it) => (
                   <TableRow key={it.id}>
                     <TableCell>{it.key}</TableCell>
-                    <TableCell>{`${it.key ? it.key + ' - ' : ''}${it.title}`}</TableCell>
+                    <TableCell>{it.title}</TableCell>
                     <TableCell className="max-w-[420px] truncate">{it.description}</TableCell>
                     <TableCell>
                       <Switch checked={it.enable} onCheckedChange={(v) => onToggleEnable(it.id, v)} />
                     </TableCell>
                     <TableCell className="max-w-[240px] truncate">{it.icon}</TableCell>
+                    <TableCell className="max-w-[240px] truncate">{it.link}</TableCell>
                     <TableCell>{it.sortOrder}</TableCell>
                     <TableCell className="space-x-2">
                       <Button size="sm" variant="outline" onClick={() => onEdit(it)}>{t('edit')}</Button>
@@ -150,6 +153,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
     description: z.string().max(200).optional(),
     enable: z.boolean().optional(),
     icon: z.string().optional(),
+    link: z.string().url().optional(),
     sortOrder: z.number().int().min(0).optional(),
   });
 
@@ -161,6 +165,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       description: initial?.description ?? undefined,
       enable: initial?.enable ?? false,
       icon: initial?.icon ?? undefined,
+      link: initial?.link ?? undefined,
       sortOrder: initial?.sortOrder,
     },
   });
@@ -172,6 +177,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
       description: initial?.description ?? undefined,
       enable: initial?.enable ?? false,
       icon: initial?.icon ?? undefined,
+      link: initial?.link ?? undefined,
       sortOrder: initial?.sortOrder,
     });
   }, [initial]);
@@ -185,6 +191,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
         description: values.description ?? '',
         enable: values.enable ?? false,
         icon: values.icon ?? '',
+        link: values.link ?? '',
         sortOrder: values.sortOrder as number | undefined,
       });
     } else {
@@ -194,6 +201,7 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
         description: values.description ?? '',
         enable: values.enable ?? false,
         icon: values.icon ?? '',
+        link: values.link ?? '',
         sortOrder: values.sortOrder as number | undefined,
       });
     }
@@ -249,7 +257,20 @@ function AppItemForm({ initial, onSubmitted }: { initial: AppItem | null; onSubm
             <FormItem>
               <FormLabel>{t('form.icon')}</FormLabel>
               <FormControl>
-                <Textarea {...field} rows={3} />
+                <Textarea {...field} rows={3} className="h-24 max-h-48 overflow-auto resize-none" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="link"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t('form.link') || 'Link'}</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="https://example.com/path" />
               </FormControl>
               <FormMessage />
             </FormItem>
