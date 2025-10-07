@@ -53,13 +53,13 @@ export function getSidebarLinks(): NestedMenuItem[] {
           external: false,
         },
         {
-          title: 'App Items',
+          title: t('admin.appItems.title'),
           icon: <SmartphoneIcon className="size-4 shrink-0" />,
           href: Routes.AdminAppItems,
           external: false,
         },
         {
-          title: 'I18n Translations',
+          title: t('admin.i18nTranslations.title'),
           icon: <Settings2Icon className="size-4 shrink-0" />,
           href: Routes.AdminI18nTranslations,
           external: false,
@@ -104,12 +104,7 @@ export function getSidebarLinks(): NestedMenuItem[] {
           href: Routes.SettingsSecurity,
           external: false,
         },
-        {
-          title: t('settings.notification.title'),
-          icon: <BellIcon className="size-4 shrink-0" />,
-          href: Routes.SettingsNotifications,
-          external: false,
-        },
+        // notifications menu hidden per request
       ],
     },
   ];

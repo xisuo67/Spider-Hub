@@ -526,6 +526,7 @@
         }
       },
       "i18nTranslations": {
+        "title": "国际化翻译",
         "new": "新增",
         "edit": "编辑翻译",
         "create": "创建",

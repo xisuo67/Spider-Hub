@@ -526,6 +526,7 @@
         }
       },
       "i18nTranslations": {
+        "title": "I18n Translations",
         "new": "New",
         "edit": "Edit Translation",
         "create": "Create",
