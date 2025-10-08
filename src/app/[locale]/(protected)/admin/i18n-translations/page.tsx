@@ -15,6 +15,8 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Loader } from '@/components/ai-elements/loader';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -35,15 +37,28 @@ export default function AdminI18nTranslationsPage() {
   const [languageCode, setLanguageCode] = useState<string>('all');
   const [importing, setImporting] = useState(false);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [loading, setLoading] = useState(false);
 
   const fetchItems = async (lc: string = languageCode) => {
-    const res = await listI18nTranslationsAction({
-      pageIndex: 0,
-      pageSize: 10000,
-      search: '',
-      languageCode: lc === 'all' ? undefined : lc,
-    });
-    if (res?.data?.success) setItems(res.data.data.items as T[]);
+    setLoading(true);
+    try {
+      const res = await listI18nTranslationsAction({
+        pageIndex: 0,
+        pageSize: 10000,
+        search: '',
+        languageCode: lc === 'all' ? undefined : lc,
+      });
+      if (res?.data?.success) {
+        setItems(res.data.data.items as T[]);
+      } else {
+        setItems([]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch i18n translations:', error);
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -153,8 +168,15 @@ export default function AdminI18nTranslationsPage() {
           </Button>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" onClick={() => setEditing(null)}>
-                {t('new')}
+              <Button size="sm" disabled={loading} onClick={() => setEditing(null)}>
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader size={14} />
+                    <span>Loading...</span>
+                  </div>
+                ) : (
+                  t('new')
+                )}
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -186,10 +208,34 @@ export default function AdminI18nTranslationsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {items.length === 0 ? (
+              {loading ? (
+                <>
+                  {Array.from({ length: 3 }).map((_, index) => (
+                    <TableRow key={`skeleton-${index}`}>
+                      <TableCell>
+                        <Skeleton className="h-4 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-8" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-48" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Skeleton className="h-8 w-16" />
+                          <Skeleton className="h-8 w-16" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              ) : items.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={4} className="h-24 text-center">
-                    {t('noResults')}
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="text-muted-foreground">{t('noResults')}</div>
+                    </div>
                   </TableCell>
                 </TableRow>
               ) : (
