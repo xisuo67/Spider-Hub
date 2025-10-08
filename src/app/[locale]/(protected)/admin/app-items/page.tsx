@@ -15,6 +15,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Loader } from '@/components/ai-elements/loader';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
@@ -46,9 +48,20 @@ export default function AdminAppItemsPage() {
 
   const fetchItems = async () => {
     setLoading(true);
-    const res = await getAppItemsAction({ pageIndex: 0, pageSize: 100, search: '' });
-    if (res?.data?.success) setItems(res.data.data.items as AppItem[]);
-    setLoading(false);
+    try {
+      const res = await getAppItemsAction({ pageIndex: 0, pageSize: 100, search: '' });
+      if (res?.data?.success) {
+        setItems(res.data.data.items as AppItem[]);
+      } else {
+        // 如果请求失败，保持空数组状态
+        setItems([]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch app items:', error);
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -103,7 +116,16 @@ export default function AdminAppItemsPage() {
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" onClick={() => { setEditing(null); }}>{t('new')}</Button>
+              <Button size="sm" disabled={loading} onClick={() => { setEditing(null); }}>
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader size={14} />
+                    <span>Loading...</span>
+                  </div>
+                ) : (
+                  t('new')
+                )}
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -138,9 +160,50 @@ export default function AdminAppItemsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {items.length === 0 ? (
+              {loading ? (
+                <>
+                  {Array.from({ length: 3 }).map((_, index) => (
+                    <TableRow key={`skeleton-${index}`}>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-4 w-4" />
+                          <Skeleton className="h-4 w-20" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-48" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-12" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-24" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-8" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Skeleton className="h-8 w-16" />
+                          <Skeleton className="h-8 w-16" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              ) : items.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">{t('noResults')}</TableCell>
+                  <TableCell colSpan={8} className="h-24 text-center">
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="text-muted-foreground">{t('noResults')}</div>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ) : (
                 renderTreeRows(

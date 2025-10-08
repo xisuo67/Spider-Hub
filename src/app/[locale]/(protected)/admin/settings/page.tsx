@@ -6,6 +6,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Loader } from '@/components/ai-elements/loader';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -21,10 +23,23 @@ export default function AdminSettingsPage() {
   const [items, setItems] = useState<Setting[]>([]);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Setting | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchItems = async () => {
-    const res = await listSettingsAction({ pageIndex: 0, pageSize: 100, search: '' });
-    if (res?.data?.success) setItems(res.data.data.items as Setting[]);
+    setLoading(true);
+    try {
+      const res = await listSettingsAction({ pageIndex: 0, pageSize: 100, search: '' });
+      if (res?.data?.success) {
+        setItems(res.data.data.items as Setting[]);
+      } else {
+        setItems([]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch settings:', error);
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -54,8 +69,15 @@ export default function AdminSettingsPage() {
           </Button>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" onClick={() => setEditing(null)}>
-                {t('new')}
+              <Button size="sm" disabled={loading} onClick={() => setEditing(null)}>
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader size={14} />
+                    <span>Loading...</span>
+                  </div>
+                ) : (
+                  t('new')
+                )}
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -85,10 +107,31 @@ export default function AdminSettingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {items.length === 0 ? (
+              {loading ? (
+                <>
+                  {Array.from({ length: 3 }).map((_, index) => (
+                    <TableRow key={`skeleton-${index}`}>
+                      <TableCell>
+                        <Skeleton className="h-4 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-48" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Skeleton className="h-8 w-16" />
+                          <Skeleton className="h-8 w-16" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              ) : items.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={3} className="h-24 text-center">
-                    {t('noResults')}
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="text-muted-foreground">{t('noResults')}</div>
+                    </div>
                   </TableCell>
                 </TableRow>
               ) : (
