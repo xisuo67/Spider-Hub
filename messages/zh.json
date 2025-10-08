@@ -1155,5 +1155,28 @@
   "AIAudioPage": {
     "title": "AI 音频",
     "description": "MkSaaS 让您在几天内轻松构建您的 AI SaaS，简单且毫不费力"
+  },
+  "Xhs": {
+    "title": "小红书",
+    "SearchNote": {
+      "title": "小红书笔记搜索",
+      "description": "搜索和分析小红书笔记数据",
+      "noteSearch": "笔记搜索",
+      "commentSearch": "获取评论",
+      "searchPlaceholder": "请输入小红书笔记链接",
+      "commentSearchPlaceholder": "请输入小红书笔记链接",
+      "search": "搜索",
+      "searching": "搜索中...",
+      "noResults": "暂无搜索结果",
+      "columnSettings": "列设置",
+      "basicInfo": "基本信息",
+      "publishTime": "发布时间",
+      "interactionVolume": "互动量",
+      "estimatedReads": "预估阅读数",
+      "collections": "收藏",
+      "comments": "评论",
+      "shares": "分享",
+      "likes": "点赞"
+    }
   }
 }

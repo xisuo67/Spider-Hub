@@ -1155,5 +1155,28 @@
   "AIAudioPage": {
     "title": "AI Audio",
     "description": "MkSaaS lets you make AI SaaS in days, simply and effortlessly"
+  },
+  "Xhs": {
+    "title": "Xiaohongshu",
+    "SearchNote": {
+      "title": "Xiaohongshu Note Search",
+      "description": "Search and analyze Xiaohongshu note data",
+      "noteSearch": "Note Search",
+      "commentSearch": "Get Comments",
+      "searchPlaceholder": "Enter Xiaohongshu note link",
+      "commentSearchPlaceholder": "Enter Xiaohongshu note link",
+      "search": "Search",
+      "searching": "Searching...",
+      "noResults": "No search results",
+      "columnSettings": "Column Settings",
+      "basicInfo": "Basic Info",
+      "publishTime": "Publish Time",
+      "interactionVolume": "Interaction Volume",
+      "estimatedReads": "Estimated Reads",
+      "collections": "Collections",
+      "comments": "Comments",
+      "shares": "Shares",
+      "likes": "Likes"
+    }
   }
 }
