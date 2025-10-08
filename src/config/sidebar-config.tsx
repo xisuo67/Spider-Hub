@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { websiteConfig } from './website';
+import { useDynamicMenu } from '@/hooks/use-dynamic-menu';
 
 /**
  * Get sidebar config with translations
@@ -30,11 +31,13 @@ import { websiteConfig } from './website';
  */
 export function getSidebarLinks(): NestedMenuItem[] {
   const t = useTranslations('Dashboard');
+  const { menuItems: dynamicMenuItems, loading, error } = useDynamicMenu();
 
   // if is demo website, allow user to access admin and user pages, but data is fake
   const isDemo = isDemoWebsite();
 
-  return [
+  // 基础菜单项
+  const baseMenuItems: NestedMenuItem[] = [
     {
       title: t('dashboard.title'),
       icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
@@ -114,4 +117,19 @@ export function getSidebarLinks(): NestedMenuItem[] {
       ],
     },
   ];
+
+  // 如果动态菜单正在加载或出错，只返回基础菜单
+  if (loading || error) {
+    return baseMenuItems;
+  }
+
+  // 将动态菜单项插入到基础菜单中
+  // 在dashboard之后插入动态菜单
+  const result: NestedMenuItem[] = [
+    baseMenuItems[0], // Dashboard
+    ...dynamicMenuItems, // 动态菜单项
+    ...baseMenuItems.slice(1), // 其余基础菜单项
+  ];
+
+  return result;
 }

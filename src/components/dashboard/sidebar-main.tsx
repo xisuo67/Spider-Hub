@@ -10,6 +10,25 @@ import {
 } from '@/components/ui/sidebar';
 import { LocaleLink, useLocalePathname } from '@/i18n/navigation';
 import type { NestedMenuItem } from '@/types';
+import { cn } from '@/lib/utils';
+
+/**
+ * Render icon based on type
+ */
+function renderIcon(icon: NestedMenuItem['icon']) {
+  if (!icon) return null;
+  
+  if (typeof icon === 'object' && 'type' in icon && icon.type === 'html') {
+    return (
+      <div 
+        className={cn('shrink-0', icon.className)}
+        dangerouslySetInnerHTML={{ __html: icon.content }}
+      />
+    );
+  }
+  
+  return icon;
+}
 
 /**
  * Main navigation for the dashboard sidebar
@@ -39,7 +58,7 @@ export function SidebarMain({ items }: { items: NestedMenuItem[] }) {
                       isActive={isActive(subItem.href)}
                     >
                       <LocaleLink href={subItem.href || ''}>
-                        {subItem.icon ? subItem.icon : null}
+                        {renderIcon(subItem.icon)}
                         <span className="truncate font-medium text-sm">
                           {subItem.title}
                         </span>
@@ -55,16 +74,16 @@ export function SidebarMain({ items }: { items: NestedMenuItem[] }) {
           <SidebarGroup key={item.title}>
             <SidebarGroupContent className="flex flex-col gap-2">
               <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isActive(item.href)}>
-                    <LocaleLink href={item.href || ''}>
-                      {item.icon ? item.icon : null}
-                      <span className="truncate font-medium text-sm">
-                        {item.title}
-                      </span>
-                    </LocaleLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={isActive(item.href)}>
+                      <LocaleLink href={item.href || ''}>
+                        {renderIcon(item.icon)}
+                        <span className="truncate font-medium text-sm">
+                          {item.title}
+                        </span>
+                      </LocaleLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
