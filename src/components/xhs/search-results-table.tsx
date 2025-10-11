@@ -6,11 +6,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { SimpleToolbar } from './simple-toolbar';
 import { CustomPagination } from './custom-pagination';
+import { DataTableBulkActions } from '@/components/data-table';
+import { BulkActions } from './bulk-actions';
 import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
+  RowSelectionState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -26,6 +29,7 @@ export interface SearchResult {
     type: 'video' | 'note';
     duration?: string;
     title: string;
+    desc: string;
     author: {
       avatar: string;
       name: string;
@@ -65,9 +69,10 @@ export function SearchResultsTable({
   ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 20,
   });
 
   const table = useReactTable({
@@ -77,8 +82,11 @@ export function SearchResultsTable({
       sorting,
       columnFilters,
       columnVisibility,
+      rowSelection,
       pagination,
     },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -87,6 +95,7 @@ export function SearchResultsTable({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    manualPagination: true, // 禁用内置分页，使用自定义分页
   });
 
   if (loading) {
@@ -128,9 +137,37 @@ export function SearchResultsTable({
     );
   }
 
+  const handleExportCSV = () => {
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    console.log('Exporting CSV for:', selectedRows.map(row => row.original.id));
+  };
+
+  const handleDownloadDetails = () => {
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    console.log('Downloading details for:', selectedRows.map(row => row.original.id));
+  };
+
+  const handleDownloadImages = () => {
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    console.log('Downloading images for:', selectedRows.map(row => row.original.id));
+  };
+
   return (
     <div className="space-y-4">
       <SimpleToolbar table={table} />
+      
+      <DataTableBulkActions 
+        table={table} 
+        entityName="data"
+      >
+        <BulkActions
+          selectedCount={table.getFilteredSelectedRowModel().rows.length}
+          selectedData={table.getFilteredSelectedRowModel().rows.map(row => row.original)}
+          onExportCSV={handleExportCSV}
+          onDownloadDetails={handleDownloadDetails}
+          onDownloadImages={handleDownloadImages}
+        />
+      </DataTableBulkActions>
       
       <div className="rounded-lg border">
         <Table>

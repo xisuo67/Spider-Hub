@@ -1178,7 +1178,20 @@
       "shares": "分享",
       "likes": "点赞",
       "video": "视频",
-      "note": "笔记"
+      "note": "笔记",
+      "bulkActions": "批量操作",
+      "exportCSV": "导出CSV",
+      "downloadDetails": "下载详细数据",
+      "downloadImages": "图文",
+      "dataSelected": "条数据已选择",
+      "exportingCSV": "正在导出 {count} 条数据的CSV文件...",
+      "downloadingDetails": "正在下载 {count} 条数据的详细信息...",
+      "downloadingImages": "正在下载 {count} 条数据的图文内容...",
+      "exportCSVTooltip": "将选中的数据导出为CSV格式文件，包含所有字段信息",
+      "downloadDetailsTooltip": "下载选中数据的详细JSON格式文件，包含完整的原始数据",
+      "downloadImagesTooltip": "下载选中数据的所有图片和文本内容到本地文件夹",
+      "exporting": "导出中...",
+      "exportFailed": "导出失败，请重试"
     }
   }
 }

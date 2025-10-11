@@ -109,6 +109,7 @@ export function transformMockDataToSearchResults(mockData: MockData): SearchResu
         type: contentType,
         duration: contentType === 'video' ? formattedDuration : undefined,
         title: note.title || note.desc.substring(0, 50) + '...',
+        desc: note.desc || '',
         author: {
           avatar: note.user.images,
           name: note.user.nickname

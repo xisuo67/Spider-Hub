@@ -10,6 +10,7 @@ interface BasicInfoData {
   type: 'video' | 'note';
   duration?: string;
   title: string;
+  desc: string;
   author: {
     avatar: string;
     name: string;
@@ -52,28 +53,33 @@ export function BasicInfoCell({ data }: BasicInfoCellProps) {
         )}
       </div>
 
-      {/* 右侧内容 */}
-      <div className="flex-1 min-w-0 flex flex-col justify-between h-24">
-        {/* 标题 */}
-        <h3 className="font-medium text-sm line-clamp-3 leading-tight">
-          {data.title}
-        </h3>
+              {/* 右侧内容 */}
+              <div className="flex-1 min-w-0 flex flex-col justify-between h-24">
+                {/* 标题 */}
+                <h3 className="font-medium text-sm line-clamp-2 leading-tight">
+                  {data.title}
+                </h3>
 
-        {/* 作者信息 - 固定在底部 */}
-        <div className="flex items-center gap-2 mt-auto">
-          <Avatar className="w-6 h-6">
-            <AvatarImage src={data.author.avatar} alt={data.author.name} />
-            <AvatarFallback className="text-xs">
-              {data.author.name.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex items-center gap-1">
-            <span className="text-sm font-medium truncate">
-              {data.author.name}
-            </span>
-          </div>
-        </div>
-      </div>
+                {/* 描述文案 */}
+                <p className="text-xs text-muted-foreground line-clamp-2 leading-tight mt-1 whitespace-pre-wrap">
+                  {data.desc}
+                </p>
+
+                {/* 作者信息 - 固定在底部 */}
+                <div className="flex items-center gap-2 mt-auto">
+                  <Avatar className="w-6 h-6">
+                    <AvatarImage src={data.author.avatar} alt={data.author.name} />
+                    <AvatarFallback className="text-xs">
+                      {data.author.name.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm font-medium truncate">
+                      {data.author.name}
+                    </span>
+                  </div>
+                </div>
+              </div>
     </div>
   );
 }

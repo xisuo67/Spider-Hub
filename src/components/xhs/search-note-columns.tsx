@@ -5,11 +5,31 @@ import { useTranslations } from 'next-intl';
 import { DataTableColumnHeader } from '@/components/data-table';
 import { BasicInfoCell } from './basic-info-cell';
 import { SearchResult } from './search-results-table';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
   const t = useTranslations('Xhs.SearchNote');
 
   return [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       id: 'basicInfo',
       accessorKey: 'basicInfo',
