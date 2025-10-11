@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SearchIcon } from 'lucide-react';
 import { SearchResultsTable, SearchResult } from '@/components/xhs/search-results-table';
+import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { loadMockData } from '@/lib/mock-data-transformer';
 
@@ -16,17 +17,34 @@ export default function XhsSearchNotePage() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('note-search');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [hasMore, setHasMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const columns = useSearchNoteColumns();
 
-  const handleSearch = async () => {
+  const handleSearch = async (page = 1, currentCursor: string | null = null) => {
     if (!searchUrl.trim()) return;
     
     setLoading(true);
     try {
-      console.log('Searching for:', searchUrl);
+      console.log('Searching for:', searchUrl, 'Page:', page, 'Cursor:', currentCursor);
       
       // 加载mock数据
       const mockResults = await loadMockData();
-      setSearchResults(mockResults);
+      
+      if (page === 1) {
+        // 第一页，替换所有数据
+        setSearchResults(mockResults);
+        setCurrentPage(1);
+      } else {
+        // 后续页面，追加数据
+        setSearchResults(prev => [...prev, ...mockResults]);
+        setCurrentPage(page);
+      }
+      
+      // 模拟API返回的分页信息
+      setHasMore(true); // 根据实际API返回的has_more字段设置
+      setCursor('next_cursor_token'); // 根据实际API返回的cursor设置
       
       // 模拟搜索延迟
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -34,6 +52,20 @@ export default function XhsSearchNotePage() {
       console.error('Search failed:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (hasMore && !loading) {
+      handleSearch(currentPage + 1, cursor);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1 && !loading) {
+      // 这里可以实现返回上一页的逻辑
+      // 由于是动态API，可能需要重新请求或维护页面历史
+      console.log('Go to previous page');
     }
   };
 
@@ -67,7 +99,7 @@ export default function XhsSearchNotePage() {
                 className="flex-1"
               />
               <Button 
-                onClick={handleSearch} 
+                onClick={() => handleSearch(1, null)} 
                 disabled={loading || !searchUrl.trim()}
                 className="bg-red-500 hover:bg-red-600"
               >
@@ -85,7 +117,15 @@ export default function XhsSearchNotePage() {
               </Button>
             </div>
 
-            <SearchResultsTable loading={loading} data={searchResults} />
+            <SearchResultsTable 
+              loading={loading} 
+              data={searchResults} 
+              columns={columns}
+              hasMore={hasMore}
+              currentPage={currentPage}
+              onNextPage={handleNextPage}
+              onPrevPage={handlePrevPage}
+            />
           </TabsContent>
 
           <TabsContent value="comment-search" className="space-y-4 mt-3">
@@ -97,7 +137,7 @@ export default function XhsSearchNotePage() {
                 className="flex-1"
               />
               <Button 
-                onClick={handleSearch} 
+                onClick={() => handleSearch(1, null)} 
                 disabled={loading || !searchUrl.trim()}
                 className="bg-red-500 hover:bg-red-600"
               >
@@ -115,7 +155,15 @@ export default function XhsSearchNotePage() {
               </Button>
             </div>
 
-            <SearchResultsTable loading={loading} data={searchResults} />
+            <SearchResultsTable 
+              loading={loading} 
+              data={searchResults} 
+              columns={columns}
+              hasMore={hasMore}
+              currentPage={currentPage}
+              onNextPage={handleNextPage}
+              onPrevPage={handlePrevPage}
+            />
           </TabsContent>
         </Tabs>
       </div>

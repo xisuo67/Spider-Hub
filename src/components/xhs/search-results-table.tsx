@@ -3,10 +3,21 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { BasicInfoCell } from './basic-info-cell';
-import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { SimpleToolbar } from './simple-toolbar';
+import { CustomPagination } from './custom-pagination';
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 
 export interface SearchResult {
   id: string;
@@ -32,84 +43,51 @@ export interface SearchResult {
 interface SearchResultsTableProps {
   loading?: boolean;
   data?: SearchResult[];
+  columns: ColumnDef<SearchResult>[];
+  hasMore?: boolean;
+  currentPage?: number;
+  onNextPage?: () => void;
+  onPrevPage?: () => void;
 }
 
-// 可配置的列定义
-const columnConfig = [
-  {
-    key: 'basicInfo',
-    label: 'basicInfo',
-    sortable: false,
-    visible: true,
-    width: 'w-80'
-  },
-  {
-    key: 'publishTime',
-    label: 'publishTime',
-    sortable: true,
-    visible: true,
-    width: 'w-32'
-  },
-  {
-    key: 'interactionVolume',
-    label: 'interactionVolume',
-    sortable: true,
-    visible: true,
-    width: 'w-32'
-  },
-  {
-    key: 'estimatedReads',
-    label: 'estimatedReads',
-    sortable: true,
-    visible: true,
-    width: 'w-32'
-  },
-  {
-    key: 'collections',
-    label: 'collections',
-    sortable: true,
-    visible: true,
-    width: 'w-24'
-  },
-  {
-    key: 'comments',
-    label: 'comments',
-    sortable: true,
-    visible: true,
-    width: 'w-24'
-  },
-  {
-    key: 'shares',
-    label: 'shares',
-    sortable: true,
-    visible: true,
-    width: 'w-24'
-  },
-  {
-    key: 'likes',
-    label: 'likes',
-    sortable: true,
-    visible: true,
-    width: 'w-24'
-  }
-];
-
-export function SearchResultsTable({ loading = false, data = [] }: SearchResultsTableProps) {
+export function SearchResultsTable({ 
+  loading = false, 
+  data = [], 
+  columns,
+  hasMore = false,
+  currentPage = 1,
+  onNextPage,
+  onPrevPage
+}: SearchResultsTableProps) {
   const t = useTranslations('Xhs.SearchNote');
-  const [sortField, setSortField] = useState<string>('likes');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'likes', desc: true }
+  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-  const handleSort = (field: string) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('desc');
-    }
-  };
-
-  // 使用所有列，不再需要列显示控制
-  const visibleColumnConfig = columnConfig;
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      pagination,
+    },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   if (loading) {
     return (
@@ -117,8 +95,8 @@ export function SearchResultsTable({ loading = false, data = [] }: SearchResults
         <Table>
           <TableHeader>
             <TableRow>
-              {visibleColumnConfig.map((col) => (
-                <TableHead key={col.key} className={col.width}>
+              {columns.map((column, index) => (
+                <TableHead key={`loading-header-${index}`}>
                   <Skeleton className="h-4 w-20" />
                 </TableHead>
               ))}
@@ -127,8 +105,8 @@ export function SearchResultsTable({ loading = false, data = [] }: SearchResults
           <TableBody>
             {Array.from({ length: 3 }).map((_, index) => (
               <TableRow key={index}>
-                {visibleColumnConfig.map((col) => (
-                  <TableCell key={col.key} className={col.width}>
+                {columns.map((column, colIndex) => (
+                  <TableCell key={`${index}-${colIndex}`}>
                     <Skeleton className="h-16 w-full" />
                   </TableCell>
                 ))}
@@ -152,53 +130,58 @@ export function SearchResultsTable({ loading = false, data = [] }: SearchResults
 
   return (
     <div className="space-y-4">
-      {/* 表格 */}
+      <SimpleToolbar table={table} />
+      
       <div className="rounded-lg border">
         <Table>
           <TableHeader>
-            <TableRow>
-              {visibleColumnConfig.map((col) => (
-                <TableHead 
-                  key={col.key} 
-                  className={`${col.width} ${col.sortable ? 'cursor-pointer hover:bg-muted' : ''}`}
-                  onClick={col.sortable ? () => handleSort(col.key) : undefined}
-                >
-                  <div className="flex items-center gap-1">
-                    <span>{t(col.label)}</span>
-                    {col.sortable && (
-                      <div className="flex flex-col">
-                        <ChevronUpIcon 
-                          className={`h-3 w-3 ${sortField === col.key && sortDirection === 'asc' ? 'text-primary' : 'text-muted-foreground'}`} 
-                        />
-                        <ChevronDownIcon 
-                          className={`h-3 w-3 -mt-1 ${sortField === col.key && sortDirection === 'desc' ? 'text-primary' : 'text-muted-foreground'}`} 
-                        />
-                      </div>
-                    )}
-                  </div>
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item) => (
-              <TableRow key={item.id}>
-                {visibleColumnConfig.map((col) => (
-                  <TableCell key={col.key} className={col.width}>
-                    {col.key === 'basicInfo' ? (
-                      <BasicInfoCell data={item.basicInfo} />
-                    ) : (
-                      <span className={col.key === 'likes' ? 'text-red-500 font-medium' : ''}>
-                        {item[col.key as keyof SearchResult] as string}
-                      </span>
-                    )}
-                  </TableCell>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
                 ))}
               </TableRow>
             ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  {t('noResults')}
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
+      
+      {onNextPage && onPrevPage && (
+        <CustomPagination
+          hasMore={hasMore}
+          loading={loading}
+          onNextPage={onNextPage}
+          onPrevPage={onPrevPage}
+          currentPage={currentPage}
+          canGoBack={currentPage > 1}
+        />
+      )}
     </div>
   );
 }

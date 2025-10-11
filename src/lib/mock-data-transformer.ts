@@ -36,6 +36,8 @@ interface MockData {
   data: {
     data: {
       notes: MockNote[];
+      has_more?: boolean;
+      cursor?: string;
     };
   };
 }
