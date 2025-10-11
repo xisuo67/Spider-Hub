@@ -15,11 +15,9 @@ export interface SearchResult {
     type: 'video' | 'note';
     duration?: string;
     title: string;
-    tags: string[];
     author: {
       avatar: string;
       name: string;
-      badge?: string;
     };
   };
   publishTime: string;
@@ -100,9 +98,6 @@ export function SearchResultsTable({ loading = false, data = [] }: SearchResults
   const t = useTranslations('Xhs.SearchNote');
   const [sortField, setSortField] = useState<string>('likes');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>(
-    columnConfig.reduce((acc, col) => ({ ...acc, [col.key]: col.visible }), {})
-  );
 
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -113,14 +108,8 @@ export function SearchResultsTable({ loading = false, data = [] }: SearchResults
     }
   };
 
-  const toggleColumnVisibility = (field: string) => {
-    setVisibleColumns(prev => ({
-      ...prev,
-      [field]: !prev[field]
-    }));
-  };
-
-  const visibleColumnConfig = columnConfig.filter(col => visibleColumns[col.key]);
+  // 使用所有列，不再需要列显示控制
+  const visibleColumnConfig = columnConfig;
 
   if (loading) {
     return (
@@ -163,22 +152,6 @@ export function SearchResultsTable({ loading = false, data = [] }: SearchResults
 
   return (
     <div className="space-y-4">
-      {/* 列显示控制 */}
-      <div className="flex flex-wrap gap-2">
-        <span className="text-sm font-medium">{t('columnSettings')}:</span>
-        {columnConfig.map((col) => (
-          <Button
-            key={col.key}
-            variant={visibleColumns[col.key] ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => toggleColumnVisibility(col.key)}
-            className="h-8"
-          >
-            {t(col.label)}
-          </Button>
-        ))}
-      </div>
-
       {/* 表格 */}
       <div className="rounded-lg border">
         <Table>

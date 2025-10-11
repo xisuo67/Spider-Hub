@@ -3,17 +3,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface BasicInfoData {
   coverImage: string;
   type: 'video' | 'note';
   duration?: string;
   title: string;
-  tags: string[];
   author: {
     avatar: string;
     name: string;
-    badge?: string;
   };
 }
 
@@ -22,6 +21,8 @@ interface BasicInfoCellProps {
 }
 
 export function BasicInfoCell({ data }: BasicInfoCellProps) {
+  const t = useTranslations('Xhs.SearchNote');
+  
   return (
     <div className="flex items-start gap-3 w-full">
       {/* 封面图片 */}
@@ -29,10 +30,10 @@ export function BasicInfoCell({ data }: BasicInfoCellProps) {
         <img
           src={data.coverImage}
           alt={data.title}
-          className="w-16 h-16 object-cover rounded-md"
+          className="w-24 h-24 object-cover rounded-md"
         />
-        {/* 类型标签 - 左上角 */}
-        <div className="absolute top-1 left-1">
+        {/* 类型标签 - 右上角 */}
+        <div className="absolute top-1 right-1">
           <Badge 
             variant="secondary" 
             className={cn(
@@ -40,7 +41,7 @@ export function BasicInfoCell({ data }: BasicInfoCellProps) {
               data.type === 'video' ? 'bg-blue-500' : 'bg-green-500'
             )}
           >
-            {data.type === 'video' ? '视频' : '笔记'}
+            {data.type === 'video' ? t('video') : t('note')}
           </Badge>
         </div>
         {/* 视频时长 - 右下角 */}
@@ -52,34 +53,14 @@ export function BasicInfoCell({ data }: BasicInfoCellProps) {
       </div>
 
       {/* 右侧内容 */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 flex flex-col justify-between h-24">
         {/* 标题 */}
-        <h3 className="font-medium text-sm line-clamp-2 mb-2 leading-tight">
+        <h3 className="font-medium text-sm line-clamp-3 leading-tight">
           {data.title}
         </h3>
 
-        {/* 标签 */}
-        {data.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-2">
-            {data.tags.slice(0, 3).map((tag, index) => (
-              <Badge 
-                key={index} 
-                variant="outline" 
-                className="text-xs px-1.5 py-0.5"
-              >
-                {tag}
-              </Badge>
-            ))}
-            {data.tags.length > 3 && (
-              <Badge variant="outline" className="text-xs px-1.5 py-0.5">
-                +{data.tags.length - 3}
-              </Badge>
-            )}
-          </div>
-        )}
-
-        {/* 作者信息 */}
-        <div className="flex items-center gap-2">
+        {/* 作者信息 - 固定在底部 */}
+        <div className="flex items-center gap-2 mt-auto">
           <Avatar className="w-6 h-6">
             <AvatarImage src={data.author.avatar} alt={data.author.name} />
             <AvatarFallback className="text-xs">
@@ -90,11 +71,6 @@ export function BasicInfoCell({ data }: BasicInfoCellProps) {
             <span className="text-sm font-medium truncate">
               {data.author.name}
             </span>
-            {data.author.badge && (
-              <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
-                {data.author.badge}
-              </Badge>
-            )}
           </div>
         </div>
       </div>

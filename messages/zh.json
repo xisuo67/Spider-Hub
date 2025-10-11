@@ -1176,7 +1176,9 @@
       "collections": "收藏",
       "comments": "评论",
       "shares": "分享",
-      "likes": "点赞"
+      "likes": "点赞",
+      "video": "视频",
+      "note": "笔记"
     }
   }
 }

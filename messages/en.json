@@ -1176,7 +1176,9 @@
       "collections": "Collections",
       "comments": "Comments",
       "shares": "Shares",
-      "likes": "Likes"
+      "likes": "Likes",
+      "video": "Video",
+      "note": "Note"
     }
   }
 }

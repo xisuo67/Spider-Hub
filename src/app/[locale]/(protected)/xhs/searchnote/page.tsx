@@ -6,24 +6,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SearchIcon } from 'lucide-react';
-import { SearchResultsTable } from '@/components/xhs/search-results-table';
+import { SearchResultsTable, SearchResult } from '@/components/xhs/search-results-table';
 import { Skeleton } from '@/components/ui/skeleton';
+import { loadMockData } from '@/lib/mock-data-transformer';
 
 export default function XhsSearchNotePage() {
   const t = useTranslations('Xhs.SearchNote');
   const [searchUrl, setSearchUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('note-search');
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
   const handleSearch = async () => {
     if (!searchUrl.trim()) return;
     
     setLoading(true);
     try {
-      // TODO: 实现搜索逻辑
       console.log('Searching for:', searchUrl);
+      
+      // 加载mock数据
+      const mockResults = await loadMockData();
+      setSearchResults(mockResults);
+      
       // 模拟搜索延迟
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
     } catch (error) {
       console.error('Search failed:', error);
     } finally {
@@ -79,7 +85,7 @@ export default function XhsSearchNotePage() {
               </Button>
             </div>
 
-            <SearchResultsTable loading={loading} />
+            <SearchResultsTable loading={loading} data={searchResults} />
           </TabsContent>
 
           <TabsContent value="comment-search" className="space-y-4 mt-3">
@@ -109,7 +115,7 @@ export default function XhsSearchNotePage() {
               </Button>
             </div>
 
-            <SearchResultsTable loading={loading} />
+            <SearchResultsTable loading={loading} data={searchResults} />
           </TabsContent>
         </Tabs>
       </div>
