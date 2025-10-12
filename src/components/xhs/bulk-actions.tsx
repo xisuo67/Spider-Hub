@@ -82,8 +82,8 @@ export function BulkActions({
     
     setLoading(prev => ({ ...prev, images: true }));
     try {
-      const filename = formatFilename('xhs-search-content', 'json');
-      downloadImagesAndText(selectedData, filename);
+      const filename = formatFilename('xhs-search-content', 'zip');
+      await downloadImagesAndText(selectedData, filename);
       toast.success(t('downloadingImages', { count: selectedCount }));
       onDownloadImages();
     } catch (error) {

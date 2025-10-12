@@ -168,17 +168,14 @@ export function SearchResultsTable({
 
   const handleExportCSV = () => {
     const selectedRows = table.getFilteredSelectedRowModel().rows;
-    console.log('Exporting CSV for:', selectedRows.map(row => row.original.id));
   };
 
   const handleDownloadDetails = () => {
     const selectedRows = table.getFilteredSelectedRowModel().rows;
-    console.log('Downloading details for:', selectedRows.map(row => row.original.id));
   };
 
   const handleDownloadImages = () => {
     const selectedRows = table.getFilteredSelectedRowModel().rows;
-    console.log('Downloading images for:', selectedRows.map(row => row.original.id));
   };
 
   return (

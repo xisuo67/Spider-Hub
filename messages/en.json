@@ -1182,14 +1182,14 @@
       "bulkActions": "Bulk Actions",
       "exportCSV": "Export CSV",
       "downloadDetails": "Download Details",
-      "downloadImages": "Images & Text",
+      "downloadImages": "Download Resources",
       "dataSelected": "data selected",
       "exportingCSV": "Exporting CSV for {count} data...",
       "downloadingDetails": "Downloading details for {count} data...",
       "downloadingImages": "Downloading images for {count} data...",
       "exportCSVTooltip": "Export selected data as CSV format file with all field information",
       "downloadDetailsTooltip": "Download detailed JSON format file of selected data with complete raw data",
-      "downloadImagesTooltip": "Download all images and text content of selected data to local folder",
+      "downloadImagesTooltip": "Download all resources and text content of selected data to local folder",
       "exporting": "Exporting...",
       "exportFailed": "Export failed, please try again"
     }

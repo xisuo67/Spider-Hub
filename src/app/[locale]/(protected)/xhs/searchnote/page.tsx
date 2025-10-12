@@ -10,6 +10,7 @@ import { SearchResultsTable, SearchResult } from '@/components/xhs/search-result
 import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { loadMockData } from '@/lib/mock-data-transformer';
+import { expandUrl } from '@/lib/utils';
 
 export default function XhsSearchNotePage() {
   const t = useTranslations('Xhs.SearchNote');
@@ -27,7 +28,17 @@ export default function XhsSearchNotePage() {
     
     setLoading(true);
     try {
-      console.log('Searching for:', searchUrl, 'Page:', page, 'Cursor:', currentCursor);
+      // 先展开短链接
+      const expandedUrl = await expandUrl(searchUrl);
+      const finalSearchUrl = expandedUrl || searchUrl;
+      
+      // 如果URL被展开，更新搜索框显示
+      if (expandedUrl && expandedUrl !== searchUrl) {
+        setSearchUrl(expandedUrl);
+        console.log('URL expanded from:', searchUrl, 'to:', expandedUrl);
+      }
+      
+      console.log('Searching for:', finalSearchUrl, 'Page:', page, 'Cursor:', currentCursor);
       
       // 加载mock数据
       const mockResults = await loadMockData();
