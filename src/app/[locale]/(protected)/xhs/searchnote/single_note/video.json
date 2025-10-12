@@ -1,0 +1,404 @@
+{
+    "code": 200,
+    "request_id": "ce9fed8f-f4e0-4aab-8bed-bfead6c7699a",
+    "message": "Request successful. This request will incur a charge.",
+    "message_zh": "请求成功，本次请求将被计费。",
+    "support": "Discord: https://discord.gg/aMEAS8Xsvz",
+    "time": "2025-10-11 20:26:44",
+    "time_stamp": 1760239604,
+    "time_zone": "America/Los_Angeles",
+    "docs": "https://api.tikhub.io/#/Xiaohongshu-App-API/get_note_info_v1_api_v1_xiaohongshu_app_get_note_info_get",
+    "cache_message": "This request will be cached. You can access the cached result directly using the URL below, valid for 24 hours.",
+    "cache_message_zh": "本次请求将被缓存，你可以使用下面的 URL 直接访问缓存结果，有效期为 24 小时。",
+    "cache_url": "https://cache.tikhub.io/api/v1/cache/public/ce9fed8f-f4e0-4aab-8bed-bfead6c7699a?sign=f9ff99776e44f76e137f3f3a53a261c5f4053f2be13c3d53a3d0d55c82f71cd4",
+    "router": "/api/v1/xiaohongshu/app/get_note_info",
+    "params": {
+        "note_id": "68e337dd0000000007031d30"
+    },
+    "data": {
+        "code": 0,
+        "success": true,
+        "msg": "成功",
+        "data": [
+            {
+                "track_id": "",
+                "model_type": "note",
+                "user": {
+                    "track_duration": 0,
+                    "fstatus": "none",
+                    "id": "5ced2db7000000001703cc66",
+                    "name": "演员瑞娜",
+                    "followed": false,
+                    "red_id": "350128527",
+                    "nickname": "演员瑞娜",
+                    "red_official_verified": false,
+                    "image": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n7oqsi152005n7d5mrlvj365vdmffo?imageView2/2/w/120/format/jpg",
+                    "red_official_verify_type": 0,
+                    "show_red_official_verify_icon": false,
+                    "userid": "5ced2db7000000001703cc66",
+                    "level": {
+                        "image": ""
+                    }
+                },
+                "note_list": [
+                    {
+                        "long_press_share_info": {
+                            "block_private_msg": false,
+                            "show_wechat_tag": false,
+                            "function_entries": [
+                                {
+                                    "type": "image_download"
+                                }
+                            ],
+                            "guide_audited": false,
+                            "content": "",
+                            "title": "",
+                            "is_star": false
+                        },
+                        "has_music": false,
+                        "need_next_step": false,
+                        "seeded": false,
+                        "liked_users": [],
+                        "widgets_groups": [
+                            [
+                                "guos_test",
+                                "note_next_step",
+                                "second_jump_bar",
+                                "cooperate_binds",
+                                "note_collection",
+                                "rec_next_infos",
+                                "image_stickers",
+                                "image_filters",
+                                "product_review",
+                                "related_search",
+                                "cooperate_comment_component",
+                                "image_goods_cards",
+                                "ads_goods_cards",
+                                "ads_comment_component",
+                                "goods_card_v2",
+                                "image_template",
+                                "buyable_goods_card_v2",
+                                "ads_engage_bar",
+                                "challenge_card",
+                                "cooperate_engage_bar",
+                                "guide_post",
+                                "pgy_comment_component",
+                                "pgy_engage_bar",
+                                "bar_below_image",
+                                "aigc_collection",
+                                "co_produce",
+                                "widgets_ndb",
+                                "next_note_guide",
+                                "pgy_bbc_exp",
+                                "async_group",
+                                "super_activity",
+                                "widgets_enhance",
+                                "music_player",
+                                "soundtrack_player"
+                            ],
+                            [
+                                "guos_test",
+                                "vote_stickers",
+                                "bullet_comment_lead",
+                                "note_search_box",
+                                "interact_pk",
+                                "interact_vote",
+                                "guide_heuristic",
+                                "share_to_msg",
+                                "follow_guide",
+                                "note_share_prompt_v1",
+                                "sync_group",
+                                "group_share",
+                                "share_guide_bubble",
+                                "widgets_share",
+                                "guide_navigator"
+                            ]
+                        ],
+                        "desc": "#演员瑞娜[话题]# #短剧推荐[话题]# #性感女神[话题]# #职场穿搭[话题]# #男频短剧[话题]#",
+                        "has_related_goods": false,
+                        "native_voice_info": {
+                            "sound_id": "1146415934253346465",
+                            "duration": 13952,
+                            "url": "http://sns-video-bd.xhscdn.com/audio/1/02e8e337e07dfdb20103700399b7924dfa_0.m4a",
+                            "subtitle": "演员瑞娜的原声",
+                            "sound_bg_music_type": 1,
+                            "optimize_exp_in_use_count": 0,
+                            "name": "演员瑞娜的原声",
+                            "desc": "@演员瑞娜创作的原声",
+                            "md5sum": "4b9adb7d64371ef61ec60b93d9fff70d",
+                            "use_count": 1,
+                            "cover": "https://thirdwx.qlogo.cn/mmopen/vi_32/zUZMSvia9ByR3ulEXDjrIiaeuzpp49aODqRHsPNTpNpqkPxYMialsvsAq1CzKhKzC4GicmqMxy7hsRp9ttPpx2ibibBYwxLtdPrDp3YasJmU9ib39c/132"
+                        },
+                        "use_water_color": false,
+                        "enable_co_produce": false,
+                        "last_update_time": 0,
+                        "collected_count": 439,
+                        "title": "衣服又崩开了…",
+                        "media_save_config": {
+                            "disable_save": false,
+                            "disable_watermark": false,
+                            "disable_weibo_cover": false
+                        },
+                        "api_upgrade": 1,
+                        "content_trans_info": {
+                            "strategy": 9
+                        },
+                        "text_language_code": "zh",
+                        "in_censor": false,
+                        "enable_brand_lottery": false,
+                        "guide_keys": "728d5131880848e38773caabf9a9ad3a",
+                        "qq_mini_program_info": {
+                            "user_name": "gh_66c53d495417",
+                            "path": "pages/main/note/index?xsec_source=app_share&id=68e337dd0000000007031d30&type=video&xsec_token=CBUKrWWtu3-Gwp5QiQlDOKjWANosHafzwwQ8Ggr_DV_FY=",
+                            "title": "@演员瑞娜 发了一篇超赞的笔记，快点来看！",
+                            "desc": "#演员瑞娜  #短剧推荐  #性感女神  #职场穿搭  #男频短剧",
+                            "webpage_url": "https://www.xiaohongshu.com/discovery/item/68e337dd0000000007031d30?xsec_source=app_share&xsec_token=CBUKrWWtu3-Gwp5QiQlDOKjWANosHafzwwQ8Ggr_DV_FY=",
+                            "thumb": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/540/format/jpg/q/75",
+                            "share_title": "@演员瑞娜 发了一篇超赞的笔记，快点来看！"
+                        },
+                        "may_have_red_packet": false,
+                        "time": 1759721437,
+                        "sticky": false,
+                        "video": {
+                            "duration": 14,
+                            "adaptive_streaming_url_set": [],
+                            "url": "http://sns-video-bd.xhscdn.com/stream/79/110/258/01e8e337dd3475cc4f03700199b7925f26_258.mp4?v=2",
+                            "avg_bitrate": 1529489,
+                            "vmaf": -1,
+                            "played_count": 0,
+                            "height": 1280,
+                            "thumbnail": "frame/110/0/01e8e337dd3475cc00100000000199b79256fe_0.webp",
+                            "thumbnail_dim": "frame/110/0/01e8e337dd3475cc00100000000199b79256fe_0.webp?imageView2/2/w/720/h/720/format/webp",
+                            "volume": 0,
+                            "width": 720,
+                            "url_info_list": [
+                                {
+                                    "desc": "h265-RedH265",
+                                    "url": "http://sns-video-bd.xhscdn.com/stream/79/110/114/01e8e337dd3475cc4f03700199b792ae2b_114.mp4?v=2",
+                                    "avg_bitrate": 1356327,
+                                    "width": 720,
+                                    "height": 1280,
+                                    "vmaf": -1
+                                },
+                                {
+                                    "url": "http://sns-video-bd.xhscdn.com/stream/79/110/258/01e8e337dd3475cc4f03700199b7925f26_258.mp4?v=2",
+                                    "avg_bitrate": 1529489,
+                                    "width": 720,
+                                    "height": 1280,
+                                    "vmaf": -1,
+                                    "desc": "h264-RedH264"
+                                }
+                            ],
+                            "can_super_resolution": true,
+                            "is_upload": false,
+                            "first_frame": "http://sns-na-i6.xhscdn.com/110/0/01e8e337dd3475cc00100000000199b7924084_0.jpg?imageView2/2/w/1080/format/webp",
+                            "id": "137609617708709324",
+                            "preload_size": 1048576,
+                            "frame_ts": 0,
+                            "is_user_select": false
+                        },
+                        "liked": false,
+                        "comments_count": 49,
+                        "mini_program_info": {
+                            "user_name": "gh_52be748ce5b7",
+                            "path": "pages/main/home/index?redirect_path=%2Fpages%2Fmain%2Fnote%2Findex%3Fxsec_source%3Dapp_share%26id%3D68e337dd0000000007031d30%26type%3Dvideo%26xsec_token%3DCBUKrWWtu3-Gwp5QiQlDOKjWANosHafzwwQ8Ggr_DV_FY%3D",
+                            "title": "@演员瑞娜 发了一篇笔记，快点来看吧！",
+                            "desc": "#演员瑞娜  #短剧推荐  #性感女神  #职场穿搭  #男频短剧",
+                            "webpage_url": "https://www.xiaohongshu.com/discovery/item/68e337dd0000000007031d30?xsec_source=app_share&xsec_token=CBUKrWWtu3-Gwp5QiQlDOKjWANosHafzwwQ8Ggr_DV_FY=",
+                            "thumb": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/540/format/jpg/q/75",
+                            "share_title": "@演员瑞娜 发了一篇笔记，快点来看吧！"
+                        },
+                        "view_count": 0,
+                        "widgets_context": "{\"video\":true,\"origin_video_key\":\"\",\"flags\":{\"sound_track\":true},\"author_id\":\"5ced2db7000000001703cc66\",\"author_name\":\"演员瑞娜\",\"note_sound_info\":{\"sound_id\":\"1146415934253346465\",\"name\":\"演员瑞娜的原声\",\"desc\":\"@演员瑞娜创作的原声\",\"duration\":13952,\"url\":\"http://sns-video-bd.xhscdn.com/audio/1/02e8e337e07dfdb20103700399b7924dfa_0.m4a\",\"use_count\":1,\"subtitle\":\"演员瑞娜的原声\",\"sound_bg_music_type\":1,\"cover\":\"https://thirdwx.qlogo.cn/mmopen/vi_32/zUZMSvia9ByR3ulEXDjrIiaeuzpp49aODqRHsPNTpNpqkPxYMialsvsAq1CzKhKzC4GicmqMxy7hsRp9ttPpx2ibibBYwxLtdPrDp3YasJmU9ib39c/132\",\"creator\":\"5ced2db7000000001703cc66\"},\"video_duration\":14,\"q_task_id\":\"\",\"video_rec_bar_info\":\"\"}",
+                        "countdown": 0,
+                        "hash_tag": [
+                            {
+                                "bizId": "",
+                                "id": "68b2870d0000000007028619",
+                                "type": "topic",
+                                "link": "xhsdiscover://topic/v2/68b2870d007a000000000001?page_source=note_feed.click_new_big&topic_name=%E6%BC%94%E5%91%98%E7%91%9E%E5%A8%9C&source=video&pre_source=explore",
+                                "record_emoji": "",
+                                "record_count": 0,
+                                "current_score": 0,
+                                "name": "演员瑞娜",
+                                "record_unit": "",
+                                "tag_hint": ""
+                            },
+                            {
+                                "current_score": 0,
+                                "bizId": "",
+                                "id": "5e7c2aed000000000100b8b0",
+                                "name": "短剧推荐",
+                                "type": "topic",
+                                "link": "xhsdiscover://topic/v2/5e7c2aed98f6f60001bdf0d3?page_source=note_feed.click_new_big&topic_name=%E7%9F%AD%E5%89%A7%E6%8E%A8%E8%8D%90&source=video&pre_source=explore",
+                                "record_emoji": "",
+                                "record_count": 0,
+                                "record_unit": "",
+                                "tag_hint": ""
+                            },
+                            {
+                                "name": "性感女神",
+                                "link": "xhsdiscover://topic/v2/5c1d28211be20f00016e2e6f?page_source=note_feed.click_new_big&topic_name=%E6%80%A7%E6%84%9F%E5%A5%B3%E7%A5%9E&source=video&pre_source=explore",
+                                "record_emoji": "",
+                                "record_count": 0,
+                                "bizId": "",
+                                "tag_hint": "",
+                                "id": "5c1d2821000000000a017876",
+                                "type": "topic",
+                                "record_unit": "",
+                                "current_score": 0
+                            },
+                            {
+                                "link": "xhsdiscover://topic/v2/5fb5bb553f373c00017fa14f?page_source=note_feed.click_new_big&topic_name=%E8%81%8C%E5%9C%BA%E7%A9%BF%E6%90%AD&source=video&pre_source=explore",
+                                "record_unit": "",
+                                "bizId": "",
+                                "type": "topic",
+                                "name": "职场穿搭",
+                                "record_emoji": "",
+                                "record_count": 0,
+                                "current_score": 0,
+                                "tag_hint": "",
+                                "id": "5fb5bb550000000001003bff"
+                            },
+                            {
+                                "record_unit": "",
+                                "current_score": 0,
+                                "bizId": "",
+                                "tag_hint": "",
+                                "id": "637cf4b70000000001003ad9",
+                                "type": "topic",
+                                "link": "xhsdiscover://topic/v2/637cf4b787104d00018eb794?page_source=note_feed.click_new_big&topic_name=%E7%94%B7%E9%A2%91%E7%9F%AD%E5%89%A7&source=video&pre_source=explore",
+                                "record_emoji": "",
+                                "name": "男频短剧",
+                                "record_count": 0
+                            }
+                        ],
+                        "enable_fls_bridge_cards": false,
+                        "need_product_review": false,
+                        "ats": [],
+                        "id": "68e337dd0000000007031d30",
+                        "shared_count": 152,
+                        "red_envelope_note": false,
+                        "note_text_press_options": [
+                            {
+                                "key": "copy",
+                                "extra": ""
+                            }
+                        ],
+                        "model_type": "note",
+                        "images_list": [
+                            {
+                                "need_load_original_image": true,
+                                "scale_to_large": 4,
+                                "width": 1080,
+                                "original": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "index": 0,
+                                "longitude": 0,
+                                "latitude": 0,
+                                "trace_id": "1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260",
+                                "fileid": "1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260",
+                                "height": 1440,
+                                "url": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/540/format/jpg/q/75|imageMogr2/strip&redImage/frame/0",
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/540/format/jpg/q/75|imageMogr2/strip&redImage/frame/0",
+                                    "medium": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/540/format/jpg/q/75|imageMogr2/strip&redImage/frame/0",
+                                    "high": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/540/format/jpg/q/75|imageMogr2/strip&redImage/frame/0"
+                                },
+                                "text_intention": 0
+                            }
+                        ],
+                        "liked_count": 1788,
+                        "enable_fls_related_cards": false,
+                        "foot_tags": [],
+                        "privacy": {
+                            "type": 0,
+                            "show_tips": false,
+                            "nick_names": ""
+                        },
+                        "goods_info": {},
+                        "has_co_produce": false,
+                        "type": "video",
+                        "topics": [
+                            {
+                                "business_type": 0,
+                                "id": "68b2870d0000000007028619",
+                                "name": "演员瑞娜",
+                                "image": "http://ci.xiaohongshu.com/fd75707a-37f8-45ad-b7a7-0feaf36e9cad@r_120w_120h.jpg",
+                                "link": "xhsdiscover://topic/v2/68b2870d007a000000000001?page_source=note_feed.click_new_big",
+                                "activity_online": false,
+                                "style": 0,
+                                "discuss_num": 0
+                            }
+                        ],
+                        "share_code_flag": 0,
+                        "head_tags": [],
+                        "ip_location": "浙江",
+                        "cooperate_binds": [],
+                        "collected": false,
+                        "seeded_count": 0,
+                        "share_info": {
+                            "image": "http://sns-na-i6.xhscdn.com/1040g2sg31n9inl1ql0e05n7d5mrlvj36pggl260?imageView2/2/w/360/format/jpg/q/75",
+                            "is_star": false,
+                            "show_wechat_tag": false,
+                            "function_entries": [
+                                {
+                                    "type": "dislike"
+                                },
+                                {
+                                    "type": "report"
+                                },
+                                {
+                                    "type": "video_download"
+                                },
+                                {
+                                    "type": "heat_for_author"
+                                },
+                                {
+                                    "type": "generate_image"
+                                },
+                                {
+                                    "type": "copy_link"
+                                },
+                                {
+                                    "type": "background_music"
+                                },
+                                {
+                                    "type": "video_speed"
+                                },
+                                {
+                                    "type": "video_feedback"
+                                }
+                            ],
+                            "guide_audited": true,
+                            "content": "#演员瑞娜  #短剧推荐  #性感女神  #职场穿搭  #男频短剧",
+                            "link": "https://www.xiaohongshu.com/discovery/item/68e337dd0000000007031d30?app_platform=android&ignoreEngage=true&app_version=8.47.0&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBUKrWWtu3-Gwp5QiQlDOKjWANosHafzwwQ8Ggr_DV_FY=&author_share=1",
+                            "title": "衣服又崩开了",
+                            "block_private_msg": false
+                        },
+                        "feedback_info": {
+                            "dislike_status": 0
+                        },
+                        "user": {
+                            "id": "5ced2db7000000001703cc66",
+                            "image": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n7oqsi152005n7d5mrlvj365vdmffo?imageView2/2/w/120/format/jpg",
+                            "red_id": "350128527",
+                            "red_official_verify_type": 0,
+                            "show_red_official_verify_icon": false,
+                            "track_duration": 0,
+                            "level": {
+                                "image": ""
+                            },
+                            "name": "演员瑞娜",
+                            "followed": false,
+                            "nickname": "演员瑞娜",
+                            "red_official_verified": false,
+                            "userid": "5ced2db7000000001703cc66",
+                            "fstatus": "none"
+                        }
+                    }
+                ],
+                "comment_list": []
+            }
+        ]
+    }
+}

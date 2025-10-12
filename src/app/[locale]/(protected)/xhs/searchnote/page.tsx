@@ -10,6 +10,7 @@ import { SearchResultsTable, SearchResult } from '@/components/xhs/search-result
 import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { loadMockData } from '@/lib/mock-data-transformer';
+import { loadSingleNoteData, transformSingleNoteToSearchResult } from '@/lib/single-note-transformer';
 import { expandUrl } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -42,11 +43,26 @@ export default function XhsSearchNotePage() {
         return;
       }else{
         // 如果URL被展开，更新搜索框显示
-      if (expandedUrl && expandedUrl !== searchUrl) {
-        setSearchUrl(expandedUrl);
-      }
-      // 加载mock数据
-      const mockResults = await loadMockData();
+        if (expandedUrl && expandedUrl !== searchUrl) {
+          setSearchUrl(expandedUrl);
+        }
+        
+        // 判断是否为单条笔记链接
+        let mockResults;
+        if (expandedUrl.includes('www.xiaohongshu.com/explore')) {
+          // 单条笔记，加载单条笔记数据
+          const singleNoteData = await loadSingleNoteData();
+          if (singleNoteData) {
+            // 将单条笔记数据转换为SearchResult格式
+            mockResults = [transformSingleNoteToSearchResult(singleNoteData)];
+          } else {
+            // 如果加载失败，使用默认mock数据
+            mockResults = await loadMockData();
+          }
+        } else {
+          // 博主首页，加载多条mock数据
+          mockResults = await loadMockData();
+        }
       
       if (page === 1) {
         // 第一页，替换所有数据
@@ -89,8 +105,6 @@ export default function XhsSearchNotePage() {
 
   return (
     <div className="w-full flex flex-col justify-start gap-6">
-
-
       <div className="px-4 lg:px-6 mt-0">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList variant="underline">

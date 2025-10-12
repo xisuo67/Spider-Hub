@@ -1,0 +1,606 @@
+{
+    "code": 200,
+    "request_id": "574ee9f9-005a-496f-8983-cbbce7733382",
+    "message": "Request successful. This request will incur a charge.",
+    "message_zh": "请求成功，本次请求将被计费。",
+    "support": "Discord: https://discord.gg/aMEAS8Xsvz",
+    "time": "2025-10-11 20:26:46",
+    "time_stamp": 1760239606,
+    "time_zone": "America/Los_Angeles",
+    "docs": "https://api.tikhub.io/#/Xiaohongshu-App-API/get_note_info_v1_api_v1_xiaohongshu_app_get_note_info_get",
+    "cache_message": "This request will be cached. You can access the cached result directly using the URL below, valid for 24 hours.",
+    "cache_message_zh": "本次请求将被缓存，你可以使用下面的 URL 直接访问缓存结果，有效期为 24 小时。",
+    "cache_url": "https://cache.tikhub.io/api/v1/cache/public/574ee9f9-005a-496f-8983-cbbce7733382?sign=3fd7f1f3f17de655e8ede90910ef76236c02f6eb7485e8f895a452872d0e5bba",
+    "router": "/api/v1/xiaohongshu/app/get_note_info",
+    "params": {
+        "note_id": "68a697ff000000001c030288"
+    },
+    "data": {
+        "code": 0,
+        "success": true,
+        "msg": "成功",
+        "data": [
+            {
+                "track_id": "",
+                "model_type": "note",
+                "user": {
+                    "followed": false,
+                    "red_id": "425979047",
+                    "red_official_verify_type": 0,
+                    "show_red_official_verify_icon": false,
+                    "track_duration": 0,
+                    "fstatus": "none",
+                    "level": {
+                        "image": ""
+                    },
+                    "image": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mf5m9g0mg004a6ea1da9ehfnkos648?imageView2/2/w/120/format/jpg",
+                    "name": "江南枝",
+                    "nickname": "江南枝",
+                    "red_official_verified": false,
+                    "userid": "5b2a5aa4e8ac2b27c512ba2f",
+                    "id": "5b2a5aa4e8ac2b27c512ba2f"
+                },
+                "note_list": [
+                    {
+                        "collected_count": 1098,
+                        "has_related_goods": false,
+                        "order_cooperate": {
+                            "status": 401
+                        },
+                        "id": "68a697ff000000001c030288",
+                        "widgets_context": "{\"origin_video_key\":\"\",\"flags\":{},\"author_id\":\"5b2a5aa4e8ac2b27c512ba2f\",\"author_name\":\"江南枝\",\"order_cooperate\":true,\"commercial_bridge_note\":true,\"q_task_id\":\"\",\"video_rec_bar_info\":\"\"}",
+                        "use_water_color": false,
+                        "sticky": false,
+                        "cooperate_binds": [],
+                        "note_text_press_options": [
+                            {
+                                "key": "copy",
+                                "extra": ""
+                            }
+                        ],
+                        "share_code_flag": 0,
+                        "liked": false,
+                        "widgets_groups": [
+                            [
+                                "guos_test",
+                                "note_next_step",
+                                "second_jump_bar",
+                                "cooperate_binds",
+                                "note_collection",
+                                "rec_next_infos",
+                                "image_stickers",
+                                "image_filters",
+                                "product_review",
+                                "related_search",
+                                "cooperate_comment_component",
+                                "image_goods_cards",
+                                "ads_goods_cards",
+                                "ads_comment_component",
+                                "goods_card_v2",
+                                "image_template",
+                                "buyable_goods_card_v2",
+                                "ads_engage_bar",
+                                "challenge_card",
+                                "cooperate_engage_bar",
+                                "guide_post",
+                                "pgy_comment_component",
+                                "pgy_engage_bar",
+                                "bar_below_image",
+                                "aigc_collection",
+                                "co_produce",
+                                "widgets_ndb",
+                                "next_note_guide",
+                                "pgy_bbc_exp",
+                                "async_group",
+                                "super_activity",
+                                "widgets_enhance",
+                                "music_player",
+                                "soundtrack_player"
+                            ],
+                            [
+                                "guos_test",
+                                "vote_stickers",
+                                "bullet_comment_lead",
+                                "note_search_box",
+                                "interact_pk",
+                                "interact_vote",
+                                "guide_heuristic",
+                                "share_to_msg",
+                                "follow_guide",
+                                "note_share_prompt_v1",
+                                "sync_group",
+                                "group_share",
+                                "share_guide_bubble",
+                                "widgets_share",
+                                "guide_navigator"
+                            ]
+                        ],
+                        "feedback_info": {
+                            "dislike_status": 0
+                        },
+                        "ats": [],
+                        "qq_mini_program_info": {
+                            "desc": "火龙果色就是热辣明媚的代名词！ 终于穿上心爱的👙啦～ 🩱：BE范德安 #来拍照了  #泳装  #泳衣  #来拍照了",
+                            "webpage_url": "https://www.xiaohongshu.com/discovery/item/68a697ff000000001c030288?xsec_source=app_share&xsec_token=CBYR0cucj2-7trvWKSAG1d18AMtjkZ2qhRsnyAvZbdgKA=",
+                            "thumb": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/540/format/jpg/q/75",
+                            "share_title": "@江南枝 发了一篇超赞的笔记，快点来看！",
+                            "user_name": "gh_66c53d495417",
+                            "path": "pages/main/note/index?xsec_source=app_share&id=68a697ff000000001c030288&type=normal&xsec_token=CBYR0cucj2-7trvWKSAG1d18AMtjkZ2qhRsnyAvZbdgKA=",
+                            "title": "@江南枝 发了一篇超赞的笔记，快点来看！"
+                        },
+                        "has_music": false,
+                        "need_product_review": false,
+                        "enable_co_produce": true,
+                        "has_co_produce": false,
+                        "type": "normal",
+                        "title": "夏天结束之前再穿一次比基尼👙",
+                        "model_type": "note",
+                        "comments_count": 38,
+                        "mini_program_info": {
+                            "user_name": "gh_52be748ce5b7",
+                            "path": "pages/main/home/index?redirect_path=%2Fpages%2Fmain%2Fnote%2Findex%3Fxsec_source%3Dapp_share%26id%3D68a697ff000000001c030288%26type%3Dnormal%26xsec_token%3DCBYR0cucj2-7trvWKSAG1d18AMtjkZ2qhRsnyAvZbdgKA%3D",
+                            "title": "@江南枝 发了一篇笔记，快点来看吧！",
+                            "desc": "火龙果色就是热辣明媚的代名词！ 终于穿上心爱的👙啦～ 🩱：BE范德安 #来拍照了  #泳装  #泳衣  #来拍照了",
+                            "webpage_url": "https://www.xiaohongshu.com/discovery/item/68a697ff000000001c030288?xsec_source=app_share&xsec_token=CBYR0cucj2-7trvWKSAG1d18AMtjkZ2qhRsnyAvZbdgKA=",
+                            "thumb": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/540/format/jpg/q/75",
+                            "share_title": "@江南枝 发了一篇笔记，快点来看吧！"
+                        },
+                        "shared_count": 236,
+                        "ip_location": "浙江",
+                        "text_language_code": "zh",
+                        "last_update_time": 0,
+                        "desc": "火龙果色就是热辣明媚的代名词！\n终于穿上心爱的👙啦～\n🩱：BE范德安\n#来拍照了[话题]#  #泳装[话题]#  #泳衣[话题]# #来拍照了[话题]# #比基尼拍照[话题]# #比基尼[话题]# #泳池拍照[话题]# #泳衣拍照[话题]# #泳衣推荐[话题]#",
+                        "hash_tag": [
+                            {
+                                "tag_hint": "",
+                                "id": "5aa266f77642f10b36736a0c",
+                                "name": "来拍照了",
+                                "type": "topic",
+                                "record_emoji": "",
+                                "record_unit": "",
+                                "link": "xhsdiscover://topic/v2/5aa26759ec9d1376a6b1b915?page_source=note_feed.click_new_big&topic_name=%E6%9D%A5%E6%8B%8D%E7%85%A7%E4%BA%86&source=normal&pre_source=explore",
+                                "record_count": 0,
+                                "current_score": 0,
+                                "bizId": ""
+                            },
+                            {
+                                "record_emoji": "",
+                                "record_unit": "",
+                                "current_score": 0,
+                                "bizId": "",
+                                "tag_hint": "",
+                                "name": "泳装",
+                                "link": "xhsdiscover://topic/v2/5be56455d970510001fc5e5c?page_source=note_feed.click_new_big&topic_name=%E6%B3%B3%E8%A3%85&source=normal&pre_source=explore",
+                                "record_count": 0,
+                                "id": "5be564546604350001a321a1",
+                                "type": "topic"
+                            },
+                            {
+                                "name": "泳衣",
+                                "type": "topic",
+                                "link": "xhsdiscover://topic/v2/5a438d9a80008606617204b0?page_source=note_feed.click_new_big&topic_name=%E6%B3%B3%E8%A1%A3&source=normal&pre_source=explore",
+                                "record_unit": "",
+                                "current_score": 0,
+                                "tag_hint": "",
+                                "id": "593a011acd30d8280e23a0de",
+                                "record_emoji": "",
+                                "record_count": 0,
+                                "bizId": ""
+                            },
+                            {
+                                "id": "611b5e9b000000000100587d",
+                                "name": "比基尼拍照",
+                                "type": "topic",
+                                "record_count": 0,
+                                "bizId": "",
+                                "tag_hint": "",
+                                "link": "xhsdiscover://topic/v2/611b5e9b8b74e2000183b536?page_source=note_feed.click_new_big&topic_name=%E6%AF%94%E5%9F%BA%E5%B0%BC%E6%8B%8D%E7%85%A7&source=normal&pre_source=explore",
+                                "record_emoji": "",
+                                "record_unit": "",
+                                "current_score": 0
+                            },
+                            {
+                                "record_count": 0,
+                                "current_score": 0,
+                                "type": "topic",
+                                "record_emoji": "",
+                                "link": "xhsdiscover://topic/v2/5bf196c4bcae46000190cc44?page_source=note_feed.click_new_big&topic_name=%E6%AF%94%E5%9F%BA%E5%B0%BC&source=normal&pre_source=explore",
+                                "record_unit": "",
+                                "bizId": "",
+                                "tag_hint": "",
+                                "id": "5bf196c451875e000147ecf9",
+                                "name": "比基尼"
+                            },
+                            {
+                                "current_score": 0,
+                                "bizId": "",
+                                "id": "5c5d9635000000000d02db5c",
+                                "record_emoji": "",
+                                "record_unit": "",
+                                "record_count": 0,
+                                "tag_hint": "",
+                                "name": "泳池拍照",
+                                "type": "topic",
+                                "link": "xhsdiscover://topic/v2/5c5d96367d46b40001703b27?page_source=note_feed.click_new_big&topic_name=%E6%B3%B3%E6%B1%A0%E6%8B%8D%E7%85%A7&source=normal&pre_source=explore"
+                            },
+                            {
+                                "id": "5d46f28f0000000017034849",
+                                "name": "泳衣拍照",
+                                "type": "topic",
+                                "record_unit": "",
+                                "bizId": "",
+                                "link": "xhsdiscover://topic/v2/5d46f28f5362d3000109b858?page_source=note_feed.click_new_big&topic_name=%E6%B3%B3%E8%A1%A3%E6%8B%8D%E7%85%A7&source=normal&pre_source=explore",
+                                "record_emoji": "",
+                                "record_count": 0,
+                                "current_score": 0,
+                                "tag_hint": ""
+                            },
+                            {
+                                "tag_hint": "",
+                                "type": "topic",
+                                "link": "xhsdiscover://topic/v2/5c28f086feb21d0001838f33?page_source=note_feed.click_new_big&topic_name=%E6%B3%B3%E8%A1%A3%E6%8E%A8%E8%8D%90&source=normal&pre_source=explore",
+                                "record_emoji": "",
+                                "record_unit": "",
+                                "current_score": 0,
+                                "bizId": "",
+                                "id": "57453409d5945f3f8661b844",
+                                "name": "泳衣推荐",
+                                "record_count": 0
+                            }
+                        ],
+                        "collected": false,
+                        "view_count": 0,
+                        "may_have_red_packet": false,
+                        "co_produce_link": "xhsdiscover://post_new_note?source=%7B%22type%22%3A%22together_post%22%2C%22extraInfo%22%3A%7B%22subType%22%3A%22together_post_halfspace%22%2C%22track_id%22%3A%2268a697ff000000001c030288%22%7D%7D&page=%7B%22page_type%22%3A%22image_co_produce_album%22%7D",
+                        "time": 1755759626,
+                        "liked_count": 4098,
+                        "seeded": false,
+                        "seeded_count": 0,
+                        "need_next_step": false,
+                        "privacy": {
+                            "type": 0,
+                            "show_tips": false,
+                            "nick_names": ""
+                        },
+                        "goods_info": {},
+                        "enable_fls_related_cards": false,
+                        "enable_brand_lottery": false,
+                        "red_envelope_note": false,
+                        "guide_keys": "08f5bf5b26564fd4940223e1a67cbf32",
+                        "countdown": 0,
+                        "api_upgrade": 1,
+                        "user": {
+                            "track_duration": 0,
+                            "fstatus": "none",
+                            "followed": false,
+                            "red_id": "425979047",
+                            "red_official_verify_type": 0,
+                            "red_official_verified": false,
+                            "userid": "5b2a5aa4e8ac2b27c512ba2f",
+                            "level": {
+                                "image": ""
+                            },
+                            "id": "5b2a5aa4e8ac2b27c512ba2f",
+                            "name": "江南枝",
+                            "image": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mf5m9g0mg004a6ea1da9ehfnkos648?imageView2/2/w/120/format/jpg",
+                            "nickname": "江南枝",
+                            "show_red_official_verify_icon": false
+                        },
+                        "in_censor": false,
+                        "long_press_share_info": {
+                            "show_wechat_tag": false,
+                            "function_entries": [
+                                {
+                                    "type": "image_download"
+                                }
+                            ],
+                            "guide_audited": false,
+                            "content": "",
+                            "title": "",
+                            "is_star": false,
+                            "block_private_msg": false
+                        },
+                        "topics": [
+                            {
+                                "style": 0,
+                                "discuss_num": 0,
+                                "business_type": 0,
+                                "id": "5aa266f77642f10b36736a0c",
+                                "name": "来拍照了",
+                                "image": "http://ci.xiaohongshu.com/fd75707a-37f8-45ad-b7a7-0feaf36e9cad@r_120w_120h.jpg",
+                                "link": "xhsdiscover://topic/v2/5aa26759ec9d1376a6b1b915?page_source=note_feed.click_new_big",
+                                "activity_online": false
+                            }
+                        ],
+                        "head_tags": [],
+                        "liked_users": [],
+                        "content_trans_info": {
+                            "strategy": 9
+                        },
+                        "images_list": [
+                            {
+                                "longitude": 0,
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso",
+                                "need_load_original_image": false,
+                                "text_intention": 0,
+                                "height": 1608,
+                                "width": 1206,
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/1440/format/webp",
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "scale_to_large": 4,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso",
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/1440/format/webp/q/75"
+                                },
+                                "index": 0,
+                                "latitude": 0
+                            },
+                            {
+                                "width": 1206,
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m0g4a6ea1da9ehflgta2hg?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m0g4a6ea1da9ehflgta2hg?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m0g4a6ea1da9ehflgta2hg?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m0g4a6ea1da9ehflgta2hg?imageView2/2/w/1440/format/webp/q/75"
+                                },
+                                "index": 0,
+                                "longitude": 0,
+                                "scale_to_large": 4,
+                                "text_intention": 0,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m0g4a6ea1da9ehflgta2hg",
+                                "height": 1608,
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m0g4a6ea1da9ehflgta2hg?imageView2/2/w/1440/format/webp",
+                                "latitude": 0,
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m0g4a6ea1da9ehflgta2hg",
+                                "need_load_original_image": false
+                            },
+                            {
+                                "height": 2880,
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m3g4a6ea1da9ehfn7jvu08?imageView2/2/w/1440/format/webp",
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m3g4a6ea1da9ehfn7jvu08?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "index": 0,
+                                "live_photo_file_id": "livephoto_pre_post/1040g3jg31lec6uptlo004a6ea1da9ehfe7f70dg",
+                                "scale_to_large": 4,
+                                "width": 2160,
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m3g4a6ea1da9ehfn7jvu08?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m3g4a6ea1da9ehfn7jvu08?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m3g4a6ea1da9ehfn7jvu08?imageView2/2/w/1440/format/webp/q/75"
+                                },
+                                "longitude": 0,
+                                "latitude": 0,
+                                "need_load_original_image": true,
+                                "text_intention": 0,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m3g4a6ea1da9ehfn7jvu08",
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m3g4a6ea1da9ehfn7jvu08",
+                                "live_photo": {
+                                    "media": {
+                                        "video_id": "137542958784967932",
+                                        "video": {
+                                            "biz_name": 10,
+                                            "biz_id": "281658148466655880",
+                                            "duration": 4,
+                                            "hdr_type": 0,
+                                            "drm_type": 0,
+                                            "stream_types": [
+                                                16
+                                            ],
+                                            "width": 1440,
+                                            "height": 1920,
+                                            "bound": [
+                                                {
+                                                    "x": 0,
+                                                    "y": 0,
+                                                    "w": 1440,
+                                                    "h": 1920
+                                                }
+                                            ],
+                                            "opaque1": {
+                                                "domestic": "1",
+                                                "livephoto_flag": "1"
+                                            }
+                                        },
+                                        "stream": {
+                                            "h264": [],
+                                            "h265": [
+                                                {
+                                                    "stream_type": 16,
+                                                    "stream_desc": "livephoto_r256_1080p_16_andr",
+                                                    "default_stream": 1,
+                                                    "format": "mp4",
+                                                    "width": 1080,
+                                                    "height": 1440,
+                                                    "duration": 3734,
+                                                    "size": 849672,
+                                                    "volume": 0.0,
+                                                    "avg_bitrate": 1820400,
+                                                    "fps": 30,
+                                                    "video_codec": "hevc",
+                                                    "video_bitrate": 1815484,
+                                                    "video_duration": 3733,
+                                                    "audio_bitrate": 0,
+                                                    "audio_duration": 0,
+                                                    "audio_channels": 0,
+                                                    "rotate": 0,
+                                                    "master_url": "http://sns-video-al.xhscdn.com/stream/1/10/16/01e8a6979fbbf4fc0100500198cac212e7_16.mp4",
+                                                    "backup_urls": [
+                                                        "http://sns-bak-v1.xhscdn.com/stream/1/10/16/01e8a6979fbbf4fc0100500198cac212e7_16.mp4",
+                                                        "http://sns-bak-v6.xhscdn.com/stream/1/10/16/01e8a6979fbbf4fc0100500198cac212e7_16.mp4"
+                                                    ],
+                                                    "hdr_type": 0,
+                                                    "vmaf": -1.0,
+                                                    "psnr": 0.0,
+                                                    "ssim": 0.0,
+                                                    "weight": 66,
+                                                    "quality_type": "FHD",
+                                                    "sr": 0,
+                                                    "opaque1": {
+                                                        "didLoudnorm": "false",
+                                                        "pcdn_supplier": "wangxin",
+                                                        "amend": "0",
+                                                        "has_soundtrack": "0",
+                                                        "use_pcdn": "0",
+                                                        "pcdn_302_flag": "false",
+                                                        "device_score": "0"
+                                                    }
+                                                }
+                                            ],
+                                            "h266": [],
+                                            "av1": []
+                                        },
+                                        "user_level": 0
+                                    },
+                                    "image": {
+                                        "first_frame": ""
+                                    },
+                                    "capa": {
+                                        "duration": 0,
+                                        "frame_ts": 0,
+                                        "is_user_select": false,
+                                        "is_upload": false,
+                                        "is_ai_tab": false
+                                    },
+                                    "consumer": {
+                                        "can_super_resolution": true
+                                    }
+                                }
+                            },
+                            {
+                                "width": 1206,
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m104a6ea1da9ehfcthiuh8?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m104a6ea1da9ehfcthiuh8?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m104a6ea1da9ehfcthiuh8?imageView2/2/w/1440/format/webp/q/75"
+                                },
+                                "index": 0,
+                                "longitude": 0,
+                                "latitude": 0,
+                                "need_load_original_image": false,
+                                "text_intention": 0,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m104a6ea1da9ehfcthiuh8",
+                                "height": 1673,
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m104a6ea1da9ehfcthiuh8?imageView2/2/w/1440/format/webp",
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m104a6ea1da9ehfcthiuh8?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m104a6ea1da9ehfcthiuh8",
+                                "scale_to_large": 4
+                            },
+                            {
+                                "width": 1206,
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m1g4a6ea1da9ehf59ek51o?imageView2/2/w/1440/format/webp",
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m1g4a6ea1da9ehf59ek51o?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m1g4a6ea1da9ehf59ek51o?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m1g4a6ea1da9ehf59ek51o?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m1g4a6ea1da9ehf59ek51o?imageView2/2/w/1440/format/webp/q/75"
+                                },
+                                "index": 0,
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m1g4a6ea1da9ehf59ek51o",
+                                "scale_to_large": 4,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m1g4a6ea1da9ehf59ek51o",
+                                "height": 1608,
+                                "longitude": 0,
+                                "latitude": 0,
+                                "need_load_original_image": false,
+                                "text_intention": 0
+                            },
+                            {
+                                "height": 1608,
+                                "need_load_original_image": false,
+                                "text_intention": 0,
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m204a6ea1da9ehfvfmih5o?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m204a6ea1da9ehfvfmih5o?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m204a6ea1da9ehfvfmih5o?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m204a6ea1da9ehfvfmih5o?imageView2/2/w/1440/format/webp/q/75"
+                                },
+                                "index": 0,
+                                "longitude": 0,
+                                "latitude": 0,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m204a6ea1da9ehfvfmih5o",
+                                "width": 1206,
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m204a6ea1da9ehfvfmih5o?imageView2/2/w/1440/format/webp",
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m204a6ea1da9ehfvfmih5o",
+                                "scale_to_large": 4
+                            },
+                            {
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m2g4a6ea1da9ehf40hd86g?imageView2/2/w/1440/format/webp",
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m2g4a6ea1da9ehf40hd86g?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "index": 0,
+                                "longitude": 0,
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m2g4a6ea1da9ehf40hd86g",
+                                "height": 1616,
+                                "width": 1206,
+                                "latitude": 0,
+                                "need_load_original_image": false,
+                                "scale_to_large": 4,
+                                "text_intention": 0,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m2g4a6ea1da9ehf40hd86g",
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m2g4a6ea1da9ehf40hd86g?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m2g4a6ea1da9ehf40hd86g?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m2g4a6ea1da9ehf40hd86g?imageView2/2/w/1440/format/webp/q/75"
+                                }
+                            },
+                            {
+                                "longitude": 0,
+                                "text_intention": 0,
+                                "fileid": "notes_pre_post/1040g3k031lec6uon5m304a6ea1da9ehf30cemfg",
+                                "width": 1206,
+                                "original": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m304a6ea1da9ehf30cemfg?imageView2/2/w/5000/h/5000/format/webp/q/90",
+                                "index": 0,
+                                "trace_id": "notes_pre_post/1040g3k031lec6uon5m304a6ea1da9ehf30cemfg",
+                                "need_load_original_image": false,
+                                "scale_to_large": 4,
+                                "height": 1608,
+                                "url": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m304a6ea1da9ehf30cemfg?imageView2/2/w/1440/format/webp",
+                                "url_multi_level": {
+                                    "low": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m304a6ea1da9ehf30cemfg?imageView2/2/w/1440/format/webp/q/75",
+                                    "medium": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m304a6ea1da9ehf30cemfg?imageView2/2/w/1440/format/webp/q/75",
+                                    "high": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m304a6ea1da9ehf30cemfg?imageView2/2/w/1440/format/webp/q/75"
+                                },
+                                "latitude": 0
+                            }
+                        ],
+                        "foot_tags": [],
+                        "share_info": {
+                            "content": "火龙果色就是热辣明媚的代名词！ 终于穿上心爱的👙啦～ 🩱：BE范德安 #来拍照了  #泳装  #泳衣  #来拍照了",
+                            "block_private_msg": false,
+                            "show_wechat_tag": false,
+                            "function_entries": [
+                                {
+                                    "type": "heat_for_author"
+                                },
+                                {
+                                    "type": "generate_image"
+                                },
+                                {
+                                    "type": "copy_link"
+                                },
+                                {
+                                    "type": "dislike"
+                                },
+                                {
+                                    "type": "report"
+                                }
+                            ],
+                            "guide_audited": true,
+                            "image": "http://sns-na-i1.xhscdn.com/notes_pre_post/1040g3k031lec6uon5m004a6ea1da9ehfvi64kso?imageView2/2/w/360/format/jpg/q/75",
+                            "link": "https://www.xiaohongshu.com/discovery/item/68a697ff000000001c030288?app_platform=android&ignoreEngage=true&app_version=8.47.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBYR0cucj2-7trvWKSAG1d18AMtjkZ2qhRsnyAvZbdgKA=&author_share=1",
+                            "title": "夏天结束之前再穿一次比基尼",
+                            "is_star": false
+                        },
+                        "enable_fls_bridge_cards": false,
+                        "media_save_config": {
+                            "disable_save": false,
+                            "disable_watermark": false,
+                            "disable_weibo_cover": false
+                        }
+                    }
+                ],
+                "comment_list": []
+            }
+        ]
+    }
+}
