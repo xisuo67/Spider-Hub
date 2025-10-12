@@ -47,12 +47,30 @@ export interface SearchResult {
     url: string; // 从live_photo.media.stream.h265.master_url获取
   }>; // 复杂对象，不一定存在
   publishTime: string;
-  interactionVolume: string;
-  estimatedReads: string;
-  collections: string;
-  comments: string;
-  shares: string;
-  likes: string;
+  interactionVolume: {
+    formatted: string;
+    raw: number;
+  };
+  estimatedReads: {
+    formatted: string;
+    raw: number;
+  };
+  collections: {
+    formatted: string;
+    raw: number;
+  };
+  comments: {
+    formatted: string;
+    raw: number;
+  };
+  shares: {
+    formatted: string;
+    raw: number;
+  };
+  likes: {
+    formatted: string;
+    raw: number;
+  };
 }
 
 interface SearchResultsTableProps {
@@ -200,8 +218,12 @@ export function SearchResultsTable({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              table.getRowModel().rows.map((row, index) => (
+                <TableRow 
+                  key={row.id} 
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={index % 2 === 0 ? 'bg-background' : 'bg-muted/50'}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

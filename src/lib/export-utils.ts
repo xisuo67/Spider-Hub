@@ -10,14 +10,12 @@ const getLocalizedHeaders = (locale: string = 'zh') => {
       '作者',
       '类型',
       '发布时间',
-      '互动量',
       '预估阅读数',
+      '互动量',
       '收藏数',
       '评论数',
       '分享数',
-      '点赞数',
-      '视频时长',
-      '封面图片'
+      '点赞数'
     ],
     en: [
       'ID',
@@ -26,14 +24,12 @@ const getLocalizedHeaders = (locale: string = 'zh') => {
       'Author',
       'Type',
       'Publish Time',
-      'Interaction Volume',
       'Estimated Reads',
+      'Interaction Volume',
       'Collections',
       'Comments',
       'Shares',
-      'Likes',
-      'Video Duration',
-      'Cover Image'
+      'Likes'
     ]
   };
   return headers[locale as keyof typeof headers] || headers.zh;
@@ -61,14 +57,12 @@ export function exportToCSV(data: SearchResult[], filename: string = 'search-res
       `"${item.basicInfo.author.name}"`,
       `"${item.basicInfo.type}"`,
       `"${item.publishTime}"`,
-      `"${item.interactionVolume}"`,
-      `"${item.estimatedReads}"`,
-      `"${item.collections}"`,
-      `"${item.comments}"`,
-      `"${item.shares}"`,
-      `"${item.likes}"`,
-      `"${item.basicInfo.duration || ''}"`,
-      `"${item.basicInfo.coverImage}"`
+      `"${item.estimatedReads.raw}"`,
+      `"${item.interactionVolume.raw}"`,
+      `"${item.collections.raw}"`,
+      `"${item.comments.raw}"`,
+      `"${item.shares.raw}"`,
+      `"${item.likes.raw}"`
     ].join(','))
   ].join('\n');
 

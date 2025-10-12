@@ -245,12 +245,18 @@ export function transformMockDataToSearchResults(mockData: MockData): SearchResu
     const publishTime = formatTimestamp(note.create_time);
     
     // 计算互动量（点赞+收藏+分享+评论）
-    const interactionVolume = formatNumber(
-      note.likes + note.collected_count + note.share_count + note.comments_count
-    );
+    const interactionVolumeRaw = note.likes + note.collected_count + note.share_count + note.comments_count;
+    const interactionVolume = {
+      formatted: formatNumber(interactionVolumeRaw),
+      raw: interactionVolumeRaw
+    };
     
     // 估算阅读量（基于互动量估算）
-    const estimatedReads = formatNumber(Math.max(note.likes * 10, note.collected_count * 5));
+    const estimatedReadsRaw = Math.max(note.likes * 10, note.collected_count * 5);
+    const estimatedReads = {
+      formatted: formatNumber(estimatedReadsRaw),
+      raw: estimatedReadsRaw
+    };
     
     return {
       id: note.cursor || `note-${index}`,
@@ -271,10 +277,22 @@ export function transformMockDataToSearchResults(mockData: MockData): SearchResu
       publishTime,
       interactionVolume,
       estimatedReads,
-      collections: formatNumber(note.collected_count),
-      comments: formatNumber(note.comments_count),
-      shares: formatNumber(note.share_count),
-      likes: formatNumber(note.likes)
+      collections: {
+        formatted: formatNumber(note.collected_count),
+        raw: note.collected_count
+      },
+      comments: {
+        formatted: formatNumber(note.comments_count),
+        raw: note.comments_count
+      },
+      shares: {
+        formatted: formatNumber(note.share_count),
+        raw: note.share_count
+      },
+      likes: {
+        formatted: formatNumber(note.likes),
+        raw: note.likes
+      }
     };
   });
 }
