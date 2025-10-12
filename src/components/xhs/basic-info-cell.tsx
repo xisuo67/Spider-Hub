@@ -25,13 +25,13 @@ export function BasicInfoCell({ data }: BasicInfoCellProps) {
   const t = useTranslations('Xhs.SearchNote');
   
   return (
-    <div className="flex items-start gap-3 w-full">
+    <div className="flex items-start gap-3 w-full max-w-xs">
       {/* 封面图片 */}
       <div className="relative flex-shrink-0">
         <img
           src={data.coverImage}
           alt={data.title}
-          className="w-24 h-24 object-cover rounded-md"
+          className="w-28 h-34 object-cover rounded-md"
         />
         {/* 类型标签 - 右上角 */}
         <div className="absolute top-1 right-1">
@@ -54,7 +54,7 @@ export function BasicInfoCell({ data }: BasicInfoCellProps) {
       </div>
 
               {/* 右侧内容 */}
-              <div className="flex-1 min-w-0 flex flex-col justify-between h-24">
+              <div className="flex-1 min-w-0 flex flex-col justify-between h-34">
                 {/* 标题 */}
                 <h3 className="font-medium text-sm line-clamp-2 leading-tight">
                   {data.title}

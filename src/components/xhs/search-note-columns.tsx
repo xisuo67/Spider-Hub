@@ -47,9 +47,7 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
         <DataTableColumnHeader column={column} title={t('publishTime')} />
       ),
       cell: ({ row }) => (
-        <div className="text-center">
-          <span className="text-sm">{row.original.publishTime}</span>
-        </div>
+        <span className="text-sm">{row.original.publishTime}</span>
       ),
     },
     {
