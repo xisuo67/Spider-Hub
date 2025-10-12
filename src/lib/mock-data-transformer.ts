@@ -16,6 +16,36 @@ interface MockNote {
     url_size_large: string;
     height: number;
     width: number;
+    live_photo?: {
+      media?: {
+        stream?: {
+          h264?: Array<{
+            master_url: string;
+            backup_urls: string[];
+            height: number;
+            width: number;
+          }>;
+          h265?: Array<{
+            master_url: string;
+            backup_urls: string[];
+            height: number;
+            width: number;
+          }>;
+          h266?: Array<{
+            master_url: string;
+            backup_urls: string[];
+            height: number;
+            width: number;
+          }>;
+          av1?: Array<{
+            master_url: string;
+            backup_urls: string[];
+            height: number;
+            width: number;
+          }>;
+        };
+      };
+    };
   }>;
   collected_count: number;
   share_count: number;
@@ -28,6 +58,37 @@ interface MockNote {
   video_info_v2?: {
     capa?: {
       duration: number;
+    };
+    image?: {
+      first_frame: string;
+    };
+    media?: {
+      stream?: {
+        h264?: Array<{
+          master_url: string;
+          backup_urls: string[];
+          height: number;
+          width: number;
+        }>;
+        h265?: Array<{
+          master_url: string;
+          backup_urls: string[];
+          height: number;
+          width: number;
+        }>;
+        h266?: Array<{
+          master_url: string;
+          backup_urls: string[];
+          height: number;
+          width: number;
+        }>;
+        av1?: Array<{
+          master_url: string;
+          backup_urls: string[];
+          height: number;
+          width: number;
+        }>;
+      };
     };
   };
 }
@@ -72,7 +133,96 @@ function formatVideoDuration(seconds: number): string {
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-// 不再需要提取标签功能
+// 去除URL参数
+function removeUrlParams(url: string): string {
+  return url?.split('?')[0] || '';
+}
+
+// 转换images_list
+function transformImagesList(imagesList: any[]): Array<{ url: string }> {
+  if (!imagesList || imagesList.length === 0) return [];
+  
+  return imagesList.map(image => ({
+    url: removeUrlParams(image.url_size_large || image.url || '')
+  }));
+}
+
+// 转换live_photo_list
+function transformLivePhotoList(imagesList: any[]): Array<{ url: string }> {
+  if (!imagesList || imagesList.length === 0) return [];
+  
+  return imagesList
+    .filter(image => image.live_photo?.media?.stream)
+    .map(image => {
+      const stream = image.live_photo.media.stream;
+      
+      // 收集所有格式的视频流
+      const allStreams: any[] = [];
+      
+      // 检查所有可能的格式
+      if (stream.h265 && stream.h265.length > 0) {
+        allStreams.push(...stream.h265);
+      }
+      if (stream.h264 && stream.h264.length > 0) {
+        allStreams.push(...stream.h264);
+      }
+      if (stream.h266 && stream.h266.length > 0) {
+        allStreams.push(...stream.h266);
+      }
+      if (stream.av1 && stream.av1.length > 0) {
+        allStreams.push(...stream.av1);
+      }
+      
+      if (allStreams.length === 0) {
+        return { url: '' };
+      }
+      
+      // 按height排序，选择最高分辨率
+      allStreams.sort((a: any, b: any) => b.height - a.height);
+      
+      return {
+        url: removeUrlParams(allStreams[0]?.master_url || '')
+      };
+    });
+}
+
+// 转换video_list
+function transformVideoList(videoInfo: any): Array<{ cover_image: string; master_url: string; backup_urls: string[] }> {
+  if (!videoInfo?.media?.stream) return [];
+  
+  const stream = videoInfo.media.stream;
+  
+  // 收集所有格式的视频流
+  const allStreams: any[] = [];
+  
+  // 检查所有可能的格式
+  if (stream.h265 && stream.h265.length > 0) {
+    allStreams.push(...stream.h265);
+  }
+  if (stream.h264 && stream.h264.length > 0) {
+    allStreams.push(...stream.h264);
+  }
+  if (stream.h266 && stream.h266.length > 0) {
+    allStreams.push(...stream.h266);
+  }
+  if (stream.av1 && stream.av1.length > 0) {
+    allStreams.push(...stream.av1);
+  }
+  
+  if (allStreams.length === 0) return [];
+  
+  // 按height排序，选择最高分辨率
+  allStreams.sort((a: any, b: any) => b.height - a.height);
+  
+  // 只返回最高分辨率的视频
+  const highestQualityStream = allStreams[0];
+  
+  return [{
+    cover_image: removeUrlParams(videoInfo.image?.first_frame || ''),
+    master_url: removeUrlParams(highestQualityStream.master_url || ''),
+    backup_urls: highestQualityStream.backup_urls || []
+  }];
+}
 
 // 转换mock数据为SearchResult格式
 export function transformMockDataToSearchResults(mockData: MockData): SearchResult[] {
@@ -115,6 +265,9 @@ export function transformMockDataToSearchResults(mockData: MockData): SearchResu
           name: note.user.nickname
         }
       },
+      images_list: transformImagesList(note.images_list || []),
+      video_list: contentType === 'video' ? transformVideoList(note.video_info_v2) : undefined,
+      live_photo_list: transformLivePhotoList(note.images_list || []),
       publishTime,
       interactionVolume,
       estimatedReads,

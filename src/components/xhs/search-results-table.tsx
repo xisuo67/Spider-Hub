@@ -35,6 +35,17 @@ export interface SearchResult {
       name: string;
     };
   };
+  images_list?: Array<{
+    url: string; // 从url_size_large获取，去除?后参数
+  }>;
+  video_list?: Array<{
+    cover_image: string; // 从video.media.stream.h265.master_url获取，去除?后参数
+    master_url: string; // 优先h265格式，按height选择最高分辨率
+    backup_urls: string[];
+  }>; // 仅当type为video时提供
+  live_photo_list?: Array<{
+    url: string; // 从live_photo.media.stream.h265.master_url获取
+  }>; // 复杂对象，不一定存在
   publishTime: string;
   interactionVolume: string;
   estimatedReads: string;
