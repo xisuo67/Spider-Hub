@@ -11,6 +11,7 @@ import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { loadMockData } from '@/lib/mock-data-transformer';
 import { expandUrl } from '@/lib/utils';
+import { toast } from 'sonner';
 
 export default function XhsSearchNotePage() {
   const t = useTranslations('Xhs.SearchNote');
@@ -32,14 +33,18 @@ export default function XhsSearchNotePage() {
       const expandedUrl = await expandUrl(searchUrl);
       const finalSearchUrl = expandedUrl || searchUrl;
       
-      // 如果URL被展开，更新搜索框显示
+      // 验证URL是否为有效的小红书链接
+      if (!expandedUrl.includes('www.xiaohongshu.com/explore') && !expandedUrl.includes('www.xiaohongshu.com/user/profile')) {
+        toast.error(t('invalidUrl'), {
+          description: t('invalidUrlDescription')
+        });
+        setLoading(false);
+        return;
+      }else{
+        // 如果URL被展开，更新搜索框显示
       if (expandedUrl && expandedUrl !== searchUrl) {
         setSearchUrl(expandedUrl);
-        console.log('URL expanded from:', searchUrl, 'to:', expandedUrl);
       }
-      
-      console.log('Searching for:', finalSearchUrl, 'Page:', page, 'Cursor:', currentCursor);
-      
       // 加载mock数据
       const mockResults = await loadMockData();
       
@@ -59,6 +64,8 @@ export default function XhsSearchNotePage() {
       
       // 模拟搜索延迟
       await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+      
     } catch (error) {
       console.error('Search failed:', error);
     } finally {

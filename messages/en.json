@@ -1177,6 +1177,8 @@
       "comments": "Comments",
       "shares": "Shares",
       "likes": "Likes",
+      "invalidUrl": "Please enter a valid Xiaohongshu search link",
+      "invalidUrlDescription": "Only supports blogger homepage or note links",
       "video": "Video",
       "note": "Note",
       "bulkActions": "Bulk Actions",

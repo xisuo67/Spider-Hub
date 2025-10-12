@@ -109,8 +109,6 @@ export function getXhsShortUrl(input: string): string {
  */
 export async function expandShortUrl(shortUrl: string): Promise<string> {
   try {
-    console.log('Attempting to expand short link:', shortUrl);
-    
     // 首先尝试使用我们的API代理
     try {
       const response = await fetch('/api/expand-url', {
@@ -124,14 +122,11 @@ export async function expandShortUrl(shortUrl: string): Promise<string> {
       if (response.ok) {
         const result = await response.json();
         if (result.success && result.expandedUrl) {
-          console.log('URL expanded via API:', shortUrl, '->', result.expandedUrl);
           return result.expandedUrl;
         }
-      } else {
-        console.warn('API proxy returned error:', response.status, response.statusText);
       }
     } catch (apiError) {
-      console.warn('API proxy failed, trying direct method:', apiError);
+      // API代理失败，尝试直接请求
     }
     
     // 如果API代理失败，尝试直接请求（仅作为降级方案）
@@ -146,25 +141,15 @@ export async function expandShortUrl(shortUrl: string): Promise<string> {
       
       // 如果请求成功，返回最终URL
       if (response.ok) {
-        const finalUrl = response.url;
-        console.log('URL expanded successfully via direct method:', shortUrl, '->', finalUrl);
-        return finalUrl;
+        return response.url;
       }
     } catch (directError) {
-      console.warn('Direct method also failed:', directError);
+      // 直接请求也失败
     }
     
     // 如果所有方法都失败，返回原URL
-    console.log('All expansion methods failed, returning original URL');
     return shortUrl;
   } catch (error) {
-    console.warn(`Error expanding short URL ${shortUrl}:`, error);
-    
-    // 如果是CORS错误，提供更友好的提示
-    if (error instanceof TypeError && error.message.includes('CORS')) {
-      console.warn('CORS error detected, returning original URL');
-    }
-    
     return shortUrl; // 出错时返回原URL
   }
 }
@@ -194,7 +179,6 @@ export async function expandUrl(input: string): Promise<string> {
     if (isUrl(input)) {
       // 如果是小红书特定路径，直接返回，不进行展开
       if (isXhsSpecificPath(input)) {
-        console.log('XHS specific path detected, skipping expansion:', input);
         return input;
       }
       
@@ -208,7 +192,6 @@ export async function expandUrl(input: string): Promise<string> {
     if (shortUrl) {
       // 检查提取到的短链接是否为小红书特定路径
       if (isXhsSpecificPath(shortUrl)) {
-        console.log('XHS specific path detected in extracted URL, skipping expansion:', shortUrl);
         return shortUrl;
       }
       
@@ -219,7 +202,6 @@ export async function expandUrl(input: string): Promise<string> {
     
     return input; // 如果没有找到短链接，返回原始输入
   } catch (error) {
-    console.warn('Error expanding URL:', error);
     return input; // 出错时返回原始输入
   }
 }

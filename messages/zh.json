@@ -1177,6 +1177,8 @@
       "comments": "评论",
       "shares": "分享",
       "likes": "点赞",
+      "invalidUrl": "请输入正确的小红书搜索链接",
+      "invalidUrlDescription": "仅支持博主首页或笔记链接",
       "video": "视频",
       "note": "笔记",
       "bulkActions": "批量操作",

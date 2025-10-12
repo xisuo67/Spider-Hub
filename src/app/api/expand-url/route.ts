@@ -8,8 +8,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 });
     }
     
-    console.log('Expanding URL:', url);
-    
     // 方法1: 使用GET请求并跟随重定向
     try {
       const response = await fetch(url, {
@@ -27,7 +25,6 @@ export async function POST(request: NextRequest) {
       
       if (response.ok) {
         const finalUrl = response.url;
-        console.log('URL expanded successfully:', url, '->', finalUrl);
         return NextResponse.json({ 
           success: true, 
           originalUrl: url, 
@@ -35,7 +32,7 @@ export async function POST(request: NextRequest) {
         });
       }
     } catch (fetchError) {
-      console.warn('GET request failed, trying HEAD method:', fetchError);
+      // GET请求失败，尝试HEAD方法
     }
     
     // 方法2: 使用HEAD请求手动处理重定向
@@ -52,7 +49,6 @@ export async function POST(request: NextRequest) {
       if (response.status === 301 || response.status === 302 || response.status === 307 || response.status === 308) {
         const location = response.headers.get('Location');
         if (location) {
-          console.log('URL expanded via redirect header:', url, '->', location);
           return NextResponse.json({ 
             success: true, 
             originalUrl: url, 
@@ -61,7 +57,7 @@ export async function POST(request: NextRequest) {
         }
       }
     } catch (headError) {
-      console.warn('HEAD request failed:', headError);
+      // HEAD请求失败
     }
     
     // 方法3: 对于小红书短链接，尝试特殊处理
@@ -88,7 +84,6 @@ export async function POST(request: NextRequest) {
         
         if (response.ok) {
           const finalUrl = response.url;
-          console.log('XHS URL expanded successfully:', url, '->', finalUrl);
           return NextResponse.json({ 
             success: true, 
             originalUrl: url, 
@@ -96,12 +91,11 @@ export async function POST(request: NextRequest) {
           });
         }
       } catch (xhsError) {
-        console.warn('XHS special handling failed:', xhsError);
+        // 小红书特殊处理失败
       }
     }
     
     // 如果所有方法都失败，返回原URL
-    console.log('All expansion methods failed, returning original URL');
     return NextResponse.json({ 
       success: true, 
       originalUrl: url, 
@@ -109,7 +103,6 @@ export async function POST(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error('Error expanding URL:', error);
     return NextResponse.json({ 
       success: false, 
       error: 'Failed to expand URL'
