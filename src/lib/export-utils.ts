@@ -15,7 +15,8 @@ const getLocalizedHeaders = (locale: string = 'zh') => {
       '收藏数',
       '评论数',
       '分享数',
-      '点赞数'
+      '点赞数',
+      '封面图片'
     ],
     en: [
       'ID',
@@ -29,7 +30,8 @@ const getLocalizedHeaders = (locale: string = 'zh') => {
       'Collections',
       'Comments',
       'Shares',
-      'Likes'
+      'Likes',
+      'Cover Image'
     ]
   };
   return headers[locale as keyof typeof headers] || headers.zh;
@@ -47,6 +49,11 @@ export function exportToCSV(data: SearchResult[], filename: string = 'search-res
   // 根据语言获取CSV列标题
   const headers = getLocalizedHeaders(locale);
 
+  // 去除URL参数的辅助函数
+  const removeUrlParams = (url: string): string => {
+    return url?.split('?')[0] || '';
+  };
+
   // 转换数据为CSV格式
   const csvContent = [
     headers.join(','),
@@ -62,7 +69,8 @@ export function exportToCSV(data: SearchResult[], filename: string = 'search-res
       `"${item.collections.raw}"`,
       `"${item.comments.raw}"`,
       `"${item.shares.raw}"`,
-      `"${item.likes.raw}"`
+      `"${item.likes.raw}"`,
+      `"${removeUrlParams(item.basicInfo.coverImage)}"`
     ].join(','))
   ].join('\n');
 
