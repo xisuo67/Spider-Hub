@@ -57,12 +57,16 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
         return rowA.original.estimatedReads.raw - rowB.original.estimatedReads.raw;
       },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('estimatedReads')} />
+        <DataTableColumnHeader 
+          column={column} 
+          title={t('estimatedReads')} 
+          className="justify-center"
+        />
       ),
       cell: ({ row }) => (
         <div className="text-center">
           <div className="text-sm font-medium">{row.original.estimatedReads.formatted}</div>
-          <div className="text-xs text-muted-foreground">{row.original.estimatedReads.raw.toLocaleString()}</div>
+          <div className="text-sm text-muted-foreground">{row.original.estimatedReads.raw.toLocaleString()}</div>
         </div>
       ),
     },
@@ -73,12 +77,16 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
         return rowA.original.interactionVolume.raw - rowB.original.interactionVolume.raw;
       },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('interactionVolume')} />
+        <DataTableColumnHeader 
+          column={column} 
+          title={t('interactionVolume')} 
+          className="justify-center"
+        />
       ),
       cell: ({ row }) => (
         <div className="text-center">
           <div className="text-sm font-medium">{row.original.interactionVolume.formatted}</div>
-          <div className="text-xs text-muted-foreground">{row.original.interactionVolume.raw.toLocaleString()}</div>
+          <div className="text-sm text-muted-foreground">{row.original.interactionVolume.raw.toLocaleString()}</div>
         </div>
       ),
     },
@@ -89,12 +97,16 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
         return rowA.original.collections.raw - rowB.original.collections.raw;
       },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('collections')} />
+        <DataTableColumnHeader 
+          column={column} 
+          title={t('collections')} 
+          className="justify-center"
+        />
       ),
       cell: ({ row }) => (
         <div className="text-center">
           <div className="text-sm font-medium">{row.original.collections.formatted}</div>
-          <div className="text-xs text-muted-foreground">{row.original.collections.raw.toLocaleString()}</div>
+          <div className="text-sm text-muted-foreground">{row.original.collections.raw.toLocaleString()}</div>
         </div>
       ),
     },
@@ -105,12 +117,14 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
         return rowA.original.comments.raw - rowB.original.comments.raw;
       },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('comments')} />
+        <div className="text-center">
+          <DataTableColumnHeader column={column} title={t('comments')} />
+        </div>
       ),
       cell: ({ row }) => (
         <div className="text-center">
           <div className="text-sm font-medium">{row.original.comments.formatted}</div>
-          <div className="text-xs text-muted-foreground">{row.original.comments.raw.toLocaleString()}</div>
+          <div className="text-sm text-muted-foreground">{row.original.comments.raw.toLocaleString()}</div>
         </div>
       ),
     },
@@ -121,12 +135,14 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
         return rowA.original.shares.raw - rowB.original.shares.raw;
       },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('shares')} />
+        <div className="text-center">
+          <DataTableColumnHeader column={column} title={t('shares')} />
+        </div>
       ),
       cell: ({ row }) => (
         <div className="text-center">
           <div className="text-sm font-medium">{row.original.shares.formatted}</div>
-          <div className="text-xs text-muted-foreground">{row.original.shares.raw.toLocaleString()}</div>
+          <div className="text-sm text-muted-foreground">{row.original.shares.raw.toLocaleString()}</div>
         </div>
       ),
     },
@@ -137,12 +153,14 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
         return rowA.original.likes.raw - rowB.original.likes.raw;
       },
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('likes')} />
+        <div className="text-center">
+          <DataTableColumnHeader column={column} title={t('likes')} />
+        </div>
       ),
       cell: ({ row }) => (
         <div className="text-center">
           <div className="text-sm text-red-500 font-medium">{row.original.likes.formatted}</div>
-          <div className="text-xs text-muted-foreground">{row.original.likes.raw.toLocaleString()}</div>
+          <div className="text-sm text-muted-foreground">{row.original.likes.raw.toLocaleString()}</div>
         </div>
       ),
     },

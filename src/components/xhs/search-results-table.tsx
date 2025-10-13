@@ -8,6 +8,7 @@ import { SimpleToolbar } from './simple-toolbar';
 import { CustomPagination } from './custom-pagination';
 import { DataTableBulkActions } from '@/components/data-table';
 import { BulkActions } from './bulk-actions';
+import { BasicInfoSkeleton } from './basic-info-skeleton';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -141,13 +142,53 @@ export function SearchResultsTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Array.from({ length: 3 }).map((_, index) => (
+            {Array.from({ length: 5 }).map((_, index) => (
               <TableRow key={index}>
-                {columns.map((column, colIndex) => (
-                  <TableCell key={`${index}-${colIndex}`}>
-                    <Skeleton className="h-16 w-full" />
-                  </TableCell>
-                ))}
+                {columns.map((column, colIndex) => {
+                  // 为不同列提供不同的骨架屏
+                  if (column.id === 'select') {
+                    return (
+                      <TableCell key={`${index}-${colIndex}`}>
+                        <Skeleton className="h-4 w-4 rounded" />
+                      </TableCell>
+                    );
+                  }
+                  
+                  if (column.id === 'basicInfo') {
+                    return (
+                      <TableCell key={`${index}-${colIndex}`}>
+                        <BasicInfoSkeleton />
+                      </TableCell>
+                    );
+                  }
+                  
+                  if (column.id === 'publishTime') {
+                    return (
+                      <TableCell key={`${index}-${colIndex}`}>
+                        <Skeleton className="h-4 w-20" />
+                      </TableCell>
+                    );
+                  }
+                  
+                  // 数值列的骨架屏
+                  if (['estimatedReads', 'interactionVolume', 'collections', 'comments', 'shares', 'likes'].includes(column.id as string)) {
+                    return (
+                      <TableCell key={`${index}-${colIndex}`} className="text-center">
+                        <div className="space-y-1">
+                          <Skeleton className="h-4 w-12 mx-auto" />
+                          <Skeleton className="h-4 w-16 mx-auto" />
+                        </div>
+                      </TableCell>
+                    );
+                  }
+                  
+                  // 默认骨架屏
+                  return (
+                    <TableCell key={`${index}-${colIndex}`}>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableBody>
