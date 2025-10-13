@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SearchIcon, Upload } from 'lucide-react';
+import { ImportNotesDialog } from '@/components/xhs/import-notes-dialog';
 import { SearchResultsTable, SearchResult } from '@/components/xhs/search-results-table';
 import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
 import { CommentsResultsTable, CommentResult, useCommentsColumns } from '@/components/xhs/comments-results-table';
@@ -136,6 +137,7 @@ export default function XhsSearchNotePage() {
   const [cursor, setCursor] = useState<string | null>(null);
   const columns = useSearchNoteColumns();
   const commentColumns = useCommentsColumns();
+  const [importOpen, setImportOpen] = useState(false);
 
   const handleSearch = async (page = 1, currentCursor: string | null = null) => {
     if (!searchUrl.trim()) return;
@@ -261,13 +263,36 @@ export default function XhsSearchNotePage() {
           </div>
         {activeTab === 'note-search' && (
           <div className='flex items-center space-x-2'>
-            <Button>
+            <Button onClick={() => setImportOpen(true)}>
               <Upload className="h-4 w-4 mr-2" />
               {t('batchImport')}
             </Button>
           </div>
         )}
       </div>
+        <ImportNotesDialog
+          open={importOpen}
+          onOpenChange={setImportOpen}
+          onImported={(links, files) => {
+            // 将 single_note 下示例 JSON 转换为 SearchResult，直接填充到列表
+            (async () => {
+              const results: SearchResult[] = [];
+              try {
+                const note = await import('@/app/[locale]/(protected)/xhs/searchnote/single_note/note.json').then((m) => m.default).catch(() => null);
+                const video = await import('@/app/[locale]/(protected)/xhs/searchnote/single_note/video.json').then((m) => m.default).catch(() => null);
+                const live = await import('@/app/[locale]/(protected)/xhs/searchnote/single_note/live.json').then((m) => m.default).catch(() => null);
+                if (note) results.push(transformSingleNoteToSearchResult(note));
+                if (video) results.push(transformSingleNoteToSearchResult(video));
+                if (live) results.push(transformSingleNoteToSearchResult(live));
+              } catch {}
+              if (results.length > 0) {
+                setSearchResults(results);
+                setCurrentPage(1);
+                setHasMore(false);
+              }
+            })();
+          }}
+        />
         <Tabs value={activeTab}  onValueChange={setActiveTab} className="w-full">
           <TabsList variant="pill">
             <TabsTrigger 
