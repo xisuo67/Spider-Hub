@@ -1,0 +1,681 @@
+{
+    "code": 200,
+    "request_id": "cab178bf-16a8-4deb-b17c-dfd8ecaa2f96",
+    "message": "Request successful. This request will incur a charge.",
+    "message_zh": "请求成功，本次请求将被计费。",
+    "support": "Discord: https://discord.gg/aMEAS8Xsvz",
+    "time": "2025-10-13 05:11:29",
+    "time_stamp": 1760357489,
+    "time_zone": "America/Los_Angeles",
+    "docs": "https://api.tikhub.io/#/Xiaohongshu-Web-V2-API/fetch_note_comments_api_v1_xiaohongshu_web_v2_fetch_note_comments_get",
+    "cache_message": "This request will be cached. You can access the cached result directly using the URL below, valid for 24 hours.",
+    "cache_message_zh": "本次请求将被缓存，你可以使用下面的 URL 直接访问缓存结果，有效期为 24 小时。",
+    "cache_url": "https://cache.tikhub.io/api/v1/cache/public/cab178bf-16a8-4deb-b17c-dfd8ecaa2f96?sign=7f4a4d26080118ca255601b365c766fb4a7dfbc414992b8f3eadcb06ff613d28",
+    "router": "/api/v1/xiaohongshu/web_v2/fetch_note_comments",
+    "params": {
+        "note_id": "680b9380000000001d023c95",
+        "cursor": "68c1643c0000000030004e00"
+    },
+    "data": {
+        "comment_count": 217,
+        "comment_count_l1": 188,
+        "comments": [
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 3,
+                "content": "",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68b3eb05000000000902bafd",
+                "like_count": 0,
+                "liked": false,
+                "media_source_type": 1,
+                "note_id": "680b9380000000001d023c95",
+                "pictures": [
+                    {
+                        "box_h": 120,
+                        "box_w": 120,
+                        "file_id": "",
+                        "height": 326,
+                        "meme_package": {
+                            "height": 0,
+                            "meme_id": "137024201614238697",
+                            "width": 0
+                        },
+                        "origin_url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lrbos665i1g5q466nujfllbhdi1b80?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=d92fac9528127cf364a6da71a5cfe39b&t=68ecf25f",
+                        "url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lrbos665i1g5q466nujfllbhdi1b80?imageView2/2/h/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=d92fac9528127cf364a6da71a5cfe39b&t=68ecf25f",
+                        "width": 352
+                    }
+                ],
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1756621575,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ndg8f505m605q466nujfllbjnn2olg?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "迁雪の🌷",
+                    "red_id": "49614280682",
+                    "userid": "688635fd000000000d03d6ab"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68b1b531000000003001e777",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1756476721,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31io58v9thg6g5ou62jo9gqmi04u0t5o?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "惜音",
+                    "red_id": "5042112407",
+                    "userid": "63c614f00000000026006ad2"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿[飞吻R]",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68b02b1a00000000300288bc",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1756375834,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31lsu8ig25u505pgnr2q1on3ps2vdd58?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "戏精",
+                    "red_id": "xijing841212",
+                    "userid": "6617d8b40000000007005c79"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "作者，图可以用来临摹吗",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68ac594f000000000a009bb8",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1756125519,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31kochui6306g5q38e5qmr2q3esdbkb0?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "一点饼干🍪",
+                    "red_id": "94389369560",
+                    "userid": "68687175000000001b018b43"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "第一张好绝",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68ac3f85000000002603fdd1",
+                "like_count": 1,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1756118917,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31lil72175m605q5ass7mc7l3rmemoqo?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "绘梨",
+                    "red_id": "94301347945",
+                    "userid": "68aae70f0000000019021ea3"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 2,
+                "content": "看，作者[偷笑R]",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68ac2a17000000003000f7f6",
+                "like_count": 0,
+                "liked": false,
+                "media_source_type": 0,
+                "note_id": "680b9380000000001d023c95",
+                "pictures": [
+                    {
+                        "box_h": 160,
+                        "box_w": 120,
+                        "file_id": "",
+                        "height": 1252,
+                        "meme_package": {
+                            "height": 1080,
+                            "image_url": "http://sns-img-qc.xhscdn.com/comment/1040g2h031ljqc8j8ku6g5puiqkq3904vsji14i8?imageView2/2/h/1080/format/webp",
+                            "width": 810
+                        },
+                        "origin_url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031ljqc8j8ku6g5puiqkq3904vsji14i8?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=250c12cb001ab99a7ebf364b580bf404&t=68ecf25f",
+                        "url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031ljqc8j8ku6g5puiqkq3904vsji14i8?imageView2/2/w/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=250c12cb001ab99a7ebf364b580bf404&t=68ecf25f",
+                        "width": 939
+                    }
+                ],
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1756113433,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mnu5hf6ku6g5puiqkq3904v6628mq8?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "^泠冰冰的朋友",
+                    "red_id": "26759084244",
+                    "userid": "67d2d534000000000d00809f"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68aabd81000000003000879b",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1756020097,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mmltoi74s605o4am8t09dsnrgrnkqg?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "^小鱼^",
+                    "red_id": "4283516284",
+                    "userid": "608ab23a000000000100b797"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼貌拿取，谢谢做主。[飞吻R]",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a889ce0000000030014e74",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755875791,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31l6ud4ohkq6g5o0afj608re0e4q2auo?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "风辞金牌助理悸晥渔",
+                    "red_id": "4950913604",
+                    "userid": "600a7ccc0000000001006dc0"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a8867100000000300104ea",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755874929,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31lg8k2bd4s6g5pefdc4h3ktcslbe9n8?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "双木鱼儿",
+                    "red_id": "10592508698",
+                    "userid": "65cf6b09000000000401d3ac"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿，已三连",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a55e6800000000260359b8",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755668073,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31jv4nlqvj45g5p7j3t314tma3q80ubo?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "喜灰.沐霖",
+                    "red_id": "8682477859",
+                    "userid": "64f31f4600000000040276ca"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿[飞吻R]",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a40210000000003001c1b5",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755578897,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n7e15tq6m5g5ogpfpv8com09jale60?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "椰果🦋",
+                    "red_id": "1456514821",
+                    "userid": "62197e7e00000000210262c0"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "false"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a3d05e0000000030016446",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755566175,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mgrikpmkq005q04dl52ns9fleivvro?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "林婉蝶",
+                    "red_id": "95390581465",
+                    "userid": "68046d4a000000000a03f12f"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 2,
+                "content": "",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a31ba20000000030007ecf",
+                "like_count": 0,
+                "liked": false,
+                "media_source_type": 0,
+                "note_id": "680b9380000000001d023c95",
+                "pictures": [
+                    {
+                        "box_h": 120,
+                        "box_w": 160,
+                        "file_id": "",
+                        "height": 3120,
+                        "meme_package": {
+                            "height": 810,
+                            "image_url": "http://sns-img-qc.xhscdn.com/comment/1040g2h031lavbprh4q6g5otg0on9i1um67k0feg?imageView2/2/w/1080/format/webp",
+                            "width": 1080
+                        },
+                        "origin_url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lavbprh4q6g5otg0on9i1um67k0feg?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=ea463e803a59ad5e7a2df1ec52541f76&t=68ecf25f",
+                        "url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lavbprh4q6g5otg0on9i1um67k0feg?imageView2/2/h/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=ea463e803a59ad5e7a2df1ec52541f76&t=68ecf25f",
+                        "width": 4160
+                    }
+                ],
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755519908,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/63b0062e00000000260107d6.jpg?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "斯文-Sun😋",
+                    "red_id": "3884835620",
+                    "userid": "63b0062e00000000260107d6"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "拿图吱一声",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a2cf0f0000000026038811",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755500304,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ncg5vsu584g5q13aqminn22uh8j1n0?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "晓叶兮",
+                    "red_id": "95066430732",
+                    "userid": "682356ad000000000a03dc42"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68a17420000000003002b36e",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1755411488,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31l9bm7eulo6g5o0va5i0bh5hqef6qp8?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "风之.铃心",
+                    "red_id": "1184007300y",
+                    "userid": "601f5164000000000101c4b1"
+                }
+            }
+        ],
+        "current_sort_strategy": "default",
+        "cursor": "68a17420000000003002b36e",
+        "has_more": true,
+        "page_context": "",
+        "user_id": "5d4587b7000000001202714e"
+    }
+}

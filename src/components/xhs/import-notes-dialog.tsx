@@ -6,7 +6,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Upload } from 'lucide-react';
-import { CodeBlock } from '@/components/ai-elements/code-block';
 
 interface ImportNotesDialogProps {
   open: boolean;
@@ -23,7 +22,6 @@ export function ImportNotesDialog({ open, onOpenChange, onImported }: ImportNote
   const [fileName, setFileName] = useState<string>('');
   const [validCount, setValidCount] = useState<number>(0);
   const [estimatePoints, setEstimatePoints] = useState<number>(0);
-  const [previewJson, setPreviewJson] = useState<string>('');
   const [links, setLinks] = useState<string[]>([]);
 
   const handleChooseFile = () => fileInputRef.current?.click();
@@ -55,7 +53,6 @@ export function ImportNotesDialog({ open, onOpenChange, onImported }: ImportNote
       import('@/app/[locale]/(protected)/xhs/searchnote/single_note/live.json').then((m) => ({ name: 'live.json', json: m.default })).catch(() => ({ name: 'live.json', json: { error: 'missing' } })),
     ]);
     const payloads = [note, video, live];
-    setPreviewJson(JSON.stringify({ files: payloads }, null, 2));
     onImported(links, payloads);
     onOpenChange(false);
   };
@@ -87,9 +84,7 @@ export function ImportNotesDialog({ open, onOpenChange, onImported }: ImportNote
             <span>{t('creditsEstimate', { points: estimatePoints })}</span>
           </div>
 
-          {previewJson && (
-            <CodeBlock code={previewJson} language="json" />
-          )}
+          {/* 移除预览 JSON 的展示，导入后直接交给页面渲染列表 */}
         </div>
 
         <DialogFooter>

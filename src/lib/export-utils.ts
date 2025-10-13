@@ -155,12 +155,15 @@ function getFileExtension(url: string, defaultExt: string = 'jpg'): string {
  * 下载文件并返回Blob（带超时和重试）
  */
 async function downloadFileAsBlob(url: string, retries: number = 2): Promise<Blob | null> {
+  // 通过本地代理规避 CORS/Referer/混合内容限制
+  const encoded = encodeURIComponent(url)
+  const safeUrl = `/api/proxy?url=${encoded}`
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
       
-      const response = await fetch(url, {
+      const response = await fetch(safeUrl, {
         signal: controller.signal,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -263,7 +266,7 @@ export async function downloadImagesAndText(data: SearchResult[], filename: stri
         type: 'image' | 'video' | 'live_photo';
       }> = [];
 
-      // 收集images_list
+      // 收集images_list（通过代理）
       if (item.images_list && item.images_list.length > 0) {
         item.images_list.forEach((image, i) => {
           if (image.url) {
@@ -279,23 +282,25 @@ export async function downloadImagesAndText(data: SearchResult[], filename: stri
 
       // 收集video_list
       if (item.video_list && item.video_list.length > 0) {
+        // 下载全部可用视频流
         item.video_list.forEach((video, i) => {
           if (video.master_url) {
-            const extension = getFileExtension(video.master_url, 'mp4');
+            const extension = 'mp4';
             filesToDownload.push({
               url: video.master_url,
               filename: `video_${i + 1}.${extension}`,
               type: 'video'
             });
           }
-        });
+        }); 
       }
 
       // 收集live_photo_list
       if (item.live_photo_list && item.live_photo_list.length > 0) {
+        // 下载全部可用 live 流
         item.live_photo_list.forEach((livePhoto, i) => {
           if (livePhoto.url) {
-            const extension = getFileExtension(livePhoto.url, 'mp4');
+            const extension = 'mp4';
             filesToDownload.push({
               url: livePhoto.url,
               filename: `${title}_live_${i + 1}.${extension}`,
@@ -306,7 +311,7 @@ export async function downloadImagesAndText(data: SearchResult[], filename: stri
       }
 
       // 限制每个笔记的文件数量（避免过大）
-      const maxFilesPerNote = 10;
+      const maxFilesPerNote = 20;
       const limitedFiles = filesToDownload.slice(0, maxFilesPerNote);
       
       // 使用并发限制下载

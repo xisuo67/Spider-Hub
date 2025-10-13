@@ -173,8 +173,8 @@ export default function XhsSearchNotePage() {
           // 单条笔记，加载单条笔记数据
           const singleNoteData = await loadSingleNoteData();
           if (singleNoteData) {
-            // 将单条笔记数据转换为SearchResult格式
-            mockResults = [transformSingleNoteToSearchResult(singleNoteData)];
+            // 将单条笔记数据转换为SearchResult[] 格式
+            mockResults = transformSingleNoteToSearchResult(singleNoteData);
           } else {
             // 如果加载失败，使用默认mock数据
             mockResults = await loadMockData();
@@ -186,11 +186,11 @@ export default function XhsSearchNotePage() {
         
         if (page === 1) {
           // 第一页，替换所有数据
-          setSearchResults(mockResults);
+          setSearchResults(mockResults as SearchResult[]);
           setCurrentPage(1);
         } else {
           // 后续页面，追加数据
-          setSearchResults(prev => [...prev, ...mockResults]);
+          setSearchResults(prev => [...prev, ...(mockResults as SearchResult[])]);
           setCurrentPage(page);
         }
         
@@ -283,9 +283,9 @@ export default function XhsSearchNotePage() {
                 const note = await import('@/app/[locale]/(protected)/xhs/searchnote/single_note/note.json').then((m) => m.default).catch(() => null);
                 const video = await import('@/app/[locale]/(protected)/xhs/searchnote/single_note/video.json').then((m) => m.default).catch(() => null);
                 const live = await import('@/app/[locale]/(protected)/xhs/searchnote/single_note/live.json').then((m) => m.default).catch(() => null);
-                if (note) results.push(transformSingleNoteToSearchResult(note));
-                if (video) results.push(transformSingleNoteToSearchResult(video));
-                if (live) results.push(transformSingleNoteToSearchResult(live));
+                if (note) results.push(...transformSingleNoteToSearchResult(note));
+                if (video) results.push(...transformSingleNoteToSearchResult(video));
+                if (live) results.push(...transformSingleNoteToSearchResult(live));
               } catch {}
               if (results.length > 0) {
                 setSearchResults(results);

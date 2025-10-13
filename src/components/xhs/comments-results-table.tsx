@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
-import { CustomPagination } from './custom-pagination';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -174,10 +173,7 @@ export function CommentsResultsTable({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 20,
-  });
+  // 无分页
 
   const table = useReactTable({
     data,
@@ -187,19 +183,17 @@ export function CommentsResultsTable({
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination,
+      // no pagination state
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    manualPagination: true,
+    // no manual pagination
   });
 
   if (loading) {
@@ -330,14 +324,7 @@ export function CommentsResultsTable({
         </Table>
       </div>
 
-      <CustomPagination
-        hasMore={hasMore}
-        loading={loading}
-        onNextPage={onNextPage}
-        onPrevPage={onPrevPage}
-        currentPage={currentPage}
-        canGoBack={currentPage > 1}
-      />
+      {/* pagination removed for comments list */}
     </div>
   );
 }
