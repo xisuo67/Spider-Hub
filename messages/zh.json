@@ -1251,6 +1251,34 @@
       "start": "开始",
       "confirmTitle": "确认采集规则",
       "confirmContent": "一次请求消耗2积分，一次请求一页，一页20条评论数据（仅根评论）。继续吗？"
+    },
+    "CommentList": {
+      "title": "评论列表",
+      "user": "用户",
+      "account": "账号",
+      "content": "评论内容",
+      "pictures": "回复图片",
+      "time": "评论时间",
+      "noteLink": "笔记链接",
+      "likes": "点赞",
+      "replies": "回复",
+      "noResults": "暂无评论",
+      "selectAll": "全选",
+      "selectedCount": "已选择 {count} 条",
+      "bulkActions": "批量操作",
+      "exportCSV": "导出CSV",
+      "downloadDetails": "下载详细数据",
+      "downloadImages": "下载资源",
+      "exporting": "导出中...",
+      "exportingCSV": "正在导出 {count} 条评论的CSV...",
+      "downloadingDetails": "正在下载 {count} 条评论详情...",
+      "downloadingImages": "正在下载 {count} 条评论资源...",
+      "exportCSVTooltip": "将选中的评论导出为CSV",
+      "downloadDetailsTooltip": "下载选中评论的JSON详情",
+      "downloadImagesTooltip": "下载选中评论的图片与文本",
+      "exportFailed": "导出失败，请重试",
+      "previewTitle": "图片预览",
+      "previewClose": "关闭"
     }
   }
 }

@@ -11,6 +11,8 @@ import { CommentSettingsDialog } from '@/components/xhs/comment-settings-dialog'
 import { SearchResultsTable, SearchResult } from '@/components/xhs/search-results-table';
 import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
 import { CommentsResultsTable, CommentResult, useCommentsColumns } from '@/components/xhs/comments-results-table';
+import { CommentsTable, type CommentListItem } from '@/components/xhs/comments-table';
+import { loadMockComments, transformWebPageToComments } from '@/lib/load-comments';
 import { Skeleton } from '@/components/ui/skeleton';
 import { loadMockData } from '@/lib/mock-data-transformer';
 import { loadSingleNoteData, transformSingleNoteToSearchResult } from '@/lib/single-note-transformer';
@@ -133,6 +135,7 @@ export default function XhsSearchNotePage() {
   const [activeTab, setActiveTab] = useState('note-search');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [commentResults, setCommentResults] = useState<CommentResult[]>([]);
+  const [commentList, setCommentList] = useState<CommentListItem[]>([]);
   const [hasMore, setHasMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [cursor, setCursor] = useState<string | null>(null);
@@ -210,16 +213,26 @@ export default function XhsSearchNotePage() {
           setSearchUrl(expandedUrl);
         }
         
-        // 模拟加载评论数据
-        const mockCommentResults = await loadMockCommentData();
-        
+        // 模拟加载评论数据（从 webpage1/2.json 读取并转换）
+        const mockCommentResults = await loadMockComments(1);
+        debugger
         if (page === 1) {
           // 第一页，替换所有数据
-          setCommentResults(mockCommentResults);
+          setCommentResults(mockCommentResults as any);
+          setCommentList(mockCommentResults.map((m: any) => ({
+            id: m.id,
+            author: { avatar: m.author.avatar, name: m.author.name, account: (m as any).author.account || '' },
+            content: m.content,
+            pictures: (m as any).pictures || [],
+            publishTime: m.publishTime,
+            noteLink: searchUrl,
+            likes: m.likes,
+            replies: m.replies,
+          })));
           setCurrentPage(1);
         } else {
           // 后续页面，追加数据
-          setCommentResults(prev => [...prev, ...mockCommentResults]);
+          setCommentResults(prev => [...prev, ...mockCommentResults as any]);
           setCurrentPage(page);
         }
       }
@@ -376,21 +389,26 @@ export default function XhsSearchNotePage() {
               </Button>
             </div>
 
-            <CommentsResultsTable 
-              loading={loading} 
-              data={commentResults} 
-              columns={commentColumns}
-              hasMore={hasMore}
-              currentPage={currentPage}
-              onNextPage={handleNextPage}
-              onPrevPage={handlePrevPage}
-            />
+            <CommentsTable data={commentList} />
             <CommentSettingsDialog
               open={commentSettingsOpen}
               onOpenChange={setCommentSettingsOpen}
-              onStart={({ fetchAll, pages }) => {
-                // 这里开始真正的采集：根据 fetchAll/pages 触发 handleSearch 或分页逻辑
-                handleSearch(1, null);
+              onStart={async ({ fetchAll, pages }) => {
+                debugger
+                // 弹窗确认后直接加载 mock 评论
+                const p1 = await loadMockComments(1)
+                const merged = p1
+                setCommentResults(merged as any)
+                setCommentList(merged.map((m: any) => ({
+                  id: m.id,
+                  author: { avatar: m.author.avatar, name: m.author.name, account: m.author.account || '' },
+                  content: m.content,
+                  pictures: m.pictures || [],
+                  publishTime: m.publishTime,
+                  noteLink: searchUrl,
+                  likes: m.likes,
+                  replies: m.replies,
+                })))
               }}
             />
           </TabsContent>

@@ -1250,6 +1250,34 @@
       "start": "Start",
       "confirmTitle": "Confirm Search Rules",
       "confirmContent": "One request costs 2 credits and fetches one page with 20 root comments only. Continue?"
+    },
+    "CommentList": {
+      "title": "Comments",
+      "user": "User",
+      "account": "Account",
+      "content": "Content",
+      "pictures": "Pictures",
+      "time": "Time",
+      "noteLink": "Note Link",
+      "likes": "Likes",
+      "replies": "Replies",
+      "noResults": "No comments",
+      "selectAll": "Select All",
+      "selectedCount": "{count} selected",
+      "bulkActions": "Bulk Actions",
+      "exportCSV": "Export CSV",
+      "downloadDetails": "Download Details",
+      "downloadImages": "Download Resources",
+      "exporting": "Exporting...",
+      "exportingCSV": "Exporting CSV for {count} comments...",
+      "downloadingDetails": "Downloading details for {count} comments...",
+      "downloadingImages": "Downloading resources for {count} comments...",
+      "exportCSVTooltip": "Export selected comments as CSV",
+      "downloadDetailsTooltip": "Download JSON details of selected comments",
+      "downloadImagesTooltip": "Download images and text of selected comments",
+      "exportFailed": "Export failed, please try again",
+      "previewTitle": "Preview",
+      "previewClose": "Close"
     }
   }
 }

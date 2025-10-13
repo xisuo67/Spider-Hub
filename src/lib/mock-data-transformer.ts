@@ -133,10 +133,7 @@ function formatVideoDuration(seconds: number): string {
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-// 去除URL参数
-function removeUrlParams(url: string): string {
-  return url?.split('?')[0] || '';
-}
+import { removeUrlParams } from './url';
 
 // 转换images_list
 function transformImagesList(imagesList: any[]): Array<{ url: string }> {

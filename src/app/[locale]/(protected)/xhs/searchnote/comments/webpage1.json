@@ -1,25 +1,599 @@
 {
     "code": 200,
-    "request_id": "cab178bf-16a8-4deb-b17c-dfd8ecaa2f96",
+    "request_id": "13058da1-13c6-4b35-8861-d516cb37c814",
     "message": "Request successful. This request will incur a charge.",
     "message_zh": "请求成功，本次请求将被计费。",
     "support": "Discord: https://discord.gg/aMEAS8Xsvz",
-    "time": "2025-10-13 05:11:29",
-    "time_stamp": 1760357489,
+    "time": "2025-10-13 05:11:25",
+    "time_stamp": 1760357485,
     "time_zone": "America/Los_Angeles",
     "docs": "https://api.tikhub.io/#/Xiaohongshu-Web-V2-API/fetch_note_comments_api_v1_xiaohongshu_web_v2_fetch_note_comments_get",
     "cache_message": "This request will be cached. You can access the cached result directly using the URL below, valid for 24 hours.",
     "cache_message_zh": "本次请求将被缓存，你可以使用下面的 URL 直接访问缓存结果，有效期为 24 小时。",
-    "cache_url": "https://cache.tikhub.io/api/v1/cache/public/cab178bf-16a8-4deb-b17c-dfd8ecaa2f96?sign=7f4a4d26080118ca255601b365c766fb4a7dfbc414992b8f3eadcb06ff613d28",
+    "cache_url": "https://cache.tikhub.io/api/v1/cache/public/13058da1-13c6-4b35-8861-d516cb37c814?sign=cc2553bb76dde36fe75f6193b0b6eddd5c4a7c77e54ed908e879c7532f848cbe",
     "router": "/api/v1/xiaohongshu/web_v2/fetch_note_comments",
     "params": {
         "note_id": "680b9380000000001d023c95",
-        "cursor": "68c1643c0000000030004e00"
+        "cursor": ""
     },
     "data": {
+        "all_sort_strategies": [
+            {
+                "optional_name": "按默认",
+                "suffix_name": "",
+                "type": "default"
+            },
+            {
+                "optional_name": "按最新",
+                "suffix_name": "最新",
+                "type": "latest_v2"
+            }
+        ],
         "comment_count": 217,
         "comment_count_l1": 188,
         "comments": [
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "求图一",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "680cf5860000000004016399",
+                "like_count": 6,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 130,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 23,
+                "sub_comment_cursor": "{\"cursor\":\"6817912d000000000702a49e\",\"index\":1}",
+                "sub_comments": [
+                    {
+                        "at_users": [],
+                        "biz_label": {
+                            "group_invite": "false",
+                            "product_review": false,
+                            "rich_text": "unknown"
+                        },
+                        "collected": false,
+                        "comment_type": 2,
+                        "content": "",
+                        "downvoted": false,
+                        "friend_liked_msg": "",
+                        "hidden": false,
+                        "id": "6817912d000000000702a49e",
+                        "like_count": 16,
+                        "liked": false,
+                        "media_source_type": 0,
+                        "note_id": "680b9380000000001d023c95",
+                        "pictures": [
+                            {
+                                "box_h": 120,
+                                "box_w": 120,
+                                "file_id": "",
+                                "height": 1017,
+                                "origin_url": "https://sns-note-i6.xhscdn.com/comment/1040g2h031h2mmuaijq505na5gurkksae455qpmo?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=a96ad60e2b456b5f44cc49ce4c206d2a&t=68ecf1b5",
+                                "url": "https://sns-note-i6.xhscdn.com/comment/1040g2h031h2mmuaijq505na5gurkksae455qpmo?imageView2/2/w/360/h/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=a96ad60e2b456b5f44cc49ce4c206d2a&t=68ecf1b5",
+                                "width": 1017
+                            }
+                        ],
+                        "score": -36,
+                        "show_tags": [],
+                        "show_tags_v2": [
+                            {
+                                "pos": "post_name",
+                                "style_id": "red",
+                                "text": "作者",
+                                "type": "is_author"
+                            }
+                        ],
+                        "show_type": "common",
+                        "status": 0,
+                        "target_comment": {
+                            "id": "680cf5860000000004016399",
+                            "status": 0,
+                            "user": {
+                                "additional_tags": {},
+                                "ai_agent": false,
+                                "current_user": "false",
+                                "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo30vd83i565q5g5nro3l60bijbbq10u38?imageView2/2/w/120/format/jpg",
+                                "level": {
+                                    "image": ""
+                                },
+                                "nickname": "温眠",
+                                "red_id": "Eliauk9211",
+                                "userid": "5f781d4c000000000101ca6b"
+                            }
+                        },
+                        "text_language_code": "zh",
+                        "time": 1746374958,
+                        "user": {
+                            "additional_tags": {},
+                            "ai_agent": false,
+                            "current_user": "false",
+                            "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n1eg42hmm605na5gurkksaeskippd8?imageView2/2/w/120/format/jpg",
+                            "level": {
+                                "image": ""
+                            },
+                            "nickname": "讨厌香菜",
+                            "red_id": "453640417",
+                            "userid": "5d4587b7000000001202714e"
+                        }
+                    }
+                ],
+                "text_language_code": "zh",
+                "time": 1745679750,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo30vd83i565q5g5nro3l60bijbbq10u38?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "温眠",
+                    "red_id": "Eliauk9211",
+                    "userid": "5f781d4c000000000101ca6b"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 2,
+                "content": "我不行了[笑哭R]",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "6886fad80000000009016f5c",
+                "like_count": 1,
+                "liked": false,
+                "media_source_type": 0,
+                "note_id": "680b9380000000001d023c95",
+                "pictures": [
+                    {
+                        "box_h": 160,
+                        "box_w": 120,
+                        "file_id": "",
+                        "height": 2800,
+                        "origin_url": "https://sns-note-i6.xhscdn.com/comment/1040g2h031kfgbn562o5g5o8q38rgbhi6i6gl1fg?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=deac759b3d368de585f3416e531a74d2&t=68ecf1b5",
+                        "url": "https://sns-note-i6.xhscdn.com/comment/1040g2h031kfgbn562o5g5o8q38rgbhi6i6gl1fg?imageView2/1/w/360/h/480/format/heif/q/46&ap=4&sc=CMT_PRV&sign=deac759b3d368de585f3416e531a74d2&t=68ecf1b5",
+                        "width": 1260
+                    }
+                ],
+                "score": 8,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 3,
+                "sub_comment_cursor": "{\"cursor\":\"688718ac0000000013035624\",\"index\":1}",
+                "sub_comments": [
+                    {
+                        "at_users": [],
+                        "biz_label": {
+                            "group_invite": "false",
+                            "product_review": false,
+                            "rich_text": "unknown"
+                        },
+                        "collected": false,
+                        "comment_type": 0,
+                        "content": "哎哟，小爷找到你了",
+                        "downvoted": false,
+                        "friend_liked_msg": "",
+                        "hidden": false,
+                        "id": "688718ac0000000013035624",
+                        "like_count": 1,
+                        "liked": false,
+                        "note_id": "680b9380000000001d023c95",
+                        "score": 0,
+                        "show_tags": [],
+                        "show_tags_v2": [],
+                        "show_type": "common",
+                        "status": 0,
+                        "target_comment": {
+                            "id": "6886fad80000000009016f5c",
+                            "status": 0,
+                            "user": {
+                                "additional_tags": {},
+                                "ai_agent": false,
+                                "current_user": "false",
+                                "images": "https://sns-avatar-qc.xhscdn.com/avatar/cd255d0e201935e0d852bd371f18c198.jpg?imageView2/2/w/120/format/jpg",
+                                "level": {
+                                    "image": ""
+                                },
+                                "nickname": "小红薯611B82D4",
+                                "red_id": "2992749493",
+                                "userid": "611a1a37000000000101c646"
+                            }
+                        },
+                        "text_language_code": "zh",
+                        "time": 1753684140,
+                        "user": {
+                            "additional_tags": {},
+                            "ai_agent": false,
+                            "current_user": "false",
+                            "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31kjpk92o48e05ohuhfc8cosh505i5q8?imageView2/2/w/120/format/jpg",
+                            "level": {
+                                "image": ""
+                            },
+                            "nickname": "尸体NO.1",
+                            "red_id": "6905537395",
+                            "userid": "623e8bd80000000021026391"
+                        }
+                    }
+                ],
+                "text_language_code": "zh",
+                "time": 1753676506,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/cd255d0e201935e0d852bd371f18c198.jpg?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "小红薯611B82D4",
+                    "red_id": "2992749493",
+                    "userid": "611a1a37000000000101c646"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "宝宝求图一句话话",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "6899d986000000002b01c954",
+                "like_count": 1,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 3,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 1,
+                "sub_comment_cursor": "{\"cursor\":\"6899d999000000002b02dfe8\",\"index\":1}",
+                "sub_comments": [
+                    {
+                        "at_users": [],
+                        "biz_label": {
+                            "group_invite": "false",
+                            "product_review": false,
+                            "rich_text": "unknown"
+                        },
+                        "collected": false,
+                        "comment_type": 0,
+                        "content": "拿去画画",
+                        "downvoted": false,
+                        "friend_liked_msg": "",
+                        "hidden": false,
+                        "id": "6899d999000000002b02dfe8",
+                        "like_count": 0,
+                        "liked": false,
+                        "note_id": "680b9380000000001d023c95",
+                        "score": 0,
+                        "show_tags": [],
+                        "show_tags_v2": [],
+                        "show_type": "common",
+                        "status": 0,
+                        "target_comment": {
+                            "id": "6899d986000000002b01c954",
+                            "status": 0,
+                            "user": {
+                                "additional_tags": {},
+                                "ai_agent": false,
+                                "current_user": "false",
+                                "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31kv06j47iu705ok289tocr1m186uhmo?imageView2/2/w/120/format/jpg",
+                                "level": {
+                                    "image": ""
+                                },
+                                "nickname": "^ 🍀皖鱼~🐬",
+                                "red_id": "5650453207",
+                                "userid": "6282427b0000000021026c36"
+                            }
+                        },
+                        "text_language_code": "zh",
+                        "time": 1754913177,
+                        "user": {
+                            "additional_tags": {},
+                            "ai_agent": false,
+                            "current_user": "false",
+                            "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31kv06j47iu705ok289tocr1m186uhmo?imageView2/2/w/120/format/jpg",
+                            "level": {
+                                "image": ""
+                            },
+                            "nickname": "^ 🍀皖鱼~🐬",
+                            "red_id": "5650453207",
+                            "userid": "6282427b0000000021026c36"
+                        }
+                    }
+                ],
+                "text_language_code": "zh",
+                "time": 1754913158,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31kv06j47iu705ok289tocr1m186uhmo?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "^ 🍀皖鱼~🐬",
+                    "red_id": "5650453207",
+                    "userid": "6282427b0000000021026c36"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68ebacb00000000039024786",
+                "ip_location": "黑龙江",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1760275632,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ncn1heakq6g5pffja8h9sk1j9laj00?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "酒一",
+                    "red_id": "42665030586",
+                    "userid": "65ef9a91000000000500f281"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68eb5922000000003800e4fa",
+                "ip_location": "广东",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1760254242,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n4eh248mg205pl5llk7cf5qrhb9jgo?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "皓采永恒",
+                    "red_id": "94106167980",
+                    "userid": "66a5ad68000000001d023cba"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼[微笑R]",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68eb2bb60000000037026b27",
+                "ip_location": "河北",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1760242614,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31nhbapqh6g6g5pftg4sipu09sbv2hs8?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "半桃💞",
+                    "red_id": "42738139377",
+                    "userid": "65fd8139000000000b00f809"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "求图⑦[哭惹R][哭惹R][哭惹R][飞吻R][飞吻R][飞吻R]",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68e7af55000000003803028b",
+                "ip_location": "北京",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1760014165,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n4frgsolm605nuhsc3g9bpcu8ssp1g?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "兰芷",
+                    "red_id": "1048822300",
+                    "userid": "5fd1e307000000000100af2c"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68e7aad30000000039002f5c",
+                "ip_location": "浙江",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1760013012,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ndtrlu4mg6g5nt6non08jjqpn63dcg?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "芋源祁鹿",
+                    "red_id": "1061802575",
+                    "userid": "5fa6be2e0000000001004e7a"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "礼拿",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68e5cd3d00000000380164e6",
+                "ip_location": "广东",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1759890749,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31jbdp475io6g5n0r5f4hd1tfrkf8ni8?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "伤曦",
+                    "red_id": "417915470",
+                    "userid": "5c1b2bc900000000050287af"
+                }
+            },
             {
                 "at_users": [],
                 "biz_label": {
@@ -33,7 +607,8 @@
                 "downvoted": false,
                 "friend_liked_msg": "",
                 "hidden": false,
-                "id": "68b3eb05000000000902bafd",
+                "id": "68e3706d000000003902435a",
+                "ip_location": "广东",
                 "like_count": 0,
                 "liked": false,
                 "media_source_type": 1,
@@ -43,15 +618,15 @@
                         "box_h": 120,
                         "box_w": 120,
                         "file_id": "",
-                        "height": 326,
+                        "height": 640,
                         "meme_package": {
                             "height": 0,
-                            "meme_id": "137024201614238697",
+                            "meme_id": "137137827351055573",
                             "width": 0
                         },
-                        "origin_url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lrbos665i1g5q466nujfllbhdi1b80?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=d92fac9528127cf364a6da71a5cfe39b&t=68ecf25f",
-                        "url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lrbos665i1g5q466nujfllbhdi1b80?imageView2/2/h/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=d92fac9528127cf364a6da71a5cfe39b&t=68ecf25f",
-                        "width": 352
+                        "origin_url": "https://sns-note-i6.xhscdn.com/comment/1040g2h031n9j2ojp523g5o054a0gbnnvdc0khlo?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=492781ae38c4583ccfe58d585495ff7b&t=68ecf1b5",
+                        "url": "https://sns-note-i6.xhscdn.com/comment/1040g2h031n9j2ojp523g5o054a0gbnnvdc0khlo?imageView2/2/w/360/h/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=492781ae38c4583ccfe58d585495ff7b&t=68ecf1b5",
+                        "width": 640
                     }
                 ],
                 "score": 0,
@@ -62,19 +637,19 @@
                 "sub_comment_count": 0,
                 "sub_comments": [],
                 "text_language_code": "zh",
-                "time": 1756621575,
+                "time": 1759735918,
                 "track_id": "interaction-service.local",
                 "user": {
                     "additional_tags": {},
                     "ai_agent": false,
                     "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ndg8f505m605q466nujfllbjnn2olg?imageView2/2/w/120/format/jpg",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo319eif8mdlk5g5o054a0gbnnvl4bvh90?imageView2/2/w/120/format/jpg",
                     "level": {
                         "image": ""
                     },
-                    "nickname": "迁雪の🌷",
-                    "red_id": "49614280682",
-                    "userid": "688635fd000000000d03d6ab"
+                    "nickname": "🌺海蓝之星🌺(学生 狮子座 女)",
+                    "red_id": "4956872972",
+                    "userid": "60052281000000000101deff"
                 }
             },
             {
@@ -86,11 +661,12 @@
                 },
                 "collected": false,
                 "comment_type": 0,
-                "content": "礼拿",
+                "content": "求图",
                 "downvoted": false,
                 "friend_liked_msg": "",
                 "hidden": false,
-                "id": "68b1b531000000003001e777",
+                "id": "68e265fd0000000033024846",
+                "ip_location": "山东",
                 "like_count": 0,
                 "liked": false,
                 "note_id": "680b9380000000001d023c95",
@@ -102,19 +678,60 @@
                 "sub_comment_count": 0,
                 "sub_comments": [],
                 "text_language_code": "zh",
-                "time": 1756476721,
+                "time": 1759667709,
                 "track_id": "interaction-service.local",
                 "user": {
                     "additional_tags": {},
                     "ai_agent": false,
                     "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31io58v9thg6g5ou62jo9gqmi04u0t5o?imageView2/2/w/120/format/jpg",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mhnt8805i505q30uk0nh8i9elil77g?imageView2/2/w/120/format/jpg",
                     "level": {
                         "image": ""
                     },
-                    "nickname": "惜音",
-                    "red_id": "5042112407",
-                    "userid": "63c614f00000000026006ad2"
+                    "nickname": "清逸",
+                    "red_id": "95542374284",
+                    "userid": "6860f501000000001e00a249"
+                }
+            },
+            {
+                "at_users": [],
+                "biz_label": {
+                    "group_invite": "false",
+                    "product_review": false,
+                    "rich_text": "unknown"
+                },
+                "collected": false,
+                "comment_type": 0,
+                "content": "求图一",
+                "downvoted": false,
+                "friend_liked_msg": "",
+                "hidden": false,
+                "id": "68e0abbb00000000390312b5",
+                "ip_location": "湖南",
+                "like_count": 0,
+                "liked": false,
+                "note_id": "680b9380000000001d023c95",
+                "score": 0,
+                "show_tags": [],
+                "show_tags_v2": [],
+                "show_type": "common",
+                "status": 0,
+                "sub_comment_count": 0,
+                "sub_comments": [],
+                "text_language_code": "zh",
+                "time": 1759554492,
+                "track_id": "interaction-service.local",
+                "user": {
+                    "additional_tags": {},
+                    "ai_agent": false,
+                    "current_user": "false",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n89b5134q605ov6t639iatiolmcim0?imageView2/2/w/120/format/jpg",
+                    "level": {
+                        "image": ""
+                    },
+                    "nickname": "筱晚",
+                    "red_id": "6100519273",
+                    "userid": "63e6e9860000000026012bb2"
                 }
             },
             {
@@ -130,7 +747,8 @@
                 "downvoted": false,
                 "friend_liked_msg": "",
                 "hidden": false,
-                "id": "68b02b1a00000000300288bc",
+                "id": "68cf95c40000000009038b2b",
+                "ip_location": "广西",
                 "like_count": 0,
                 "liked": false,
                 "note_id": "680b9380000000001d023c95",
@@ -142,19 +760,19 @@
                 "sub_comment_count": 0,
                 "sub_comments": [],
                 "text_language_code": "zh",
-                "time": 1756375834,
+                "time": 1758434757,
                 "track_id": "interaction-service.local",
                 "user": {
                     "additional_tags": {},
                     "ai_agent": false,
                     "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31lsu8ig25u505pgnr2q1on3ps2vdd58?imageView2/2/w/120/format/jpg",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mljt8usli005om9bku0g0rtct762v8?imageView2/2/w/120/format/jpg",
                     "level": {
                         "image": ""
                     },
-                    "nickname": "戏精",
-                    "red_id": "xijing841212",
-                    "userid": "6617d8b40000000007005c79"
+                    "nickname": "ID.虞欣晗",
+                    "red_id": "2960926648",
+                    "userid": "62c95d3c000000000200037d"
                 }
             },
             {
@@ -166,11 +784,12 @@
                 },
                 "collected": false,
                 "comment_type": 0,
-                "content": "作者，图可以用来临摹吗",
+                "content": "跟着我跟祝你谢[玫瑰R][合十R]",
                 "downvoted": false,
                 "friend_liked_msg": "",
                 "hidden": false,
-                "id": "68ac594f000000000a009bb8",
+                "id": "68c6961a000000000a00d695",
+                "ip_location": "辽宁",
                 "like_count": 0,
                 "liked": false,
                 "note_id": "680b9380000000001d023c95",
@@ -182,116 +801,19 @@
                 "sub_comment_count": 0,
                 "sub_comments": [],
                 "text_language_code": "zh",
-                "time": 1756125519,
+                "time": 1757845019,
                 "track_id": "interaction-service.local",
                 "user": {
                     "additional_tags": {},
                     "ai_agent": false,
                     "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31kochui6306g5q38e5qmr2q3esdbkb0?imageView2/2/w/120/format/jpg",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31nj1db9kmm605nn2uaeg8tuu081endo?imageView2/2/w/120/format/jpg",
                     "level": {
                         "image": ""
                     },
-                    "nickname": "一点饼干🍪",
-                    "red_id": "94389369560",
-                    "userid": "68687175000000001b018b43"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "第一张好绝",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68ac3f85000000002603fdd1",
-                "like_count": 1,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1756118917,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31lil72175m605q5ass7mc7l3rmemoqo?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "绘梨",
-                    "red_id": "94301347945",
-                    "userid": "68aae70f0000000019021ea3"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 2,
-                "content": "看，作者[偷笑R]",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68ac2a17000000003000f7f6",
-                "like_count": 0,
-                "liked": false,
-                "media_source_type": 0,
-                "note_id": "680b9380000000001d023c95",
-                "pictures": [
-                    {
-                        "box_h": 160,
-                        "box_w": 120,
-                        "file_id": "",
-                        "height": 1252,
-                        "meme_package": {
-                            "height": 1080,
-                            "image_url": "http://sns-img-qc.xhscdn.com/comment/1040g2h031ljqc8j8ku6g5puiqkq3904vsji14i8?imageView2/2/h/1080/format/webp",
-                            "width": 810
-                        },
-                        "origin_url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031ljqc8j8ku6g5puiqkq3904vsji14i8?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=250c12cb001ab99a7ebf364b580bf404&t=68ecf25f",
-                        "url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031ljqc8j8ku6g5puiqkq3904vsji14i8?imageView2/2/w/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=250c12cb001ab99a7ebf364b580bf404&t=68ecf25f",
-                        "width": 939
-                    }
-                ],
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1756113433,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mnu5hf6ku6g5puiqkq3904v6628mq8?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "^泠冰冰的朋友",
-                    "red_id": "26759084244",
-                    "userid": "67d2d534000000000d00809f"
+                    "nickname": "🦋快乐小婉蕾🍂（小号）",
+                    "red_id": "712368441",
+                    "userid": "5ee2f29d00000000010077de"
                 }
             },
             {
@@ -307,7 +829,7 @@
                 "downvoted": false,
                 "friend_liked_msg": "",
                 "hidden": false,
-                "id": "68aabd81000000003000879b",
+                "id": "68c1643c0000000030004e00",
                 "like_count": 0,
                 "liked": false,
                 "note_id": "680b9380000000001d023c95",
@@ -319,361 +841,24 @@
                 "sub_comment_count": 0,
                 "sub_comments": [],
                 "text_language_code": "zh",
-                "time": 1756020097,
+                "time": 1757504572,
                 "track_id": "interaction-service.local",
                 "user": {
                     "additional_tags": {},
                     "ai_agent": false,
                     "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mmltoi74s605o4am8t09dsnrgrnkqg?imageView2/2/w/120/format/jpg",
+                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mt7v280ku6g5pv3ugcjjln9i2mr6ig?imageView2/2/w/120/format/jpg",
                     "level": {
                         "image": ""
                     },
-                    "nickname": "^小鱼^",
-                    "red_id": "4283516284",
-                    "userid": "608ab23a000000000100b797"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "礼貌拿取，谢谢做主。[飞吻R]",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a889ce0000000030014e74",
-                "like_count": 0,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755875791,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31l6ud4ohkq6g5o0afj608re0e4q2auo?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "风辞金牌助理悸晥渔",
-                    "red_id": "4950913604",
-                    "userid": "600a7ccc0000000001006dc0"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "礼拿",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a8867100000000300104ea",
-                "like_count": 0,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755874929,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31lg8k2bd4s6g5pefdc4h3ktcslbe9n8?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "双木鱼儿",
-                    "red_id": "10592508698",
-                    "userid": "65cf6b09000000000401d3ac"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "礼拿，已三连",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a55e6800000000260359b8",
-                "like_count": 0,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755668073,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31jv4nlqvj45g5p7j3t314tma3q80ubo?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "喜灰.沐霖",
-                    "red_id": "8682477859",
-                    "userid": "64f31f4600000000040276ca"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "礼拿[飞吻R]",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a40210000000003001c1b5",
-                "like_count": 0,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755578897,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31n7e15tq6m5g5ogpfpv8com09jale60?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "椰果🦋",
-                    "red_id": "1456514821",
-                    "userid": "62197e7e00000000210262c0"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "false"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "礼拿",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a3d05e0000000030016446",
-                "like_count": 0,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755566175,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mgrikpmkq005q04dl52ns9fleivvro?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "林婉蝶",
-                    "red_id": "95390581465",
-                    "userid": "68046d4a000000000a03f12f"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 2,
-                "content": "",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a31ba20000000030007ecf",
-                "like_count": 0,
-                "liked": false,
-                "media_source_type": 0,
-                "note_id": "680b9380000000001d023c95",
-                "pictures": [
-                    {
-                        "box_h": 120,
-                        "box_w": 160,
-                        "file_id": "",
-                        "height": 3120,
-                        "meme_package": {
-                            "height": 810,
-                            "image_url": "http://sns-img-qc.xhscdn.com/comment/1040g2h031lavbprh4q6g5otg0on9i1um67k0feg?imageView2/2/w/1080/format/webp",
-                            "width": 1080
-                        },
-                        "origin_url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lavbprh4q6g5otg0on9i1um67k0feg?imageView2/2/w/1280/format/heif/q/45&ap=4&sc=CMT_DTL&sign=ea463e803a59ad5e7a2df1ec52541f76&t=68ecf25f",
-                        "url": "https://sns-note-i2.xhscdn.com/comment/1040g2h031lavbprh4q6g5otg0on9i1um67k0feg?imageView2/2/h/360/format/heif/q/46&ap=4&sc=CMT_PRV&sign=ea463e803a59ad5e7a2df1ec52541f76&t=68ecf25f",
-                        "width": 4160
-                    }
-                ],
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755519908,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/63b0062e00000000260107d6.jpg?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "斯文-Sun😋",
-                    "red_id": "3884835620",
-                    "userid": "63b0062e00000000260107d6"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "拿图吱一声",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a2cf0f0000000026038811",
-                "like_count": 0,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755500304,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ncg5vsu584g5q13aqminn22uh8j1n0?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "晓叶兮",
-                    "red_id": "95066430732",
-                    "userid": "682356ad000000000a03dc42"
-                }
-            },
-            {
-                "at_users": [],
-                "biz_label": {
-                    "group_invite": "false",
-                    "product_review": false,
-                    "rich_text": "unknown"
-                },
-                "collected": false,
-                "comment_type": 0,
-                "content": "礼拿",
-                "downvoted": false,
-                "friend_liked_msg": "",
-                "hidden": false,
-                "id": "68a17420000000003002b36e",
-                "like_count": 0,
-                "liked": false,
-                "note_id": "680b9380000000001d023c95",
-                "score": 0,
-                "show_tags": [],
-                "show_tags_v2": [],
-                "show_type": "common",
-                "status": 0,
-                "sub_comment_count": 0,
-                "sub_comments": [],
-                "text_language_code": "zh",
-                "time": 1755411488,
-                "track_id": "interaction-service.local",
-                "user": {
-                    "additional_tags": {},
-                    "ai_agent": false,
-                    "current_user": "false",
-                    "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31l9bm7eulo6g5o0va5i0bh5hqef6qp8?imageView2/2/w/120/format/jpg",
-                    "level": {
-                        "image": ""
-                    },
-                    "nickname": "风之.铃心",
-                    "red_id": "1184007300y",
-                    "userid": "601f5164000000000101c4b1"
+                    "nickname": "沐浴露",
+                    "red_id": "95336013603",
+                    "userid": "67e3f419000000000e01d6e9"
                 }
             }
         ],
         "current_sort_strategy": "default",
-        "cursor": "68a17420000000003002b36e",
+        "cursor": "{\"cursor\":\"68c1643c0000000030004e00\",\"index\":2,\"pageArea\":\"ALL\"}",
         "has_more": true,
         "page_context": "",
         "user_id": "5d4587b7000000001202714e"
