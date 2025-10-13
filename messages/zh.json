@@ -1240,6 +1240,17 @@
       "downloadImagesTooltip": "下载选中数据的所有资源和文本内容到本地文件夹",
       "exporting": "导出中...",
       "exportFailed": "导出失败，请重试"
+    },
+    "CommentSettings": {
+      "title": "搜索设置",
+      "description": "采集规则举例：一次请求消耗2积分，一次请求一页，一页20条评论数据（目前仅采集根评论数据），若有200条评论，则需消耗200/20*2=20积分。具体消耗积分以采集笔记评论数量计算，以上算法仅供参考。",
+      "fetchAll": "是否获取全部评论",
+      "pagesLabel": "采集总页数",
+      "pagesHelper": "评论数据采集总页数",
+      "cancel": "取消",
+      "start": "开始",
+      "confirmTitle": "确认采集规则",
+      "confirmContent": "一次请求消耗2积分，一次请求一页，一页20条评论数据（仅根评论）。继续吗？"
     }
   }
 }

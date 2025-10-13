@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SearchIcon, Upload } from 'lucide-react';
 import { ImportNotesDialog } from '@/components/xhs/import-notes-dialog';
+import { CommentSettingsDialog } from '@/components/xhs/comment-settings-dialog';
 import { SearchResultsTable, SearchResult } from '@/components/xhs/search-results-table';
 import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
 import { CommentsResultsTable, CommentResult, useCommentsColumns } from '@/components/xhs/comments-results-table';
@@ -138,6 +139,7 @@ export default function XhsSearchNotePage() {
   const columns = useSearchNoteColumns();
   const commentColumns = useCommentsColumns();
   const [importOpen, setImportOpen] = useState(false);
+  const [commentSettingsOpen, setCommentSettingsOpen] = useState(false);
 
   const handleSearch = async (page = 1, currentCursor: string | null = null) => {
     if (!searchUrl.trim()) return;
@@ -356,7 +358,7 @@ export default function XhsSearchNotePage() {
                 className="flex-1"
               />
               <Button 
-                onClick={() => handleSearch(1, null)} 
+                onClick={() => setCommentSettingsOpen(true)} 
                 disabled={loading || !searchUrl.trim()}
                 className="bg-red-500 hover:bg-red-600"
               >
@@ -382,6 +384,14 @@ export default function XhsSearchNotePage() {
               currentPage={currentPage}
               onNextPage={handleNextPage}
               onPrevPage={handlePrevPage}
+            />
+            <CommentSettingsDialog
+              open={commentSettingsOpen}
+              onOpenChange={setCommentSettingsOpen}
+              onStart={({ fetchAll, pages }) => {
+                // 这里开始真正的采集：根据 fetchAll/pages 触发 handleSearch 或分页逻辑
+                handleSearch(1, null);
+              }}
             />
           </TabsContent>
         </Tabs>

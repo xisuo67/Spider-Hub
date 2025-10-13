@@ -1239,6 +1239,17 @@
       "downloadImagesTooltip": "Download all resources and text content of selected data to local folder",
       "exporting": "Exporting...",
       "exportFailed": "Export failed, please try again"
+    },
+    "CommentSettings": {
+      "title": "Search Settings",
+      "description": "Example rule: One request costs 2 credits and fetches one page with 20 root comments only. If there are 200 comments, it costs 200/20*2=20 credits. Actual credits depend on the number of comments collected; the above is for reference only.",
+      "fetchAll": "Fetch all comments",
+      "pagesLabel": "Total pages to collect",
+      "pagesHelper": "Number of pages of comments to collect",
+      "cancel": "Cancel",
+      "start": "Start",
+      "confirmTitle": "Confirm Search Rules",
+      "confirmContent": "One request costs 2 credits and fetches one page with 20 root comments only. Continue?"
     }
   }
 }
