@@ -1,12 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import Image from 'next/image';
+import { DataTableBulkActions } from '@/components/data-table/bulk-actions';
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { DownloadIcon, FileSpreadsheetIcon, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { exportToCSV, exportToJSON, formatFilename } from '@/lib/export-utils';
+import JSZip from 'jszip';
 
 export interface CommentListItem {
   id: string
@@ -27,111 +38,465 @@ interface CommentsTableProps {
   data: CommentListItem[]
 }
 
+const columnHelper = createColumnHelper<CommentListItem>()
+
+/**
+ * 导出评论数据为CSV文件
+ */
+async function exportCommentCSV(data: any[], filename: string) {
+  if (data.length === 0) {
+    console.warn('No data to export');
+    return;
+  }
+
+  // 获取所有字段名
+  const headers = Object.keys(data[0]);
+  
+  // 创建CSV内容
+  const csvContent = [
+    // 添加BOM以支持中文
+    '\uFEFF',
+    // 表头
+    headers.join(','),
+    // 数据行
+    ...data.map(row => 
+      headers.map(header => {
+        const value = row[header];
+        // 处理包含逗号、引号或换行符的值
+        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value;
+      }).join(',')
+    )
+  ].join('\n');
+
+  // 创建并下载文件
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * 下载评论的图片和CSV文件，生成zip包（简化结构）
+ */
+async function downloadCommentImagesAndText(comments: CommentListItem[], filename: string = 'comments-content.zip') {
+  if (comments.length === 0) {
+    console.warn('No comments to download');
+    return;
+  }
+
+  const zip = new JSZip();
+  let imageIndex = 1;
+
+  // 1. 创建CSV文件
+  const csvData = comments.map(comment => ({
+    '用户': comment.author.name,
+    '账号': comment.author.account,
+    '内容': comment.content,
+    '发布时间': comment.publishTime,
+    '笔记链接': comment.noteLink,
+    '点赞数': comment.likes.raw,
+    '回复数': comment.replies.raw,
+    '图片数量': comment.pictures.length,
+    '图片URLs': comment.pictures.join('; ')
+  }));
+
+  // 生成CSV内容
+  const headers = Object.keys(csvData[0]);
+  const csvContent = [
+    '\uFEFF', // BOM for Chinese support
+    headers.join(','),
+    ...csvData.map(row => 
+      headers.map(header => {
+        const value = (row as any)[header];
+        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value;
+      }).join(',')
+    )
+  ].join('\n');
+
+  // 添加CSV文件到zip
+  zip.file('comments.csv', csvContent);
+
+  // 2. 下载所有图片到根目录
+  for (const comment of comments) {
+    if (comment.pictures && comment.pictures.length > 0) {
+      for (const imageUrl of comment.pictures) {
+        try {
+          const response = await fetch(imageUrl);
+          if (response.ok) {
+            const blob = await response.blob();
+            const imageFilename = `image_${imageIndex}.${getFileExtension(imageUrl)}`;
+            zip.file(imageFilename, blob);
+            imageIndex++;
+          }
+        } catch (error) {
+          console.error(`Failed to download image ${imageUrl}:`, error);
+        }
+      }
+    }
+  }
+
+  // 生成并下载zip文件
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(zipBlob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * 从URL获取文件扩展名
+ */
+function getFileExtension(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    const pathname = urlObj.pathname;
+    const extension = pathname.split('.').pop();
+    return extension || 'jpg';
+  } catch {
+    return 'jpg';
+  }
+}
+
+interface CommentBulkActionsProps {
+  selectedData: CommentListItem[];
+  onExportCSV: () => void;
+  onDownloadDetails: () => void;
+  onDownloadImages: () => void;
+}
+
+function CommentBulkActions({
+  selectedData,
+  onExportCSV,
+  onDownloadDetails,
+  onDownloadImages
+}: CommentBulkActionsProps) {
+  const t = useTranslations('Xhs.CommentList');
+  const locale = useLocale();
+  const [loading, setLoading] = useState({
+    csv: false,
+    json: false,
+    images: false
+  });
+
+  const handleExportCSV = async () => {
+    if (loading.csv) return;
+    
+    setLoading(prev => ({ ...prev, csv: true }));
+    try {
+      const filename = formatFilename('xhs-comments', 'csv');
+      // 将评论数据转换为CSV格式，使用多语言字段名
+      const csvData = selectedData.map(comment => ({
+        [t('user')]: comment.author.name,
+        [t('account')]: comment.author.account,
+        [t('content')]: comment.content,
+        [t('time')]: comment.publishTime,
+        [t('noteLink')]: comment.noteLink,
+        [t('likes')]: comment.likes.raw,
+        [t('replies')]: comment.replies.raw,
+        [t('pictures')]: comment.pictures.length,
+        [t('pictures') + ' URLs']: comment.pictures.join('; ') // 添加图片URL字段
+      }));
+      
+      // 直接使用简单的CSV导出逻辑
+      await exportCommentCSV(csvData, filename);
+      toast.success(t('exportingCSV', { count: selectedData.length }));
+      onExportCSV();
+    } catch (error) {
+      console.error('CSV export failed:', error);
+      toast.error(t('exportFailed'));
+    } finally {
+      setLoading(prev => ({ ...prev, csv: false }));
+    }
+  };
+
+  const handleDownloadDetails = async () => {
+    if (loading.json) return;
+    
+    setLoading(prev => ({ ...prev, json: true }));
+    try {
+      const filename = formatFilename('xhs-comments-details', 'json');
+      exportToJSON(selectedData as any, filename);
+      toast.success(t('downloadingDetails', { count: selectedData.length }));
+      onDownloadDetails();
+    } catch (error) {
+      console.error('JSON export failed:', error);
+      toast.error(t('exportFailed'));
+    } finally {
+      setLoading(prev => ({ ...prev, json: false }));
+    }
+  };
+
+  const handleDownloadImages = async () => {
+    if (loading.images) return;
+    
+    setLoading(prev => ({ ...prev, images: true }));
+    try {
+      const filename = formatFilename('xhs-comments-content', 'zip');
+      await downloadCommentImagesAndText(selectedData, filename);
+      toast.success(t('downloadingImages', { count: selectedData.length }));
+      onDownloadImages();
+    } catch (error) {
+      console.error('Images export failed:', error);
+      toast.error(t('exportFailed'));
+    } finally {
+      setLoading(prev => ({ ...prev, images: false }));
+    }
+  };
+
+  return (
+    <TooltipProvider>
+      <div className="flex items-center gap-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleExportCSV}
+              disabled={loading.csv || loading.json || loading.images}
+              className="flex items-center gap-2"
+            >
+              {loading.csv ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <FileSpreadsheetIcon className="h-4 w-4" />
+              )}
+              {loading.csv ? t('exporting') : t('exportCSV')}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('exportCSVTooltip')}</p>
+          </TooltipContent>
+        </Tooltip>
+        
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleDownloadDetails}
+              disabled={loading.csv || loading.json || loading.images}
+              className="flex items-center gap-2"
+            >
+              {loading.json ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <DownloadIcon className="h-4 w-4" />
+              )}
+              {loading.json ? t('exporting') : t('downloadDetails')}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('downloadDetailsTooltip')}</p>
+          </TooltipContent>
+        </Tooltip>
+        
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleDownloadImages}
+              disabled={loading.csv || loading.json || loading.images}
+              className="flex items-center gap-2"
+            >
+              {loading.images ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <DownloadIcon className="h-4 w-4" />
+              )}
+              {loading.images ? t('exporting') : t('downloadImages')}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t('downloadImagesTooltip')}</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  );
+}
+
 export function CommentsTable({ data }: CommentsTableProps) {
   const t = useTranslations('Xhs.CommentList')
-  const [selected, setSelected] = useState<Record<string, boolean>>({})
   const [preview, setPreview] = useState<string[] | null>(null)
 
-  const allSelected = data.length > 0 && data.every((d) => selected[d.id])
-  const selectedCount = data.filter((d) => selected[d.id]).length
+  const columns = [
+    columnHelper.display({
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label={t('selectAll')}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label={row.original.id}
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    }),
+    columnHelper.accessor('author', {
+      header: t('user'),
+      cell: ({ row }) => {
+        const author = row.original.author
+        return (
+          <div className="flex items-center gap-3">
+            <img src={author.avatar} alt={author.name} className="h-8 w-8 rounded-full object-cover" />
+            <div className="flex flex-col">
+              <span className="text-sm font-medium">{author.name}</span>
+              <span className="text-xs text-muted-foreground">{author.account}</span>
+            </div>
+          </div>
+        )
+      },
+    }),
+    columnHelper.accessor('content', {
+      header: t('content'),
+      cell: ({ row }) => (
+        <div className="text-sm whitespace-pre-wrap break-words max-w-[520px]">
+          {row.original.content}
+        </div>
+      ),
+    }),
+    columnHelper.accessor('pictures', {
+      header: t('pictures'),
+      cell: ({ row }) => {
+        const pictures = row.original.pictures
+        return pictures && pictures.length > 0 ? (
+          <div className="flex flex-wrap gap-2 max-w-[320px]">
+            {pictures.map((url, idx) => (
+              <button 
+                key={idx} 
+                className="h-14 w-14 overflow-hidden rounded" 
+                onClick={() => setPreview(pictures)}
+              >
+                <img src={url} alt="pic" className="h-full w-full object-cover" />
+              </button>
+            ))}
+          </div>
+        ) : null
+      },
+    }),
+    columnHelper.accessor('publishTime', {
+      header: t('time'),
+      cell: ({ row }) => (
+        <div className="text-sm">{row.original.publishTime}</div>
+      ),
+    }),
+    columnHelper.accessor('noteLink', {
+      header: t('noteLink'),
+      cell: ({ row }) => {
+        const noteLink = row.original.noteLink
+        return noteLink ? (
+          <a 
+            href={noteLink} 
+            target="_blank" 
+            rel="noreferrer" 
+            className="text-blue-600 hover:underline text-sm truncate max-w-[200px] block"
+          >
+            {noteLink}
+          </a>
+        ) : null
+      },
+    }),
+    columnHelper.accessor('likes', {
+      header: () => <div className="text-right">{t('likes')}</div>,
+      cell: ({ row }) => (
+        <div className="text-right">
+          <div className="text-sm font-medium">{row.original.likes.formatted}</div>
+        </div>
+      ),
+    }),
+    columnHelper.accessor('replies', {
+      header: () => <div className="text-right">{t('replies')}</div>,
+      cell: ({ row }) => (
+        <div className="text-right">
+          <div className="text-sm font-medium">{row.original.replies.formatted}</div>
+        </div>
+      ),
+    }),
+  ]
 
-  const toggleAll = (checked: boolean) => {
-    const next: Record<string, boolean> = {}
-    if (checked) data.forEach((d) => (next[d.id] = true))
-    setSelected(next)
-  }
-
-  const toggleOne = (id: string, checked: boolean) => {
-    setSelected((prev) => ({ ...prev, [id]: checked }))
-  }
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    enableRowSelection: true,
+  })
 
   return (
     <div className="space-y-3">
       <div className="rounded-lg border">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="w-10">
-                <Checkbox checked={allSelected} onCheckedChange={(v) => toggleAll(Boolean(v))} aria-label={t('selectAll')} />
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className={header.id === 'select' ? 'w-10' : ''}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
               </TableHead>
-              <TableHead>{t('user')}</TableHead>
-              <TableHead>{t('content')}</TableHead>
-              <TableHead>{t('pictures')}</TableHead>
-              <TableHead>{t('time')}</TableHead>
-              <TableHead>{t('noteLink')}</TableHead>
-              <TableHead className="text-right">{t('likes')}</TableHead>
-              <TableHead className="text-right">{t('replies')}</TableHead>
+                ))}
             </TableRow>
+            ))}
           </TableHeader>
           <TableBody>
-            {data.length === 0 ? (
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className={cell.column.id === 'select' ? 'w-10' : 'align-top'}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
               <TableRow>
-                <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
                   {t('noResults')}
                 </TableCell>
               </TableRow>
-            ) : (
-              data.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className="w-10">
-                    <Checkbox checked={!!selected[item.id]} onCheckedChange={(v) => toggleOne(item.id, Boolean(v))} aria-label={item.id} />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      {/* 头像 */}
-                      {/* next/image 需要跨域允许，这里使用原生 img 更稳妥 */}
-                      <img src={item.author.avatar} alt={item.author.name} className="h-8 w-8 rounded-full object-cover" />
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium">{item.author.name}</span>
-                        <span className="text-xs text-muted-foreground">{item.author.account}</span>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="align-top">
-                    <div className="text-sm whitespace-pre-wrap break-words max-w-[520px]">{item.content}</div>
-                  </TableCell>
-                  <TableCell className="align-top">
-                    {item.pictures && item.pictures.length > 0 && (
-                      <div className="flex flex-wrap gap-2 max-w-[320px]">
-                        {item.pictures.map((url, idx) => (
-                          <button key={idx} className="h-14 w-14 overflow-hidden rounded" onClick={() => setPreview(item.pictures)}>
-                            <img src={url} alt="pic" className="h-full w-full object-cover" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="align-top text-sm">{item.publishTime}</TableCell>
-                  <TableCell className="align-top text-sm truncate max-w-[200px]">
-                    {item.noteLink && (
-                      <a href={item.noteLink} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
-                        {item.noteLink}
-                      </a>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right align-top">
-                    <div className="text-sm font-medium">{item.likes.formatted}</div>
-                  </TableCell>
-                  <TableCell className="text-right align-top">
-                    <div className="text-sm font-medium">{item.replies.formatted}</div>
-                  </TableCell>
-                </TableRow>
-              ))
             )}
           </TableBody>
         </Table>
       </div>
 
-      {selectedCount > 0 && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">{t('selectedCount', { count: selectedCount })}</div>
-          <div className="flex items-center gap-2">
-            <Button size="sm">{t('exportCSV')}</Button>
-            <Button size="sm" variant="outline">{t('downloadDetails')}</Button>
-            <Button size="sm" variant="outline">{t('downloadImages')}</Button>
-          </div>
-        </div>
-      )}
+      <DataTableBulkActions table={table} entityName="comment">
+        <CommentBulkActions
+          selectedData={table.getFilteredSelectedRowModel().rows.map(row => row.original)}
+          onExportCSV={() => {
+            // 可以在这里添加额外的逻辑，比如清除选择
+          }}
+          onDownloadDetails={() => {
+            // 可以在这里添加额外的逻辑
+          }}
+          onDownloadImages={() => {
+            // 可以在这里添加额外的逻辑
+          }}
+        />
+      </DataTableBulkActions>
 
       <Dialog open={!!preview} onOpenChange={(v) => !v && setPreview(null)}>
         <DialogContent className="max-w-3xl">
