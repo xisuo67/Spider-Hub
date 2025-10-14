@@ -10,121 +10,11 @@ import { ImportNotesDialog } from '@/components/xhs/import-notes-dialog';
 import { CommentSettingsDialog } from '@/components/xhs/comment-settings-dialog';
 import { SearchResultsTable, SearchResult } from '@/components/xhs/search-results-table';
 import { useSearchNoteColumns } from '@/components/xhs/search-note-columns';
-import { CommentsResultsTable, CommentResult, useCommentsColumns } from '@/components/xhs/comments-results-table';
 import { CommentsTable, type CommentListItem } from '@/components/xhs/comments-table';
-import { loadMockComments, transformWebPageToComments } from '@/lib/load-comments';
-import { Skeleton } from '@/components/ui/skeleton';
+import { loadMockComments } from '@/lib/load-comments';
 import { loadMockData } from '@/lib/mock-data-transformer';
 import { loadSingleNoteData, transformSingleNoteToSearchResult } from '@/lib/single-note-transformer';
 
-// 模拟加载评论数据
-const loadMockCommentData = async (): Promise<CommentResult[]> => {
-  // 模拟API延迟
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  return [
-    {
-      id: '1',
-      author: {
-        avatar: 'https://via.placeholder.com/40',
-        name: '用户001',
-        level: 5
-      },
-      content: '这个笔记真的很棒！学到了很多实用的技巧，感谢分享！',
-      publishTime: '2025/1/15 14:30:25',
-      likes: {
-        formatted: '128',
-        raw: 128
-      },
-      replies: {
-        formatted: '12',
-        raw: 12
-      },
-      isAuthor: false,
-      isPinned: true
-    },
-    {
-      id: '2',
-      author: {
-        avatar: 'https://via.placeholder.com/40',
-        name: '作者回复',
-        level: 8
-      },
-      content: '谢谢你的支持！如果有什么问题可以随时问我哦～',
-      publishTime: '2025/1/15 15:45:10',
-      likes: {
-        formatted: '89',
-        raw: 89
-      },
-      replies: {
-        formatted: '3',
-        raw: 3
-      },
-      isAuthor: true,
-      isPinned: false
-    },
-    {
-      id: '3',
-      author: {
-        avatar: 'https://via.placeholder.com/40',
-        name: '用户002',
-        level: 3
-      },
-      content: '请问这个产品在哪里可以买到？价格大概是多少？',
-      publishTime: '2025/1/15 16:20:15',
-      likes: {
-        formatted: '45',
-        raw: 45
-      },
-      replies: {
-        formatted: '8',
-        raw: 8
-      },
-      isAuthor: false,
-      isPinned: false
-    },
-    {
-      id: '4',
-      author: {
-        avatar: 'https://via.placeholder.com/40',
-        name: '用户003',
-        level: 7
-      },
-      content: '收藏了！这个教程写得很详细，步骤清晰易懂 👍',
-      publishTime: '2025/1/15 17:10:30',
-      likes: {
-        formatted: '67',
-        raw: 67
-      },
-      replies: {
-        formatted: '2',
-        raw: 2
-      },
-      isAuthor: false,
-      isPinned: false
-    },
-    {
-      id: '5',
-      author: {
-        avatar: 'https://via.placeholder.com/40',
-        name: '用户004',
-        level: 4
-      },
-      content: '试了一下这个方法，效果确实不错！推荐给大家',
-      publishTime: '2025/1/15 18:05:45',
-      likes: {
-        formatted: '23',
-        raw: 23
-      },
-      replies: {
-        formatted: '1',
-        raw: 1
-      },
-      isAuthor: false,
-      isPinned: false
-    }
-  ];
-};
 import { expandUrl } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Main } from '@/components/layout/main'
@@ -134,13 +24,12 @@ export default function XhsSearchNotePage() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('note-search');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [commentResults, setCommentResults] = useState<CommentResult[]>([]);
+  const [commentResults, setCommentResults] = useState<any[]>([]);
   const [commentList, setCommentList] = useState<CommentListItem[]>([]);
   const [hasMore, setHasMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [cursor, setCursor] = useState<string | null>(null);
   const columns = useSearchNoteColumns();
-  const commentColumns = useCommentsColumns();
   const [importOpen, setImportOpen] = useState(false);
   const [commentSettingsOpen, setCommentSettingsOpen] = useState(false);
 
@@ -215,7 +104,6 @@ export default function XhsSearchNotePage() {
         
         // 模拟加载评论数据（从 webpage1/2.json 读取并转换）
         const mockCommentResults = await loadMockComments(1);
-        debugger
         if (page === 1) {
           // 第一页，替换所有数据
           setCommentResults(mockCommentResults as any);
@@ -261,7 +149,6 @@ export default function XhsSearchNotePage() {
     if (currentPage > 1 && !loading) {
       // 这里可以实现返回上一页的逻辑
       // 由于是动态API，可能需要重新请求或维护页面历史
-      console.log('Go to previous page');
     }
   };
 
@@ -394,12 +281,10 @@ export default function XhsSearchNotePage() {
               open={commentSettingsOpen}
               onOpenChange={setCommentSettingsOpen}
               onStart={async ({ fetchAll, pages }) => {
-                debugger
                 // 弹窗确认后直接加载 mock 评论
-                const p1 = await loadMockComments(1)
-                const merged = p1
-                setCommentResults(merged as any)
-                setCommentList(merged.map((m: any) => ({
+                const mockComments = await loadMockComments(1);
+                setCommentResults(mockComments as any);
+                setCommentList(mockComments.map((m: any) => ({
                   id: m.id,
                   author: { avatar: m.author.avatar, name: m.author.name, account: m.author.account || '' },
                   content: m.content,
@@ -408,7 +293,7 @@ export default function XhsSearchNotePage() {
                   noteLink: searchUrl,
                   likes: m.likes,
                   replies: m.replies,
-                })))
+                })));
               }}
             />
           </TabsContent>
