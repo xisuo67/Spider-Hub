@@ -1,8 +1,8 @@
 {
   "Metadata": {
-    "name": "MkSaaS Demo",
-    "title": "MkSaaS - The Best AI SaaS Boilerplate",
-    "description": "MkSaaS is the best AI SaaS boilerplate. Make AI SaaS in days, simply and effortlessly"
+    "name": "Spider Hub",
+    "title": "SpiderHub - The Best Spider Website",
+    "description": "SpiderHub is the best spider website, with SpiderHub you can easily crawl content from mainstream social media websites, easily obtain social media data and all image and video resources"
   },
   "Common": {
     "login": "Log in",
@@ -846,14 +846,14 @@
     }
   },
   "HomePage": {
-    "title": "MkSaaS",
-    "description": "Make AI SaaS in days, simply and effortlessly",
+    "title": "SpiderHub",
+    "description": "SpiderHub - The Best Spider Website",
     "hero": {
-      "title": "Make AI SaaS in days, simply and effortlessly",
-      "description": "The is a demo website built with MkSaaS, a Next.js SaaS boilerplate to help you build your AI SaaS faster and better.",
-      "introduction": "Introducing MkSaaS Boilerplate",
+      "title": "With SpiderHub you can easily crawl content from mainstream social media websites",
+      "description": "SpiderHub supports crawling from mainstream social media websites, including X, Twitter, Instagram, TikTok, YouTube, etc., supporting crawling of images, videos, posts, comments, user information, etc.",
+      "introduction": "Introducing SpiderHub",
       "primary": "Get Started",
-      "secondary": "See Demo"
+      "secondary": "View Demo"
     },
     "logocloud": {
       "title": "Your favorite companies are our partners"

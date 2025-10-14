@@ -1,8 +1,8 @@
 {
   "Metadata": {
-    "name": "MkSaaS Demo",
-    "title": "MkSaaS - 最好的 AI SaaS 模板",
-    "description": "MkSaaS 是构建 AI SaaS 的最佳模板，使用 MkSaaS 可以在几天内轻松构建您的 AI SaaS，简单且毫不费力。"
+    "name": "Spider Hub",
+    "title": "SpiderHub - 最好的爬虫网站",
+    "description": "SpiderHub 是全网最好的爬虫网站，使用SpiderHub你可以轻松爬取主流社交媒体网站的内容，轻松获取社交媒体数据以及所有图片、视频资源"
   },
   "Common": {
     "login": "登录",
@@ -846,12 +846,12 @@
     }
   },
   "HomePage": {
-    "title": "MkSaaS",
-    "description": "使用 MkSaaS 在几天内轻松构建您的 AI SaaS 产品",
+    "title": "SpiderHub",
+    "description": "SpiderHub - 最好的爬虫网站",
     "hero": {
-      "title": "使用 MkSaaS 轻松构建您的 AI SaaS 产品",
-      "description": "MkSaaS 是构建 AI SaaS 的最佳模板，内置 AI、身份验证、全球支付、博客、文档、邮件订阅、SEO、多彩主题、丰富组件等。",
-      "introduction": "介绍 MkSaaS 模板",
+      "title": "使用SpiderHub你可以轻松爬取主流社交媒体网站的内容",
+      "description": "SpiderHub支持主流社交媒体网站的爬取，包括X、Twitter、Instagram、TikTok、YouTube等，支持爬取图片、视频、帖子、评论、用户信息等。",
+      "introduction": "介绍 SpiderHub",
       "primary": "开始使用",
       "secondary": "查看演示"
     },
@@ -859,33 +859,33 @@
       "title": "您最爱公司都是我们的合作伙伴"
     },
     "integration": {
-      "title": "集成",
-      "subtitle": "与您最喜欢的工具集成",
-      "description": "无缝连接流行的平台和服务，以增强您的工作流程。",
+      "title": "我们支持哪些平台?",
+      "subtitle": "我们支持主流的社交媒体网站",
+      "description": "SpiderHub支持主流社交媒体网站的爬取，包括X、Twitter、Instagram、TikTok、YouTube等，支持爬取图片、视频、帖子、评论、用户信息等。",
       "learnMore": "了解更多",
       "items": {
         "item-1": {
-          "title": "Google Gemini",
+          "title": "X",
           "description": "这里是Google Gemini的描述，详细介绍Google Gemini的功能和优势。"
         },
         "item-2": {
-          "title": "Replit",
+          "title": "TikTok",
           "description": "这里是Replit的描述，详细介绍Replit的功能和优势。"
         },
         "item-3": {
-          "title": "MagicUI",
+          "title": "Instagram",
           "description": "这里是MagicUI的描述，详细介绍MagicUI的功能和优势。"
         },
         "item-4": {
-          "title": "VSCodium",
+          "title": "YouTube",
           "description": "这里是VSCodium的描述，详细介绍VSCodium的功能和优势。"
         },
         "item-5": {
-          "title": "MediaWiki",
+          "title": "小红书",
           "description": "这里是MediaWiki的描述，详细介绍MediaWiki的功能和优势。"
         },
         "item-6": {
-          "title": "Google PaLM",
+          "title": "抖音",
           "description": "这里是Google PaLM的描述，详细介绍Google PaLM的功能和优势。"
         }
       }
