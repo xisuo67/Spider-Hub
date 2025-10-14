@@ -1,5 +1,7 @@
 import { SearchResult } from '@/components/xhs/search-results-table';
 import JSZip from 'jszip';
+import type { CommentListItem } from '@/components/xhs/comments-table'
+import { removeUrlParams } from './url'
 
 // 多语言标题映射
 const getLocalizedHeaders = (locale: string = 'zh') => {
@@ -337,6 +339,140 @@ export async function downloadImagesAndText(data: SearchResult[], filename: stri
   } catch (error) {
     console.error('Error generating zip file:', error);
   }
+}
+
+/**
+ * 下载评论图片资源到一个文件夹（不分 image_1/image_2 子目录）
+ */
+export async function downloadCommentImages(
+  items: CommentListItem[],
+  filename: string = 'comments-resources.zip'
+) {
+  if (!items || items.length === 0) return;
+  const zip = new JSZip();
+  const folder = zip.folder('comments');
+  if (!folder) return;
+
+  // 收集所有图片
+  const filesToDownload: Array<{ url: string; filename: string }> = [];
+  items.forEach((item) => {
+    (item.pictures || []).forEach((url, idx) => {
+      if (!url) return;
+      const ext = getFileExtension(url, 'jpg');
+      const safeId = sanitizeFileName(item.id);
+      filesToDownload.push({ url, filename: `comment_${safeId}_${idx + 1}.${ext}` });
+    });
+  });
+
+  await downloadWithConcurrencyLimit(
+    filesToDownload,
+    async (f) => {
+      const blob = await downloadFileAsBlob(f.url);
+      if (blob && blob.size < 50 * 1024 * 1024) {
+        folder.file(f.filename, blob);
+      }
+    },
+    4
+  );
+
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  downloadFileFromBlob(zipBlob, filename, 'application/zip');
+}
+
+// 统一生成评论 CSV 的方法（导出 CSV 与资源打包共用）
+function generateCommentsCSV(items: CommentListItem[], locale: string = 'zh'): string {
+  const headers =
+    locale === 'en'
+      ? ['ID', 'User', 'Account', 'Content', 'Pictures', 'Time', 'Note Link', 'Likes', 'Replies']
+      : ['ID', '用户', '账号', '评论内容', '回复图片', '评论时间', '笔记链接', '点赞', '回复'];
+
+  const escapeCell = (v: string) => `"${(v || '').replace(/"/g, '""').replace(/\r?\n/g, ' ')}"`;
+  const rows = items.map((i) =>
+    [
+      i.id,
+      i.author.name,
+      i.author.account,
+      i.content,
+      String((i.pictures || []).length),
+      i.publishTime,
+      i.noteLink,
+      String(i.likes.raw),
+      String(i.replies.raw),
+    ].map(escapeCell).join(',')
+  );
+  return ['\uFEFF' + headers.join(','), ...rows].join('\n');
+}
+
+/**
+ * 打包评论：CSV + 所有图片（统一放在 comments/ 目录）
+ */
+export async function downloadCommentBundle(
+  items: CommentListItem[],
+  filename: string = 'comments-content.zip',
+  locale: string = 'zh'
+) {
+  if (!items || items.length === 0) return;
+  const zip = new JSZip();
+  const folder = zip.folder('comments');
+  if (!folder) return;
+
+  // 1) 生成 CSV 内容
+  const csv = generateCommentsCSV(items, locale);
+  zip.file('comments.csv', csv);
+
+  // 2) 收集图片
+  const filesToDownload: Array<{ url: string; filename: string }> = [];
+  items.forEach((item) => {
+    (item.pictures || []).forEach((url, idx) => {
+      if (!url) return;
+      const ext = getFileExtension(url, 'jpg');
+      const safeId = sanitizeFileName(item.id);
+      filesToDownload.push({ url, filename: `comment_${safeId}_${idx + 1}.${ext}` });
+    });
+  });
+
+  await downloadWithConcurrencyLimit(
+    filesToDownload,
+    async (f) => {
+      const blob = await downloadFileAsBlob(f.url);
+      if (blob && blob.size < 50 * 1024 * 1024) {
+        folder.file(f.filename, blob);
+      }
+    },
+    4
+  );
+
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  downloadFileFromBlob(zipBlob, filename, 'application/zip');
+}
+/**
+ * 导出评论为 CSV
+ */
+export function exportCommentsToCSV(
+  items: CommentListItem[],
+  filename: string = 'comments.csv',
+  locale: string = 'zh'
+) {
+  if (!items || items.length === 0) return;
+  const csv = generateCommentsCSV(items, locale);
+  downloadFile(csv, filename, 'text/csv;charset=utf-8;');
+}
+
+/**
+ * 导出评论为 JSON（含元数据）
+ */
+export function exportCommentsToJSON(items: CommentListItem[], filename: string = 'comments.json') {
+  if (!items || items.length === 0) return;
+  const json = JSON.stringify(
+    {
+      exportTime: new Date().toISOString(),
+      total: items.length,
+      data: items,
+    },
+    null,
+    2
+  );
+  downloadFile(json, filename, 'application/json;charset=utf-8;');
 }
 
 /**

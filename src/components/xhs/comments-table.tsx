@@ -16,8 +16,7 @@ import {
 } from '@/components/ui/tooltip';
 import { DownloadIcon, FileSpreadsheetIcon, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { exportToCSV, exportToJSON, formatFilename } from '@/lib/export-utils';
-import JSZip from 'jszip';
+import { formatFilename, downloadCommentImages, exportCommentsToCSV, exportCommentsToJSON, downloadCommentBundle } from '@/lib/export-utils';
 
 export interface CommentListItem {
   id: string
@@ -40,137 +39,7 @@ interface CommentsTableProps {
 
 const columnHelper = createColumnHelper<CommentListItem>()
 
-/**
- * 导出评论数据为CSV文件
- */
-async function exportCommentCSV(data: any[], filename: string) {
-  if (data.length === 0) {
-    console.warn('No data to export');
-    return;
-  }
-
-  // 获取所有字段名
-  const headers = Object.keys(data[0]);
-  
-  // 创建CSV内容
-  const csvContent = [
-    // 添加BOM以支持中文
-    '\uFEFF',
-    // 表头
-    headers.join(','),
-    // 数据行
-    ...data.map(row => 
-      headers.map(header => {
-        const value = row[header];
-        // 处理包含逗号、引号或换行符的值
-        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
-          return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value;
-      }).join(',')
-    )
-  ].join('\n');
-
-  // 创建并下载文件
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
-
-/**
- * 下载评论的图片和CSV文件，生成zip包（简化结构）
- */
-async function downloadCommentImagesAndText(comments: CommentListItem[], filename: string = 'comments-content.zip') {
-  if (comments.length === 0) {
-    console.warn('No comments to download');
-    return;
-  }
-
-  const zip = new JSZip();
-  let imageIndex = 1;
-
-  // 1. 创建CSV文件
-  const csvData = comments.map(comment => ({
-    '用户': comment.author.name,
-    '账号': comment.author.account,
-    '内容': comment.content,
-    '发布时间': comment.publishTime,
-    '笔记链接': comment.noteLink,
-    '点赞数': comment.likes.raw,
-    '回复数': comment.replies.raw,
-    '图片数量': comment.pictures.length,
-    '图片URLs': comment.pictures.join('; ')
-  }));
-
-  // 生成CSV内容
-  const headers = Object.keys(csvData[0]);
-  const csvContent = [
-    '\uFEFF', // BOM for Chinese support
-    headers.join(','),
-    ...csvData.map(row => 
-      headers.map(header => {
-        const value = (row as any)[header];
-        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
-          return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value;
-      }).join(',')
-    )
-  ].join('\n');
-
-  // 添加CSV文件到zip
-  zip.file('comments.csv', csvContent);
-
-  // 2. 下载所有图片到根目录
-  for (const comment of comments) {
-    if (comment.pictures && comment.pictures.length > 0) {
-      for (const imageUrl of comment.pictures) {
-        try {
-          const response = await fetch(imageUrl);
-          if (response.ok) {
-            const blob = await response.blob();
-            const imageFilename = `image_${imageIndex}.${getFileExtension(imageUrl)}`;
-            zip.file(imageFilename, blob);
-            imageIndex++;
-          }
-        } catch (error) {
-          console.error(`Failed to download image ${imageUrl}:`, error);
-        }
-      }
-    }
-  }
-
-  // 生成并下载zip文件
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
-  const url = URL.createObjectURL(zipBlob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
-
-/**
- * 从URL获取文件扩展名
- */
-function getFileExtension(url: string): string {
-  try {
-    const urlObj = new URL(url);
-    const pathname = urlObj.pathname;
-    const extension = pathname.split('.').pop();
-    return extension || 'jpg';
-  } catch {
-    return 'jpg';
-  }
-}
+// 移除旧的内置导出与下载实现，统一使用 lib/export-utils 中的方法
 
 interface CommentBulkActionsProps {
   selectedData: CommentListItem[];
@@ -199,21 +68,7 @@ function CommentBulkActions({
     setLoading(prev => ({ ...prev, csv: true }));
     try {
       const filename = formatFilename('xhs-comments', 'csv');
-      // 将评论数据转换为CSV格式，使用多语言字段名
-      const csvData = selectedData.map(comment => ({
-        [t('user')]: comment.author.name,
-        [t('account')]: comment.author.account,
-        [t('content')]: comment.content,
-        [t('time')]: comment.publishTime,
-        [t('noteLink')]: comment.noteLink,
-        [t('likes')]: comment.likes.raw,
-        [t('replies')]: comment.replies.raw,
-        [t('pictures')]: comment.pictures.length,
-        [t('pictures') + ' URLs']: comment.pictures.join('; ') // 添加图片URL字段
-      }));
-      
-      // 直接使用简单的CSV导出逻辑
-      await exportCommentCSV(csvData, filename);
+      exportCommentsToCSV(selectedData, filename, locale);
       toast.success(t('exportingCSV', { count: selectedData.length }));
       onExportCSV();
     } catch (error) {
@@ -230,7 +85,7 @@ function CommentBulkActions({
     setLoading(prev => ({ ...prev, json: true }));
     try {
       const filename = formatFilename('xhs-comments-details', 'json');
-      exportToJSON(selectedData as any, filename);
+      exportCommentsToJSON(selectedData, filename);
       toast.success(t('downloadingDetails', { count: selectedData.length }));
       onDownloadDetails();
     } catch (error) {
@@ -247,7 +102,7 @@ function CommentBulkActions({
     setLoading(prev => ({ ...prev, images: true }));
     try {
       const filename = formatFilename('xhs-comments-content', 'zip');
-      await downloadCommentImagesAndText(selectedData, filename);
+      await downloadCommentBundle(selectedData, filename, locale);
       toast.success(t('downloadingImages', { count: selectedData.length }));
       onDownloadImages();
     } catch (error) {
