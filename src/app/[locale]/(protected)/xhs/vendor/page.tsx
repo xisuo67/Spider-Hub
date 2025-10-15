@@ -10,13 +10,14 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { expandUrl } from '@/lib/utils';
+import { transformShopProducts, transformSingleProduct, type VendorDisplayItem } from '@/lib/vendor-data-transformer';
 
 export default function XhsVendorPage() {
   const t = useTranslations('Xhs.Vendor');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [vendorData, setVendorData] = useState<any[]>([]);
-  const [selectedVendors, setSelectedVendors] = useState<any[]>([]);
+  const [vendorData, setVendorData] = useState<VendorDisplayItem[]>([]);
+  const [selectedVendors, setSelectedVendors] = useState<VendorDisplayItem[]>([]);
   const [currentUrlInfo, setCurrentUrlInfo] = useState<{
     type: 'shop' | 'goods-detail' | null;
     id: string | null;
@@ -27,7 +28,6 @@ export default function XhsVendorPage() {
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-    
     setLoading(true);
     try {
       // 先展开短链接
@@ -41,7 +41,10 @@ export default function XhsVendorPage() {
       }
       
       // 验证URL格式并提取ID
+      console.log('开始验证URL:', finalUrl);
       const isValidUrl = validateVendorUrl(finalUrl);
+      console.log('URL验证结果:', isValidUrl);
+      
       if (!isValidUrl.isValid) {
         toast.error(isValidUrl.message);
         return;
@@ -62,7 +65,6 @@ export default function XhsVendorPage() {
           id: shopId || null,
           url: finalUrl
         });
-        
         // 调用店铺API获取数据
         await fetchShopData(shopId || '', 0);
       } else if (isValidUrl.type === 'goods-detail') {
@@ -101,8 +103,8 @@ export default function XhsVendorPage() {
         };
       }
       
-      // 检查店铺主页链接格式: https://www.xiaohongshu.com/shop/{shopId}
-      const shopMatch = url.match(/^https:\/\/www\.xiaohongshu\.com\/shop\/([a-f0-9]+)$/);
+      // 检查店铺主页链接格式: https://www.xiaohongshu.com/shop/{shopId} (支持查询参数)
+      const shopMatch = url.match(/^https:\/\/www\.xiaohongshu\.com\/shop\/([a-f0-9]+)(?:\?.*)?$/);
       if (shopMatch) {
         return {
           isValid: true,
@@ -111,9 +113,21 @@ export default function XhsVendorPage() {
         };
       }
       
-      // 检查商品详情链接格式: https://www.xiaohongshu.com/goods-detail/{goodsId}
-      const goodsMatch = url.match(/^https:\/\/www\.xiaohongshu\.com\/goods-detail\/([a-f0-9]+)$/);
+      // 检查商品详情链接格式: https://www.xiaohongshu.com/goods-detail/{goodsId} (支持查询参数)
+      const goodsDetailMatch = url.match(/^https:\/\/www\.xiaohongshu\.com\/goods-detail\/([a-f0-9]+)(?:\?.*)?$/);
+      if (goodsDetailMatch) {
+        console.log('匹配到goods-detail格式:', goodsDetailMatch[1]);
+        return {
+          isValid: true,
+          type: 'goods-detail',
+          goodsId: goodsDetailMatch[1]
+        };
+      }
+      
+      // 检查另一种商品详情链接格式: https://www.xiaohongshu.com/goods/{goodsId} (支持查询参数)
+      const goodsMatch = url.match(/^https:\/\/www\.xiaohongshu\.com\/goods\/([a-f0-9]+)(?:\?.*)?$/);
       if (goodsMatch) {
+        console.log('匹配到goods格式:', goodsMatch[1]);
         return {
           isValid: true,
           type: 'goods-detail',
@@ -140,10 +154,22 @@ export default function XhsVendorPage() {
       const result = await response.json();
       
       if (result.success) {
-        setVendorData(result.data.products);
+        console.log('=== 店铺数据获取成功 ===');
+        console.log('原始店铺数据:', result.data);
+        console.log('商品列表:', result.data.products);
+        
+        // 店铺API返回的数据已经包含了详情数据，需要使用详情转换函数
+        const transformedProducts = result.data.products.map((product: any) => {
+          console.log('处理商品:', product.id, '详情数据:', product.detail);
+          // 使用详情数据转换函数，传入detail字段
+          return transformSingleProduct(product.detail || product);
+        });
+        
+        console.log('转换后的商品数据:', transformedProducts);
+        debugger
+        setVendorData(transformedProducts);
         setHasMore(result.data.hasMore);
         setCurrentPage(page);
-        console.log('店铺数据获取成功:', result.data);
       } else {
         throw new Error(result.error || 'Failed to fetch shop data');
       }
@@ -156,12 +182,24 @@ export default function XhsVendorPage() {
   // 获取商品详情数据
   const fetchProductData = async (productId: string) => {
     try {
+      console.log('=== 开始获取商品详情数据 ===');
+      console.log('productId:', productId);
+      
       const response = await fetch(`/api/vendor/product?productId=${productId}`);
       const result = await response.json();
       
+      console.log('API 响应结果:', result);
+      
       if (result.success) {
-        // 将单个商品数据转换为数组格式
-        setVendorData([result.data.product]);
+        console.log('=== API 调用成功，开始转换数据 ===');
+        console.log('原始商品数据:', result.data.product);
+        debugger
+        // 转换单个商品数据为统一格式
+        const transformedProduct = transformSingleProduct(result.data.product);
+        console.log('=== 数据转换完成 ===');
+        console.log('转换后的商品数据:', transformedProduct);
+        
+        setVendorData([transformedProduct]);
         setHasMore(false);
         setCurrentPage(0);
         console.log('商品详情获取成功:', result.data);
@@ -291,7 +329,7 @@ export default function XhsVendorPage() {
           onSelectionChange={handleSelectionChange}
         />
 
-        {/* 分页按钮 */}
+        {/* 分页按钮 - 只在店铺主页且有更多数据时显示 */}
         {currentUrlInfo.type === 'shop' && hasMore && (
           <div className="flex justify-center">
             <Button
@@ -309,6 +347,13 @@ export default function XhsVendorPage() {
                 <span>{t('loadMore')}</span>
               )}
             </Button>
+          </div>
+        )}
+        
+        {/* 调试信息 - 显示当前状态 */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="text-xs text-muted-foreground p-2 bg-muted rounded">
+            调试信息: 类型={currentUrlInfo.type}, 有更多数据={hasMore ? '是' : '否'}, 显示分页={currentUrlInfo.type === 'shop' && hasMore ? '是' : '否'}
           </div>
         )}
       </div>

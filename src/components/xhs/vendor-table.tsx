@@ -8,34 +8,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { format } from 'date-fns';
-import { zhCN, enUS } from 'date-fns/locale';
-
-interface VendorData {
-  id: string;
-  cover: string;
-  logo: string;
-  sellername: string;
-  sellerScore: number;
-  itemAnalysisDataText: string;
-  title: string;
-  images: string[];
-  price: number;
-  on_shelf_time: string;
-  desc: string;
-  service: Array<{
-    name: string;
-    icon: string;
-    type: string | null;
-  }>;
-  goodsDistributeLocation: string;
-  fee: number;
-}
+import { type VendorDisplayItem } from '@/lib/vendor-data-transformer';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface VendorTableProps {
   loading: boolean;
-  data: VendorData[];
-  onSelectionChange: (selected: VendorData[]) => void;
+  data: VendorDisplayItem[];
+  onSelectionChange: (selected: VendorDisplayItem[]) => void;
 }
 
 export function VendorTable({ loading, data, onSelectionChange }: VendorTableProps) {
@@ -74,12 +53,6 @@ export function VendorTable({ loading, data, onSelectionChange }: VendorTablePro
     }).format(price);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return format(date, 'yyyy-MM-dd HH:mm', {
-      locale: locale === 'zh' ? zhCN : enUS,
-    });
-  };
 
   if (loading) {
     return (
@@ -118,62 +91,74 @@ export function VendorTable({ loading, data, onSelectionChange }: VendorTablePro
   return (
     <Card>
       <CardContent className="p-0">
-        <div className="space-y-4 p-6">
-          {data.map((vendor) => (
-            <div key={vendor.id} className="flex items-start space-x-4 p-4 border rounded-lg hover:bg-muted/50">
-              <Checkbox
-                checked={selectedRows.includes(vendor.id)}
-                onCheckedChange={(checked) => handleSelectRow(vendor.id, checked as boolean)}
-                className="mt-1"
-              />
-              
-              <div className="flex-1 flex items-start space-x-4">
-                {/* 商品图片 */}
-                <div className="relative">
-                  <img
-                    src={vendor.cover}
-                    alt={vendor.title}
-                    className="w-20 h-20 object-cover rounded-lg"
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-10">
+                <Checkbox
+                  checked={selectedRows.length > 0 && selectedRows.length === data.length}
+                  onCheckedChange={(checked) => handleSelectAll(!!checked)}
+                  aria-label="Select all"
+                />
+              </TableHead>
+              <TableHead className="min-w-[360px]">{t('basicInfo')}</TableHead>
+              <TableHead className="hidden md:table-cell w-28">{t('price')}</TableHead>
+              <TableHead className="hidden md:table-cell w-32">{t('location')}</TableHead>
+              <TableHead className="hidden md:table-cell w-24">{t('fee')}</TableHead>
+              <TableHead className="hidden lg:table-cell min-w-[160px]">{t('service')}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.map((vendor) => (
+              <TableRow key={vendor.id} data-state={selectedRows.includes(vendor.id) ? 'selected' : undefined}>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedRows.includes(vendor.id)}
+                    onCheckedChange={(checked) => handleSelectRow(vendor.id, checked as boolean)}
+                    aria-label={`Select ${vendor.title}`}
                   />
-                  {vendor.images && vendor.images.length > 1 && (
-                    <Badge variant="secondary" className="absolute -top-2 -right-2 text-xs">
-                      +{vendor.images.length - 1}
-                    </Badge>
-                  )}
-                </div>
-
-                {/* 商品信息 */}
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-start justify-between">
-                    <h3 className="font-medium text-sm line-clamp-2">{vendor.title}</h3>
-                    <div className="text-right">
-                      <div className="font-semibold text-lg">{formatPrice(vendor.price)}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {t('onShelfTime')}: {formatDate(vendor.on_shelf_time)}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-start gap-3">
+                    <div className="relative shrink-0">
+                      <img
+                        src={vendor.cover}
+                        alt={vendor.title}
+                        className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-md border"
+                      />
+                      {vendor.images && vendor.images.length > 1 && (
+                        <Badge variant="secondary" className="absolute -top-2 -right-2 text-[10px]">
+                          +{vendor.images.length - 1}
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="space-y-2 min-w-0">
+                      <div className="font-medium line-clamp-2 text-sm md:text-[15px]">{vendor.title}</div>
+                      {vendor.desc && (
+                        <div className="text-xs text-muted-foreground line-clamp-2">{vendor.desc}</div>
+                      )}
+                      {(vendor.sellerScore || vendor.itemAnalysisDataText) && (
+                        <div className="text-xs text-muted-foreground">{vendor.sellerScore} {vendor.itemAnalysisDataText}</div>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-6 w-6">
+                          <AvatarImage src={vendor.logo} alt={vendor.sellername} />
+                          <AvatarFallback>{vendor.sellername?.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm">{vendor.sellername}</span>
                       </div>
                     </div>
                   </div>
-
-                  <p className="text-sm text-muted-foreground line-clamp-2">{vendor.desc}</p>
-
-                  {/* 用户信息 */}
-                  <div className="flex items-center space-x-2">
-                    <Avatar className="h-6 w-6">
-                      <AvatarImage src={vendor.logo} alt={vendor.sellername} />
-                      <AvatarFallback>{vendor.sellername.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium">{vendor.sellername}</span>
-                      <div className="flex items-center space-x-1">
-                        <span className="text-xs text-muted-foreground">
-                          {vendor.sellerScore} {vendor.itemAnalysisDataText}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 服务标签 */}
-                  {vendor.service && vendor.service.length > 0 && (
+                </TableCell>
+                <TableCell className="hidden md:table-cell font-semibold">{vendor.price}</TableCell>
+                <TableCell className="hidden md:table-cell text-xs text-muted-foreground">
+                  {vendor.goodsDistributeLocation}
+                </TableCell>
+                <TableCell className="hidden md:table-cell text-sm">
+                  {vendor.fee}
+                </TableCell>
+                <TableCell className="hidden lg:table-cell">
+                  {vendor.service && vendor.service.length > 0 ? (
                     <div className="flex flex-wrap gap-1">
                       {vendor.service.map((service, index) => (
                         <div key={index} className="flex items-center space-x-1 text-xs">
@@ -182,18 +167,17 @@ export function VendorTable({ loading, data, onSelectionChange }: VendorTablePro
                         </div>
                       ))}
                     </div>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">-</span>
                   )}
-
-                  {/* 其他信息 */}
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{t('location')}: {vendor.goodsDistributeLocation}</span>
-                    <span>{t('fee')}: {formatPrice(vendor.fee)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableCaption className="px-2 py-3 text-left">
+            {t('dataSelected', { count: selectedRows.length })}
+          </TableCaption>
+        </Table>
       </CardContent>
     </Card>
   );

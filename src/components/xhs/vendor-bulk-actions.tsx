@@ -12,31 +12,11 @@ import {
 import { DownloadIcon, FileSpreadsheetIcon, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatFilename } from '@/lib/export-utils';
-
-interface VendorData {
-  id: string;
-  cover: string;
-  logo: string;
-  sellername: string;
-  sellerScore: number;
-  itemAnalysisDataText: string;
-  title: string;
-  images: string[];
-  price: number;
-  on_shelf_time: string;
-  desc: string;
-  service: Array<{
-    name: string;
-    icon: string;
-    type: string | null;
-  }>;
-  goodsDistributeLocation: string;
-  fee: number;
-}
+import { type VendorDisplayItem } from '@/lib/vendor-data-transformer';
 
 interface VendorBulkActionsProps {
   selectedCount: number;
-  selectedData: VendorData[];
+  selectedData: VendorDisplayItem[];
   onExportCSV: () => void;
   onDownloadDetails: () => void;
   onDownloadImages: () => void;
