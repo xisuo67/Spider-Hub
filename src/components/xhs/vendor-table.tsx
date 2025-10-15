@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { type VendorDisplayItem } from '@/lib/vendor-data-transformer';
@@ -59,28 +58,29 @@ export function VendorTable({ loading, data, onSelectionChange, onTableReady }: 
               <img
                 src={vendor.cover}
                 alt={vendor.title}
-                className="w-28 h-34 object-cover rounded-md border"
+                className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md border"
               />
-              {vendor.images && vendor.images.length > 1 && (
-                <Badge variant="secondary" className="absolute -top-2 -right-2 text-[10px]">
-                  +{vendor.images.length - 1}
-                </Badge>
-              )}
             </div>
-            <div className="space-y-2 min-w-0">
-              <div className="font-medium line-clamp-2 text-sm md:text-[15px]">{vendor.title}</div>
-              {vendor.desc && (
-                <div className="text-xs text-muted-foreground line-clamp-2">{vendor.desc}</div>
-              )}
-              {(vendor.sellerScore || vendor.itemAnalysisDataText) && (
-                <div className="text-xs text-muted-foreground">{vendor.sellerScore} {vendor.itemAnalysisDataText}</div>
-              )}
-              <div className="flex items-center gap-2">
+            <div className="flex min-h-20 md:min-h-24 flex-1 flex-col justify-between min-w-0">
+              <div className="space-y-2 min-w-0">
+                <div className="font-medium text-sm md:text-[15px] leading-tight break-words whitespace-normal line-clamp-2">
+                  {vendor.title}
+                </div>
+                {vendor.desc && (
+                  <div className="text-xs text-muted-foreground break-words line-clamp-2">
+                    {vendor.desc}
+                  </div>
+                )}
+                {(vendor.sellerScore || vendor.itemAnalysisDataText) && (
+                  <div className="text-xs text-muted-foreground">{t('sellerScoreLabel')}: {vendor.sellerScore} | {vendor.itemAnalysisDataText}</div>
+                )}
+              </div>
+              <div className="flex items-center gap-2 pt-1">
                 <Avatar className="h-6 w-6">
                   <AvatarImage src={vendor.logo} alt={vendor.sellername} />
                   <AvatarFallback>{vendor.sellername?.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <span className="text-sm">{vendor.sellername}</span>
+                <span className="text-sm truncate">{vendor.sellername}</span>
               </div>
             </div>
           </div>
