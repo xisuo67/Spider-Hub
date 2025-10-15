@@ -8,6 +8,8 @@ import { VendorTable } from '@/components/xhs/vendor-table';
 import { SearchIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { expandUrl } from '@/lib/utils';
 
 export default function XhsVendorPage() {
   const t = useTranslations('Xhs.Vendor');
@@ -15,18 +17,173 @@ export default function XhsVendorPage() {
   const [loading, setLoading] = useState(false);
   const [vendorData, setVendorData] = useState<any[]>([]);
   const [selectedVendors, setSelectedVendors] = useState<any[]>([]);
+  const [currentUrlInfo, setCurrentUrlInfo] = useState<{
+    type: 'shop' | 'goods-detail' | null;
+    id: string | null;
+    url: string | null;
+  }>({ type: null, id: null, url: null });
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-
+    
     setLoading(true);
     try {
-      // TODO: 实现搜索逻辑
-      console.log('搜索:', searchQuery);
-      // 模拟数据
-      setVendorData([]);
+      // 先展开短链接
+      const expandedUrl = await expandUrl(searchQuery);
+      const finalUrl = expandedUrl || searchQuery.trim();
+      
+      // 如果URL被展开，回填到搜索框
+      if (expandedUrl && expandedUrl !== searchQuery) {
+        setSearchQuery(expandedUrl);
+        console.log('短链接已展开:', expandedUrl);
+      }
+      
+      // 验证URL格式并提取ID
+      const isValidUrl = validateVendorUrl(finalUrl);
+      if (!isValidUrl.isValid) {
+        toast.error(isValidUrl.message);
+        return;
+      }
+      
+      console.log('验证通过，URL类型:', isValidUrl.type);
+      console.log('最终URL:', finalUrl);
+      
+      // 根据URL类型进行不同的处理，并提取对应的ID
+      if (isValidUrl.type === 'shop') {
+        const shopId = isValidUrl.shopId;
+        console.log('处理店铺主页数据，店铺ID:', shopId);
+        console.log('店铺完整URL:', finalUrl);
+        
+        // 保存当前URL信息
+        setCurrentUrlInfo({
+          type: 'shop',
+          id: shopId || null,
+          url: finalUrl
+        });
+        
+        // 调用店铺API获取数据
+        await fetchShopData(shopId || '', 0);
+      } else if (isValidUrl.type === 'goods-detail') {
+        const goodsId = isValidUrl.goodsId;
+        console.log('处理商品详情数据，商品ID:', goodsId);
+        console.log('商品完整URL:', finalUrl);
+        
+        // 保存当前URL信息
+        setCurrentUrlInfo({
+          type: 'goods-detail',
+          id: goodsId || null,
+          url: finalUrl
+        });
+        
+        // 调用商品详情API获取数据
+        await fetchProductData(goodsId || '');
+      }
     } catch (error) {
       console.error('搜索失败:', error);
+      toast.error(t('searchFailed'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 验证vendor URL格式
+  const validateVendorUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      
+      // 检查是否为小红书域名
+      if (!urlObj.hostname.includes('xiaohongshu.com')) {
+        return {
+          isValid: false,
+          message: t('invalidUrl')
+        };
+      }
+      
+      // 检查店铺主页链接格式: https://www.xiaohongshu.com/shop/{shopId}
+      const shopMatch = url.match(/^https:\/\/www\.xiaohongshu\.com\/shop\/([a-f0-9]+)$/);
+      if (shopMatch) {
+        return {
+          isValid: true,
+          type: 'shop',
+          shopId: shopMatch[1]
+        };
+      }
+      
+      // 检查商品详情链接格式: https://www.xiaohongshu.com/goods-detail/{goodsId}
+      const goodsMatch = url.match(/^https:\/\/www\.xiaohongshu\.com\/goods-detail\/([a-f0-9]+)$/);
+      if (goodsMatch) {
+        return {
+          isValid: true,
+          type: 'goods-detail',
+          goodsId: goodsMatch[1]
+        };
+      }
+      
+      return {
+        isValid: false,
+        message: t('invalidUrlFormat')
+      };
+    } catch (error) {
+      return {
+        isValid: false,
+        message: t('invalidUrlMessage')
+      };
+    }
+  };
+
+  // 获取店铺数据
+  const fetchShopData = async (shopId: string, page: number) => {
+    try {
+      const response = await fetch(`/api/vendor/shop?shopId=${shopId}&page=${page}`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setVendorData(result.data.products);
+        setHasMore(result.data.hasMore);
+        setCurrentPage(page);
+        console.log('店铺数据获取成功:', result.data);
+      } else {
+        throw new Error(result.error || 'Failed to fetch shop data');
+      }
+    } catch (error) {
+      console.error('获取店铺数据失败:', error);
+      toast.error(t('fetchShopDataFailed'));
+    }
+  };
+
+  // 获取商品详情数据
+  const fetchProductData = async (productId: string) => {
+    try {
+      const response = await fetch(`/api/vendor/product?productId=${productId}`);
+      const result = await response.json();
+      
+      if (result.success) {
+        // 将单个商品数据转换为数组格式
+        setVendorData([result.data.product]);
+        setHasMore(false);
+        setCurrentPage(0);
+        console.log('商品详情获取成功:', result.data);
+      } else {
+        throw new Error(result.error || 'Failed to fetch product data');
+      }
+    } catch (error) {
+      console.error('获取商品详情失败:', error);
+      toast.error(t('fetchProductDataFailed'));
+    }
+  };
+
+  // 加载更多数据（分页）
+  const loadMore = async () => {
+    if (!currentUrlInfo.id || currentUrlInfo.type !== 'shop' || !hasMore) return;
+    
+    setLoading(true);
+    try {
+      await fetchShopData(currentUrlInfo.id, currentPage + 1);
+    } catch (error) {
+      console.error('加载更多数据失败:', error);
+      toast.error(t('loadMoreDataFailed'));
     } finally {
       setLoading(false);
     }
@@ -82,6 +239,37 @@ export default function XhsVendorPage() {
           </Button>
         </div>
 
+        {/* 显示当前URL信息 */}
+        {currentUrlInfo.type && currentUrlInfo.id && (
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">
+                    {currentUrlInfo.type === 'shop' ? t('shopHomepage') : t('productDetail')}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    ID: {currentUrlInfo.id}
+                  </span>
+                </div>
+                <div className="text-xs text-muted-foreground break-all">
+                  {currentUrlInfo.url}
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setCurrentUrlInfo({ type: null, id: null, url: null });
+                  setVendorData([]);
+                }}
+              >
+                {t('clear')}
+              </Button>
+            </div>
+          </div>
+        )}
+
         {selectedVendors.length > 0 && (
           <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
             <span className="text-sm text-muted-foreground">
@@ -97,11 +285,32 @@ export default function XhsVendorPage() {
           </div>
         )}
 
-        <VendorTable
-          loading={loading}
-          data={vendorData}
+        <VendorTable 
+          loading={loading} 
+          data={vendorData} 
           onSelectionChange={handleSelectionChange}
         />
+
+        {/* 分页按钮 */}
+        {currentUrlInfo.type === 'shop' && hasMore && (
+          <div className="flex justify-center">
+            <Button
+              onClick={loadMore}
+              disabled={loading}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+                  <span>{t('loading')}</span>
+                </>
+              ) : (
+                <span>{t('loadMore')}</span>
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </Main>
   );

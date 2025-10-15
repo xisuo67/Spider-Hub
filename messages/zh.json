@@ -1283,7 +1283,7 @@
     "Vendor": {
       "title": "商家管理",
       "description": "管理和分析商家数据",
-      "searchPlaceholder": "搜索商家或商品",
+      "searchPlaceholder": "请输入小红书店铺主页或商品详情链接",
       "search": "搜索",
       "searching": "搜索中...",
       "noResults": "暂无商家数据",
@@ -1302,7 +1302,20 @@
       "exportFailed": "导出失败",
       "onShelfTime": "上架时间",
       "location": "发货地址",
-      "fee": "费用"
+      "fee": "费用",
+      "invalidUrl": "请输入正确的小红书链接",
+      "invalidUrlFormat": "仅支持店铺主页或商品详情链接",
+      "invalidUrlMessage": "请输入有效的URL链接",
+      "searchFailed": "搜索失败，请重试",
+      "shopHomepage": "店铺主页",
+      "productDetail": "商品详情",
+      "currentUrlInfo": "当前URL信息",
+      "clear": "清除",
+      "loadMore": "加载更多",
+      "loading": "加载中...",
+      "fetchShopDataFailed": "获取店铺数据失败",
+      "fetchProductDataFailed": "获取商品详情失败",
+      "loadMoreDataFailed": "加载更多数据失败"
     }
   }
 }

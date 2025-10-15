@@ -1282,7 +1282,7 @@
     "Vendor": {
       "title": "Vendor Management",
       "description": "Manage and analyze vendor data",
-      "searchPlaceholder": "Search vendors or products",
+      "searchPlaceholder": "Enter Xiaohongshu shop or product detail link",
       "search": "Search",
       "searching": "Searching...",
       "noResults": "No vendor data",
@@ -1301,7 +1301,20 @@
       "exportFailed": "Export failed",
       "onShelfTime": "On Shelf Time",
       "location": "Shipping Address",
-      "fee": "Fee"
+      "fee": "Fee",
+      "invalidUrl": "Please enter a valid Xiaohongshu link",
+      "invalidUrlFormat": "Only shop homepage or product detail links are supported",
+      "invalidUrlMessage": "Please enter a valid URL",
+      "searchFailed": "Search failed, please try again",
+      "shopHomepage": "Shop Homepage",
+      "productDetail": "Product Detail",
+      "currentUrlInfo": "Current URL Info",
+      "clear": "Clear",
+      "loadMore": "Load More",
+      "loading": "Loading...",
+      "fetchShopDataFailed": "Failed to fetch shop data",
+      "fetchProductDataFailed": "Failed to fetch product data",
+      "loadMoreDataFailed": "Failed to load more data"
     }
   }
 }
