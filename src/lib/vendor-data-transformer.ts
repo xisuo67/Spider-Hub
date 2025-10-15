@@ -24,6 +24,12 @@ export interface VendorDisplayItem {
   fee: number;
 }
 
+function normalizeUrl(url: string | undefined | null): string {
+  if (!url) return '';
+  if (url.startsWith('//')) return `https:${url}`;
+  return url;
+}
+
 /**
  * 从店铺API数据转换商品信息
  */
@@ -35,13 +41,13 @@ export function transformShopProductToVendorItem(product: any): VendorDisplayIte
   
   return {
     id: product.id || '',
-    cover: product.image || '',
+    cover: normalizeUrl(product.image) || '',
     logo: sellerInfo.logo || basicInfo.logo || '',
     sellername: sellerInfo.sellername || basicInfo.sellername || '',
     sellerScore: sellerInfo.sellerScore || basicInfo.sellerScore || 0,
     itemAnalysisDataText: basicInfo.itemAnalysisDataText || '',
     title: product.card_title || product.desc || basicInfo.title || '',
-    images: product.images || [product.image].filter(Boolean),
+    images: (product.images || [product.image]).filter(Boolean).map((u: string) => normalizeUrl(u)),
     price: priceInfo.expected_price?.price || priceInfo.sku_price?.price || 0,
     desc: product.desc || basicInfo.desc || '',
     service: transformServiceData(product.detail?.service || basicInfo.service || []),
@@ -54,12 +60,8 @@ export function transformShopProductToVendorItem(product: any): VendorDisplayIte
  * 从商品详情API数据转换商品信息
  */
 export function transformProductDetailToVendorItem(productDetail: any): VendorDisplayItem {
-  console.log('=== transformProductDetailToVendorItem 被调用 ===');
-  console.log('原始 productDetail:', productDetail);
-  
   // 从template_data中提取数据
   const templateData = productDetail.template_data?.[0] || {};
-  console.log('templateData:', templateData);
   
   // 提取基本信息
   const descriptionH5 = templateData.descriptionH5 || {};
@@ -71,13 +73,13 @@ export function transformProductDetailToVendorItem(productDetail: any): VendorDi
   
   return {
     id: descriptionH5.skuId || '',
-    cover: carouselH5.images?.[0]?.url || '',
+    cover: normalizeUrl(carouselH5.images?.[0]?.url) || '',
     logo: sellerH5.logo || '',
     sellername: sellerH5.name || '',
     sellerScore: parseFloat(sellerH5.sellerScore || sellerH5.grade || '0'),
     itemAnalysisDataText: priceH5.itemAnalysisDataText || '',
     title: descriptionH5.name || '',
-    images: carouselH5.images?.map((img: any) => img.url) || [],
+    images: (carouselH5.images?.map((img: any) => normalizeUrl(img.url)) || []),
     price: priceH5.highlightPrice || 0,
     desc: descriptionH5.name || '',
     service: transformServiceData(serviceV5.list || []),

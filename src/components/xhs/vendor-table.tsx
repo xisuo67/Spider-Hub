@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { type VendorDisplayItem } from '@/lib/vendor-data-transformer';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ColumnDef, getCoreRowModel, RowSelectionState, useReactTable, flexRender } from '@tanstack/react-table';
+import { ImageLightbox, type LightboxSlide } from '@/components/xhs/image-lightbox';
 
 interface VendorTableProps {
   loading: boolean;
@@ -21,12 +22,22 @@ export function VendorTable({ loading, data, onSelectionChange, onTableReady }: 
   const t = useTranslations('Xhs.Vendor');
   const locale = useLocale();
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxSlides, setLightboxSlides] = useState<LightboxSlide[]>([]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat(locale === 'zh' ? 'zh-CN' : 'en-US', {
       style: 'currency',
       currency: 'CNY',
     }).format(price);
+  };
+
+  const handleOpenPreview = (vendor: VendorDisplayItem, startIndex = 0) => {
+    const imgs = (vendor.images && vendor.images.length > 0 ? vendor.images : [vendor.cover]).filter(Boolean);
+    setLightboxSlides(imgs.map((src) => ({ src })));
+    setLightboxIndex(startIndex);
+    setLightboxOpen(true);
   };
 
   const columns = useMemo<ColumnDef<VendorDisplayItem>[]>(() => [
@@ -53,21 +64,21 @@ export function VendorTable({ loading, data, onSelectionChange, onTableReady }: 
       cell: ({ row }) => {
         const vendor = row.original;
         return (
-          <div className="flex items-start gap-3">
-            <div className="relative shrink-0">
+          <div className="flex items-start gap-3 w-[460px] md:w-[580px]">
+            <button type="button" onClick={() => handleOpenPreview(vendor, 0)} className="relative shrink-0">
               <img
                 src={vendor.cover}
                 alt={vendor.title}
                 className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md border"
               />
-            </div>
+            </button>
             <div className="flex min-h-20 md:min-h-24 flex-1 flex-col justify-between min-w-0">
               <div className="space-y-2 min-w-0">
-                <div className="font-medium text-sm md:text-[15px] leading-tight break-words whitespace-normal line-clamp-2">
+                <div className="font-medium text-sm md:text-[15px] leading-tight break-words whitespace-normal line-clamp-3">
                   {vendor.title}
                 </div>
                 {vendor.desc && (
-                  <div className="text-xs text-muted-foreground break-words line-clamp-2">
+                  <div className="text-xs text-muted-foreground leading-tight break-words whitespace-normal line-clamp-3">
                     {vendor.desc}
                   </div>
                 )}
@@ -183,7 +194,7 @@ export function VendorTable({ loading, data, onSelectionChange, onTableReady }: 
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <TableHead key={header.id} className={header.column.id === 'basicInfo' ? 'min-w-[360px]' : ''}>
+                <TableHead key={header.id} className={header.column.id === 'basicInfo' ? 'w-[460px] md:w-[580px]' : ''}>
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
@@ -202,6 +213,13 @@ export function VendorTable({ loading, data, onSelectionChange, onTableReady }: 
           ))}
         </TableBody>
       </Table>
+
+      <ImageLightbox
+        slides={lightboxSlides}
+        open={lightboxOpen}
+        index={lightboxIndex}
+        onClose={() => setLightboxOpen(false)}
+      />
     </div>
   );
 }
