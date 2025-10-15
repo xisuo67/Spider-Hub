@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { expandUrl } from '@/lib/utils';
 import { transformShopProducts, transformSingleProduct, type VendorDisplayItem } from '@/lib/vendor-data-transformer';
+import { DataTableBulkActions } from '@/components/data-table/bulk-actions';
 
 export default function XhsVendorPage() {
   const t = useTranslations('Xhs.Vendor');
@@ -25,6 +26,7 @@ export default function XhsVendorPage() {
   }>({ type: null, id: null, url: null });
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const [tableInstance, setTableInstance] = useState<any>(null);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -233,7 +235,6 @@ export default function XhsVendorPage() {
           </Button>
         </div>
 
-        {/* 显示当前URL信息 */}
         {currentUrlInfo.type && currentUrlInfo.id && (
           <div className="p-4 bg-muted rounded-lg">
             <div className="flex items-center justify-between">
@@ -242,13 +243,9 @@ export default function XhsVendorPage() {
                   <span className="text-sm font-medium">
                     {currentUrlInfo.type === 'shop' ? t('shopHomepage') : t('productDetail')}
                   </span>
-                  <span className="text-xs text-muted-foreground">
-                    ID: {currentUrlInfo.id}
-                  </span>
+                  <span className="text-xs text-muted-foreground">ID: {currentUrlInfo.id}</span>
                 </div>
-                <div className="text-xs text-muted-foreground break-all">
-                  {currentUrlInfo.url}
-                </div>
+                <div className="text-xs text-muted-foreground break-all">{currentUrlInfo.url}</div>
               </div>
               <Button
                 variant="outline"
@@ -264,11 +261,9 @@ export default function XhsVendorPage() {
           </div>
         )}
 
-        {selectedVendors.length > 0 && (
-          <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-            <span className="text-sm text-muted-foreground">
-              {t('dataSelected', { count: selectedVendors.length })}
-            </span>
+        {/* 悬浮批量操作条（与SearchNote一致） */}
+        {tableInstance && (
+          <DataTableBulkActions table={tableInstance} entityName={t('title')}>
             <VendorBulkActions
               selectedCount={selectedVendors.length}
               selectedData={selectedVendors}
@@ -276,24 +271,19 @@ export default function XhsVendorPage() {
               onDownloadDetails={handleDownloadDetails}
               onDownloadImages={handleDownloadImages}
             />
-          </div>
+          </DataTableBulkActions>
         )}
 
-        <VendorTable 
-          loading={loading} 
-          data={vendorData} 
-          onSelectionChange={handleSelectionChange}
+        <VendorTable
+          loading={loading}
+          data={vendorData}
+          onSelectionChange={setSelectedVendors}
+          onTableReady={setTableInstance}
         />
 
-        {/* 分页按钮 - 只在店铺主页且有更多数据时显示 */}
         {currentUrlInfo.type === 'shop' && hasMore && (
           <div className="flex justify-center">
-            <Button
-              onClick={loadMore}
-              disabled={loading}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
+            <Button onClick={loadMore} disabled={loading} variant="outline" className="flex items-center gap-2">
               {loading ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
@@ -305,8 +295,6 @@ export default function XhsVendorPage() {
             </Button>
           </div>
         )}
-        
-
       </div>
     </Main>
   );

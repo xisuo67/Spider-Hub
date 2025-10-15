@@ -69,18 +69,6 @@ export function transformProductDetailToVendorItem(productDetail: any): VendorDi
   const serviceV5 = templateData.serviceV5 || {};
   const goodsDistributeV4 = templateData.goodsDistributeV4 || {};
   
-  console.log('=== 各个数据块 ===');
-  console.log('descriptionH5:', descriptionH5);
-  console.log('sellerH5:', sellerH5);
-  console.log('priceH5:', priceH5);
-  console.log('carouselH5:', carouselH5);
-  console.log('serviceV5:', serviceV5);
-  console.log('goodsDistributeV4:', goodsDistributeV4);
-  console.log('=== goodsDistributeV4 详情 ===');
-  console.log('goodsDistributeV4 类型:', typeof goodsDistributeV4);
-  console.log('goodsDistributeV4 是否为空对象:', Object.keys(goodsDistributeV4).length === 0);
-  console.log('goodsDistributeV4 内容:', JSON.stringify(goodsDistributeV4, null, 2));
-  debugger
   return {
     id: descriptionH5.skuId || '',
     cover: carouselH5.images?.[0]?.url || '',
