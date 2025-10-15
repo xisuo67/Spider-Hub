@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from '@/components/data-table';
 import { BasicInfoCell } from './basic-info-cell';
 import { SearchResult } from './search-results-table';
 import { Checkbox } from '@/components/ui/checkbox';
+import { ResourceCell } from '@/components/xhs/resource-cell';
 
 export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
   const t = useTranslations('Xhs.SearchNote');
@@ -39,6 +40,21 @@ export function useSearchNoteColumns(): ColumnDef<SearchResult>[] {
       cell: ({ row }) => <BasicInfoCell data={row.original.basicInfo} />,
       enableSorting: false,
       enableHiding: false,
+    },
+    {
+      id: 'resources',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('resources')} />
+      ),
+      cell: ({ row }) => (
+        <ResourceCell
+          images={row.original.images_list?.map((i) => ({ url: i.url }))}
+          videos={row.original.video_list?.map((v) => ({ master_url: v.master_url, cover_image: v.cover_image }))}
+          livePhotos={row.original.live_photo_list?.map((l) => ({ url: l.url }))}
+          label={t('resources')}
+        />
+      ),
+      enableSorting: false,
     },
     {
       id: 'publishTime',
