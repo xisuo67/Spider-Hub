@@ -102,7 +102,7 @@ export function VendorTable({ loading, data, onSelectionChange }: VendorTablePro
                 />
               </TableHead>
               <TableHead className="min-w-[360px]">{t('basicInfo')}</TableHead>
-              <TableHead className="hidden md:table-cell w-28">{t('price')}</TableHead>
+              <TableHead className="hidden md:table-cell w-28">{t('priceLabel')}</TableHead>
               <TableHead className="hidden md:table-cell w-32">{t('location')}</TableHead>
               <TableHead className="hidden md:table-cell w-24">{t('fee')}</TableHead>
               <TableHead className="hidden lg:table-cell min-w-[160px]">{t('service')}</TableHead>
@@ -124,7 +124,7 @@ export function VendorTable({ loading, data, onSelectionChange }: VendorTablePro
                       <img
                         src={vendor.cover}
                         alt={vendor.title}
-                        className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-md border"
+                        className="w-28 h-34 object-cover rounded-md border"
                       />
                       {vendor.images && vendor.images.length > 1 && (
                         <Badge variant="secondary" className="absolute -top-2 -right-2 text-[10px]">
