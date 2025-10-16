@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { VendorBulkActions } from '@/components/xhs/vendor-bulk-actions';
 import { VendorTable } from '@/components/xhs/vendor-table';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon, Upload } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { expandUrl } from '@/lib/utils';
 import { transformShopProducts, transformSingleProduct, type VendorDisplayItem } from '@/lib/vendor-data-transformer';
 import { DataTableBulkActions } from '@/components/data-table/bulk-actions';
+import { ImportVendorDialog } from '@/components/xhs/import-vendor-dialog';
 
 export default function XhsVendorPage() {
   const t = useTranslations('Xhs.Vendor');
@@ -28,6 +29,7 @@ export default function XhsVendorPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [tableInstance, setTableInstance] = useState<any>(null);
+  const [importOpen, setImportOpen] = useState(false);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -144,6 +146,14 @@ export default function XhsVendorPage() {
           <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
           <p className="text-muted-foreground">{t('description')}</p>
         </div>
+        {/* 右上角工具栏：批量导入 */}
+        <div className="flex items-center justify-end">
+          <Button variant="default" onClick={() => setImportOpen(true)} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white">
+            <Upload className="h-4 w-4" />
+            {t('batchImport')}
+          </Button>
+        </div>
+
         <div className="flex gap-4">
           <Input placeholder={t('searchPlaceholder')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="flex-1" />
           <Button onClick={handleSearch} disabled={loading || !searchQuery.trim()} className="bg-red-500 hover:bg-red-600">
@@ -160,6 +170,43 @@ export default function XhsVendorPage() {
             )}
           </Button>
         </div>
+        <ImportVendorDialog
+          open={importOpen}
+          onOpenChange={setImportOpen}
+          onImported={async (links) => {
+            // 对每条商品详情链接提取 ID 并调用现有接口，然后合并结果
+            const goodsIds = links
+              .map((u) => {
+                const m1 = u.match(/^https:\/\/www\.xiaohongshu\.com\/goods-detail\/([a-f0-9]+)(?:\?.*)?$/i);
+                if (m1) return m1[1];
+                const m2 = u.match(/^https:\/\/www\.xiaohongshu\.com\/goods\/([a-f0-9]+)(?:\?.*)?$/i);
+                if (m2) return m2[1];
+                return '';
+              })
+              .filter(Boolean);
+
+            if (goodsIds.length === 0) return;
+
+            setLoading(true);
+            try {
+              const allProducts: VendorDisplayItem[] = [];
+              for (const gid of goodsIds) {
+                const resp = await fetch(`/api/vendor/product?productId=${gid}`);
+                const result = await resp.json();
+                if (result.success && result.data?.product) {
+                  allProducts.push(transformSingleProduct(result.data.product));
+                }
+              }
+              if (allProducts.length > 0) {
+                setVendorData(allProducts);
+                setHasMore(false);
+                setCurrentPage(0);
+              }
+            } finally {
+              setLoading(false);
+            }
+          }}
+        />
         {tableInstance && (
           <DataTableBulkActions table={tableInstance} entityName={t('title')}>
             <VendorBulkActions selectedCount={selectedVendors.length} selectedData={selectedVendors} onExportCSV={handleExportCSV} onDownloadDetails={handleDownloadDetails} onDownloadImages={handleDownloadImages} />

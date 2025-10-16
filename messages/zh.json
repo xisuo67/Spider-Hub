@@ -1206,6 +1206,7 @@
       "description": "仅支持单条链接批量导入，多条链接请换行。支持链接格式（如 https://www.xiaohongshu.com/explore 及单条笔记短链接）",
       "selectFile": "选择 .txt 文件",
       "onlyTxt": "仅支持 .txt 文件",
+      "processing": "处理中…",
       "cancel": "取消",
       "import": "导入",
       "validLinks": "有效链接：{count} 条",
@@ -1213,7 +1214,8 @@
       "success": "导入完成",
       "parseError": "文件解析失败",
       "noValid": "未找到有效链接",
-      "hint": "支持 https://www.xiaohongshu.com/explore 以及短链接"
+      "hint": "支持 https://www.xiaohongshu.com/explore 以及短链接",
+      "vendorDescription": "仅支持商品详情链接批量导入，多条请换行。支持链接格式（@https://www.xiaohongshu.com/goods-detail 及短链接，导入时会自动展开后校验）"
     },
     "Comments": {
       "author": "作者",
@@ -1284,6 +1286,7 @@
     "Vendor": {
       "title": "商家管理",
       "description": "管理和分析商家数据",
+      "batchImport": "批量导入",
       "searchPlaceholder": "请输入小红书店铺主页或商品详情链接",
       "search": "搜索",
       "searching": "搜索中...",

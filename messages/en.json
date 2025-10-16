@@ -1205,6 +1205,7 @@
       "description": "Only supports batch import of single note links. For multiple links, put each on a new line. Supported formats: full note link (e.g. https://www.xiaohongshu.com/explore) and short links.",
       "selectFile": "Choose .txt file",
       "onlyTxt": "Only .txt files are allowed",
+      "processing": "Processing...",
       "cancel": "Cancel",
       "import": "Import",
       "validLinks": "Valid links: {count}",
@@ -1212,7 +1213,8 @@
       "success": "Import completed",
       "parseError": "Failed to parse file",
       "noValid": "No valid links found",
-      "hint": "Supported links: https://www.xiaohongshu.com/explore and short links"
+      "hint": "Supported links: https://www.xiaohongshu.com/explore and short links",
+      "vendorDescription": "Only supports batch import of goods detail links. For multiple links, put each on a new line. Supported formats: @https://www.xiaohongshu.com/goods-detail and short links (will be expanded before validation)."
     },
     "Comments": {
       "author": "Author",
@@ -1283,6 +1285,7 @@
     "Vendor": {
       "title": "Vendor Management",
       "description": "Manage and analyze vendor data",
+      "batchImport": "Batch Import",
       "searchPlaceholder": "Enter Xiaohongshu shop or product detail link",
       "search": "Search",
       "searching": "Searching...",
