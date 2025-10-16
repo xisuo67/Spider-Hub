@@ -32,16 +32,15 @@ export async function GET(req: NextRequest) {
       urlObj.protocol = 'https:'
     }
 
-    // 由服务端拉取资源，绕过浏览器 CORS/Referer 限制
+    // 透传 Range 头以支持视频分段（206）
+    const range = req.headers.get('range') || undefined
     const upstream = await fetch(urlObj.toString(), {
-      // 某些 CDN 需要 UA 才会返回 200
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Safari/537.36',
-        // 部分源需要 Accept Range，交由 CDN 自行处理
         Accept: '*/*',
+        ...(range ? { Range: range } : {}),
       },
-      // 允许较大的视频
       cache: 'no-store',
     })
 
@@ -51,18 +50,26 @@ export async function GET(req: NextRequest) {
       })
     }
 
-    const contentType = upstream.headers.get('content-type') || 'application/octet-stream'
-    const contentLength = upstream.headers.get('content-length') || undefined
+    const headers = new Headers()
+    const passHeaders = [
+      'content-type',
+      'content-length',
+      'accept-ranges',
+      'content-range',
+      'content-disposition',
+      'cache-control',
+      'last-modified',
+      'etag',
+    ]
+    for (const h of passHeaders) {
+      const v = upstream.headers.get(h)
+      if (v) headers.set(h, v)
+    }
+    if (!headers.has('cache-control')) headers.set('cache-control', 'no-store')
 
-    // 直接把上游流回传给客户端
     return new NextResponse(upstream.body as ReadableStream, {
-      status: 200,
-      headers: {
-        'content-type': contentType,
-        ...(contentLength ? { 'content-length': contentLength } : {}),
-        // 允许前端下载
-        'cache-control': 'no-store',
-      },
+      status: upstream.status,
+      headers,
     })
   } catch (e) {
     return new NextResponse('Proxy error', { status: 500 })

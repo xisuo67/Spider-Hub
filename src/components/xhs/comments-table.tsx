@@ -6,7 +6,6 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DataTableBulkActions } from '@/components/data-table/bulk-actions';
 import { 
   Tooltip,
@@ -17,6 +16,7 @@ import {
 import { DownloadIcon, FileSpreadsheetIcon, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatFilename, downloadCommentImages, exportCommentsToCSV, exportCommentsToJSON, downloadCommentBundle } from '@/lib/export-utils';
+import { ImageLightbox, LightboxSlide } from '@/components/xhs/image-lightbox';
 
 export interface CommentListItem {
   id: string
@@ -188,7 +188,19 @@ function CommentBulkActions({
 
 export function CommentsTable({ data }: CommentsTableProps) {
   const t = useTranslations('Xhs.CommentList')
-  const [preview, setPreview] = useState<string[] | null>(null)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxSlides, setLightboxSlides] = useState<LightboxSlide[]>([])
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+
+  const handleOpenPreview = (pictures: string[], startIndex: number = 0) => {
+    const slides: LightboxSlide[] = pictures.map(url => ({
+      src: url,
+      type: 'image' as const
+    }))
+    setLightboxSlides(slides)
+    setLightboxIndex(startIndex)
+    setLightboxOpen(true)
+  }
 
   const columns = [
     columnHelper.display({
@@ -243,7 +255,7 @@ export function CommentsTable({ data }: CommentsTableProps) {
               <button 
                 key={idx} 
                 className="h-14 w-14 overflow-hidden rounded" 
-                onClick={() => setPreview(pictures)}
+                onClick={() => handleOpenPreview(pictures, idx)}
               >
                 <img src={url} alt="pic" className="h-full w-full object-cover" />
               </button>
@@ -353,20 +365,12 @@ export function CommentsTable({ data }: CommentsTableProps) {
         />
       </DataTableBulkActions>
 
-      <Dialog open={!!preview} onOpenChange={(v) => !v && setPreview(null)}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>{t('previewTitle')}</DialogTitle>
-          </DialogHeader>
-          {preview && (
-            <div className="grid grid-cols-3 gap-3">
-              {preview.map((url, i) => (
-                <img key={i} src={url} alt="preview" className="w-full h-40 object-cover rounded" />
-              ))}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <ImageLightbox
+        slides={lightboxSlides}
+        open={lightboxOpen}
+        index={lightboxIndex}
+        onClose={() => setLightboxOpen(false)}
+      />
     </div>
   )
 }
