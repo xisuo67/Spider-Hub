@@ -142,16 +142,17 @@ export default function XhsVendorPage() {
   return (
     <Main>
       <div className="space-y-6">
-        <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('description')}</p>
-        </div>
-        {/* 右上角工具栏：批量导入 */}
-        <div className="flex items-center justify-end">
-          <Button variant="default" onClick={() => setImportOpen(true)} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white">
-            <Upload className="h-4 w-4" />
-            {t('batchImport')}
-          </Button>
+        <div className='mb-2 flex items-center justify-between space-y-2'>
+          <div>
+            <h2 className='text-2xl font-bold tracking-tight'>{t('title')}</h2>
+            <p className='text-muted-foreground'>{t('description')}</p>
+          </div>
+          <div className='flex items-center space-x-2'>
+            <Button onClick={() => setImportOpen(true)}>
+              <Upload className="h-4 w-4 mr-2" />
+              {t('batchImport')}
+            </Button>
+          </div>
         </div>
 
         <div className="flex gap-4">
