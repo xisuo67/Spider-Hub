@@ -1199,7 +1199,9 @@
       "downloadDetailsTooltip": "下载选中数据的详细JSON格式文件，包含完整的原始数据",
       "downloadImagesTooltip": "下载选中数据的所有资源和文本内容到本地文件夹",
       "exporting": "导出中...",
-      "exportFailed": "导出失败，请重试"
+      "exportFailed": "导出失败，请重试",
+      "loadMore": "加载更多",
+      "loading": "加载中..."
     },
     "ImportDialog": {
       "title": "批量导入",

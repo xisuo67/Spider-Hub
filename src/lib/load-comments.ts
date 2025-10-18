@@ -10,7 +10,7 @@ type RawWebPage = {
       }
 }
 
-export async function loadMockComments(page: 1 | 2 = 1): Promise<CommentResult[]> {
+export async function loadMockComments(page: number = 1): Promise<CommentResult[]> {
   // 使用静态导入，避免动态导入在构建时未被打包
   let mod: RawWebPage
   if (page === 1) {

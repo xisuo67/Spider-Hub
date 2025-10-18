@@ -1198,7 +1198,9 @@
       "downloadDetailsTooltip": "Download detailed JSON format file of selected data with complete raw data",
       "downloadImagesTooltip": "Download all resources and text content of selected data to local folder",
       "exporting": "Exporting...",
-      "exportFailed": "Export failed, please try again"
+      "exportFailed": "Export failed, please try again",
+      "loadMore": "Load More",
+      "loading": "Loading..."
     },
     "ImportDialog": {
       "title": "Batch Import",

@@ -27,13 +27,14 @@ export default function XhsSearchNotePage() {
   const [commentResults, setCommentResults] = useState<any[]>([]);
   const [commentList, setCommentList] = useState<CommentListItem[]>([]);
   const [hasMore, setHasMore] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [cursor, setCursor] = useState<string | null>(null);
   const columns = useSearchNoteColumns();
   const [importOpen, setImportOpen] = useState(false);
   const [commentSettingsOpen, setCommentSettingsOpen] = useState(false);
 
-  const handleSearch = async (page = 1, currentCursor: string | null = null) => {
+  const handleSearch = async (page = 0, currentCursor: string | null = null) => {
     if (!searchUrl.trim()) return;
     
     setLoading(true);
@@ -76,10 +77,10 @@ export default function XhsSearchNotePage() {
           mockResults = await loadMockData();
         }
         
-        if (page === 1) {
+        if (page === 0) {
           // 第一页，替换所有数据
           setSearchResults(mockResults as SearchResult[]);
-          setCurrentPage(1);
+          setCurrentPage(0);
         } else {
           // 后续页面，追加数据
           setSearchResults(prev => [...prev, ...(mockResults as SearchResult[])]);
@@ -103,8 +104,8 @@ export default function XhsSearchNotePage() {
         }
         
         // 模拟加载评论数据（从 webpage1/2.json 读取并转换）
-        const mockCommentResults = await loadMockComments(1);
-        if (page === 1) {
+        const mockCommentResults = await loadMockComments(page + 1);
+        if (page === 0) {
           // 第一页，替换所有数据
           setCommentResults(mockCommentResults as any);
           setCommentList(mockCommentResults.map((m: any) => ({
@@ -117,10 +118,20 @@ export default function XhsSearchNotePage() {
             likes: m.likes,
             replies: m.replies,
           })));
-          setCurrentPage(1);
+          setCurrentPage(0);
         } else {
           // 后续页面，追加数据
           setCommentResults(prev => [...prev, ...mockCommentResults as any]);
+          setCommentList(prev => [...prev, ...mockCommentResults.map((m: any) => ({
+            id: m.id,
+            author: { avatar: m.author.avatar, name: m.author.name, account: (m as any).author.account || '' },
+            content: m.content,
+            pictures: (m as any).pictures || [],
+            publishTime: m.publishTime,
+            noteLink: searchUrl,
+            likes: m.likes,
+            replies: m.replies,
+          }))]);
           setCurrentPage(page);
         }
       }
@@ -139,16 +150,71 @@ export default function XhsSearchNotePage() {
     }
   };
 
-  const handleNextPage = () => {
-    if (hasMore && !loading) {
-      handleSearch(currentPage + 1, cursor);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1 && !loading) {
-      // 这里可以实现返回上一页的逻辑
-      // 由于是动态API，可能需要重新请求或维护页面历史
+  const loadMore = async () => {
+    if (!hasMore || loadingMore) return;
+    setLoadingMore(true);
+    try {
+      // 直接调用搜索逻辑，但不触发全局loading
+      if (!searchUrl.trim()) return;
+      
+      // 先展开短链接
+      const expandedUrl = await expandUrl(searchUrl);
+      const finalSearchUrl = expandedUrl || searchUrl;
+      
+      // 根据当前 tab 进行不同的处理
+      if (activeTab === 'note-search') {
+        // 笔记搜索模式
+        // 判断是否为单条笔记链接
+        let mockResults;
+        if (expandedUrl.includes('www.xiaohongshu.com/explore')) {
+          // 单条笔记，加载单条笔记数据
+          const singleNoteData = await loadSingleNoteData();
+          if (singleNoteData) {
+            // 将单条笔记数据转换为SearchResult[] 格式
+            mockResults = transformSingleNoteToSearchResult(singleNoteData);
+          } else {
+            // 如果加载失败，使用默认mock数据
+            mockResults = await loadMockData();
+          }
+        } else {
+          // 博主首页，加载多条mock数据
+          mockResults = await loadMockData();
+        }
+        
+        // 追加数据
+        setSearchResults(prev => [...prev, ...(mockResults as SearchResult[])]);
+        setCurrentPage(currentPage + 1);
+        
+      } else if (activeTab === 'comment-search') {
+        // 评论搜索模式
+        // 模拟加载评论数据（从 webpage1/2.json 读取并转换）
+        const mockCommentResults = await loadMockComments(currentPage + 2);
+        // 追加数据
+        setCommentResults(prev => [...prev, ...mockCommentResults as any]);
+        setCommentList(prev => [...prev, ...mockCommentResults.map((m: any) => ({
+          id: m.id,
+          author: { avatar: m.author.avatar, name: m.author.name, account: (m as any).author.account || '' },
+          content: m.content,
+          pictures: (m as any).pictures || [],
+          publishTime: m.publishTime,
+          noteLink: searchUrl,
+          likes: m.likes,
+          replies: m.replies,
+        }))]);
+        setCurrentPage(currentPage + 1);
+      }
+      
+      // 模拟API返回的分页信息
+      setHasMore(true); // 根据实际API返回的has_more字段设置
+      setCursor('next_cursor_token'); // 根据实际API返回的cursor设置
+      
+      // 模拟搜索延迟
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+    } catch (error) {
+      console.error('Load more failed:', error);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -189,7 +255,7 @@ export default function XhsSearchNotePage() {
               } catch {}
               if (results.length > 0) {
                 setSearchResults(results);
-                setCurrentPage(1);
+                setCurrentPage(0);
                 setHasMore(false);
               }
             })();
@@ -220,7 +286,7 @@ export default function XhsSearchNotePage() {
                 className="flex-1"
               />
               <Button 
-                onClick={() => handleSearch(1, null)} 
+                onClick={() => handleSearch(0, null)} 
                 disabled={loading || !searchUrl.trim()}
                 className="bg-red-500 hover:bg-red-600"
               >
@@ -239,13 +305,12 @@ export default function XhsSearchNotePage() {
             </div>
 
             <SearchResultsTable 
-              loading={loading} 
+              loading={loading && currentPage === 0} 
               data={searchResults} 
               columns={columns}
-              hasMore={hasMore}
-              currentPage={currentPage}
-              onNextPage={handleNextPage}
-              onPrevPage={handlePrevPage}
+              hasMore={hasMore && searchResults.length > 0}
+              loadingMore={loadingMore}
+              onLoadMore={loadMore}
             />
           </TabsContent>
 

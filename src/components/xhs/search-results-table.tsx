@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SimpleToolbar } from './simple-toolbar';
-import { CustomPagination } from './custom-pagination';
+import { LoadMoreButton } from './load-more-button';
 import { DataTableBulkActions } from '@/components/data-table';
 import { BulkActions } from './bulk-actions';
 import { BasicInfoSkeleton } from './basic-info-skeleton';
@@ -79,9 +79,8 @@ interface SearchResultsTableProps {
   data?: SearchResult[];
   columns: ColumnDef<SearchResult>[];
   hasMore?: boolean;
-  currentPage?: number;
-  onNextPage?: () => void;
-  onPrevPage?: () => void;
+  loadingMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export function SearchResultsTable({ 
@@ -89,9 +88,8 @@ export function SearchResultsTable({
   data = [], 
   columns,
   hasMore = false,
-  currentPage = 1,
-  onNextPage,
-  onPrevPage
+  loadingMore = false,
+  onLoadMore
 }: SearchResultsTableProps) {
   const t = useTranslations('Xhs.SearchNote');
   const [sorting, setSorting] = useState<SortingState>([
@@ -280,14 +278,11 @@ export function SearchResultsTable({
         </Table>
       </div>
       
-      {onNextPage && onPrevPage && (
-        <CustomPagination
+      {onLoadMore && (
+        <LoadMoreButton
           hasMore={hasMore}
-          loading={loading}
-          onNextPage={onNextPage}
-          onPrevPage={onPrevPage}
-          currentPage={currentPage}
-          canGoBack={currentPage > 1}
+          loading={loadingMore}
+          onLoadMore={onLoadMore}
         />
       )}
     </div>

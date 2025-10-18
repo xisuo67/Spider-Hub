@@ -19,7 +19,8 @@ const getLocalizedHeaders = (locale: string = 'zh') => {
       '评论数',
       '分享数',
       '点赞数',
-      '封面图片'
+      '封面图片',
+      'Resources'
     ],
     en: [
       'ID',
@@ -34,7 +35,8 @@ const getLocalizedHeaders = (locale: string = 'zh') => {
       'Comments',
       'Shares',
       'Likes',
-      'Cover Image'
+      'Cover Image',
+      'Resources'
     ]
   };
   return headers[locale as keyof typeof headers] || headers.zh;
@@ -60,21 +62,57 @@ export function exportToCSV(data: SearchResult[], filename: string = 'search-res
   // 转换数据为CSV格式
   const csvContent = [
     headers.join(','),
-    ...data.map(item => [
-      `"${item.id}"`,
-      `"${item.basicInfo.title.replace(/"/g, '""')}"`,
-      `"${item.basicInfo.desc.replace(/"/g, '""')}"`,
-      `"${item.basicInfo.author.name}"`,
-      `"${item.basicInfo.type}"`,
-      `"${item.publishTime}"`,
-      `"${item.estimatedReads.raw}"`,
-      `"${item.interactionVolume.raw}"`,
-      `"${item.collections.raw}"`,
-      `"${item.comments.raw}"`,
-      `"${item.shares.raw}"`,
-      `"${item.likes.raw}"`,
-      `"${removeUrlParams(item.basicInfo.coverImage)}"`
-    ].join(','))
+    ...data.map(item => {
+      // 收集所有资源链接
+      const allResources: string[] = [];
+      
+      // 添加图片资源
+      if (item.images_list && item.images_list.length > 0) {
+        item.images_list.forEach(img => {
+          if (img.url) {
+            allResources.push(removeUrlParams(img.url));
+          }
+        });
+      }
+      
+      // 添加视频资源
+      if (item.video_list && item.video_list.length > 0) {
+        item.video_list.forEach(video => {
+          if (video.master_url) {
+            allResources.push(removeUrlParams(video.master_url));
+          }
+        });
+      }
+      
+      // 添加Live图资源
+      if (item.live_photo_list && item.live_photo_list.length > 0) {
+        item.live_photo_list.forEach(live => {
+          if (live.url) {
+            allResources.push(removeUrlParams(live.url));
+          }
+        });
+      }
+      
+      // 将所有资源用换行符连接
+      const resourcesText = allResources.join('\n');
+      
+      return [
+        `"${item.id}"`,
+        `"${item.basicInfo.title.replace(/"/g, '""')}"`,
+        `"${item.basicInfo.desc.replace(/"/g, '""')}"`,
+        `"${item.basicInfo.author.name}"`,
+        `"${item.basicInfo.type}"`,
+        `"${item.publishTime}"`,
+        `"${item.estimatedReads.raw}"`,
+        `"${item.interactionVolume.raw}"`,
+        `"${item.collections.raw}"`,
+        `"${item.comments.raw}"`,
+        `"${item.shares.raw}"`,
+        `"${item.likes.raw}"`,
+        `"${removeUrlParams(item.basicInfo.coverImage)}"`,
+        `"${resourcesText.replace(/"/g, '""')}"`
+      ].join(',');
+    })
   ].join('\n');
 
   // 创建并下载文件
