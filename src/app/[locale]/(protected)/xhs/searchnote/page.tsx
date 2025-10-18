@@ -35,6 +35,7 @@ export default function XhsSearchNotePage() {
     totalPages?: number;
     currentPage: number;
   }>({ fetchAll: true, currentPage: 0 });
+  const [searchType, setSearchType] = useState<'single-note' | 'blogger-homepage' | null>(null);
   const columns = useSearchNoteColumns();
   const [importOpen, setImportOpen] = useState(false);
   const [commentSettingsOpen, setCommentSettingsOpen] = useState(false);
@@ -69,6 +70,7 @@ export default function XhsSearchNotePage() {
         let mockResults;
         if (expandedUrl.includes('www.xiaohongshu.com/explore')) {
           // 单条笔记，加载单条笔记数据
+          setSearchType('single-note');
           const singleNoteData = await loadSingleNoteData();
           if (singleNoteData) {
             // 将单条笔记数据转换为SearchResult[] 格式
@@ -79,6 +81,7 @@ export default function XhsSearchNotePage() {
           }
         } else {
           // 博主首页，加载多条mock数据
+          setSearchType('blogger-homepage');
           mockResults = await loadMockData();
         }
         
@@ -146,8 +149,13 @@ export default function XhsSearchNotePage() {
       }
       
       // 模拟API返回的分页信息
-      // 模拟最多加载3页数据
-      setHasMore(currentPage < 2); // 根据实际API返回的has_more字段设置
+      if (searchType === 'single-note') {
+        // 单条笔记不显示 load more
+        setHasMore(false);
+      } else {
+        // 博主首页显示 load more，模拟最多加载3页数据
+        setHasMore(currentPage < 2);
+      }
       setCursor('next_cursor_token'); // 根据实际API返回的cursor设置
       
       // 模拟搜索延迟
@@ -226,8 +234,14 @@ export default function XhsSearchNotePage() {
       
       // 模拟API返回的分页信息
       if (activeTab === 'note-search') {
-        // 笔记搜索模式：模拟最多加载3页数据
-        setHasMore(currentPage < 2);
+        // 笔记搜索模式：根据搜索类型决定
+        if (searchType === 'single-note') {
+          // 单条笔记不显示 load more
+          setHasMore(false);
+        } else {
+          // 博主首页显示 load more，模拟最多加载3页数据
+          setHasMore(currentPage < 2);
+        }
       }
       // 评论搜索模式的 hasMore 已经在上面通过 API 响应设置了
       setCursor('next_cursor_token'); // 根据实际API返回的cursor设置
@@ -281,6 +295,7 @@ export default function XhsSearchNotePage() {
                 setSearchResults(results);
                 setCurrentPage(0);
                 setHasMore(false);
+                setSearchType('single-note'); // 批量导入为单条笔记类型
               }
             })();
           }}
