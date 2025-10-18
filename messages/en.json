@@ -1282,7 +1282,9 @@
       "downloadImagesTooltip": "Download images and text of selected comments",
       "exportFailed": "Export failed, please try again",
       "previewTitle": "Preview",
-      "previewClose": "Close"
+      "previewClose": "Close",
+      "loadMore": "Load More",
+      "loading": "Loading..."
     },
     "Vendor": {
       "title": "Vendor Management",

@@ -1283,7 +1283,9 @@
       "downloadImagesTooltip": "下载选中评论的图片与文本",
       "exportFailed": "导出失败，请重试",
       "previewTitle": "图片预览",
-      "previewClose": "关闭"
+      "previewClose": "关闭",
+      "loadMore": "加载更多",
+      "loading": "加载中..."
     },
     "Vendor": {
       "title": "商家管理",

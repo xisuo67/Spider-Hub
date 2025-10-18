@@ -10,7 +10,11 @@ type RawWebPage = {
       }
 }
 
-export async function loadMockComments(page: number = 1): Promise<CommentResult[]> {
+export async function loadMockComments(page: number = 1): Promise<{
+  comments: CommentResult[];
+  hasMore: boolean;
+  cursor: string;
+}> {
   // 使用静态导入，避免动态导入在构建时未被打包
   let mod: RawWebPage
   if (page === 1) {
@@ -18,7 +22,16 @@ export async function loadMockComments(page: number = 1): Promise<CommentResult[
   } else {
     mod = await import('../app/[locale]/(protected)/xhs/searchnote/comments/webpage2.json') as any
   }
-  return transformWebPageToComments(mod)
+  
+  const comments = transformWebPageToComments(mod)
+  const hasMore = mod?.data?.has_more || false
+  const cursor = mod?.data?.cursor || ''
+  
+  return {
+    comments,
+    hasMore,
+    cursor
+  }
 }
 
 export function transformWebPageToComments(raw: RawWebPage): CommentResult[] {

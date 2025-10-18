@@ -30,6 +30,11 @@ export default function XhsSearchNotePage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [loadingMore, setLoadingMore] = useState(false);
   const [cursor, setCursor] = useState<string | null>(null);
+  const [commentSettings, setCommentSettings] = useState<{
+    fetchAll: boolean;
+    totalPages?: number;
+    currentPage: number;
+  }>({ fetchAll: true, currentPage: 0 });
   const columns = useSearchNoteColumns();
   const [importOpen, setImportOpen] = useState(false);
   const [commentSettingsOpen, setCommentSettingsOpen] = useState(false);
@@ -104,11 +109,11 @@ export default function XhsSearchNotePage() {
         }
         
         // 模拟加载评论数据（从 webpage1/2.json 读取并转换）
-        const mockCommentResults = await loadMockComments(page + 1);
+        const mockCommentData = await loadMockComments(page + 1);
         if (page === 0) {
           // 第一页，替换所有数据
-          setCommentResults(mockCommentResults as any);
-          setCommentList(mockCommentResults.map((m: any) => ({
+          setCommentResults(mockCommentData.comments as any);
+          setCommentList(mockCommentData.comments.map((m: any) => ({
             id: m.id,
             author: { avatar: m.author.avatar, name: m.author.name, account: (m as any).author.account || '' },
             content: m.content,
@@ -121,8 +126,8 @@ export default function XhsSearchNotePage() {
           setCurrentPage(0);
         } else {
           // 后续页面，追加数据
-          setCommentResults(prev => [...prev, ...mockCommentResults as any]);
-          setCommentList(prev => [...prev, ...mockCommentResults.map((m: any) => ({
+          setCommentResults(prev => [...prev, ...mockCommentData.comments as any]);
+          setCommentList(prev => [...prev, ...mockCommentData.comments.map((m: any) => ({
             id: m.id,
             author: { avatar: m.author.avatar, name: m.author.name, account: (m as any).author.account || '' },
             content: m.content,
@@ -134,10 +139,15 @@ export default function XhsSearchNotePage() {
           }))]);
           setCurrentPage(page);
         }
+        
+        // 使用 API 返回的 has_more 信息
+        setHasMore(mockCommentData.hasMore);
+        setCursor(mockCommentData.cursor);
       }
       
       // 模拟API返回的分页信息
-      setHasMore(true); // 根据实际API返回的has_more字段设置
+      // 模拟最多加载3页数据
+      setHasMore(currentPage < 2); // 根据实际API返回的has_more字段设置
       setCursor('next_cursor_token'); // 根据实际API返回的cursor设置
       
       // 模拟搜索延迟
@@ -187,11 +197,14 @@ export default function XhsSearchNotePage() {
         
       } else if (activeTab === 'comment-search') {
         // 评论搜索模式
+        const nextPage = commentSettings.currentPage + 1;
+        
         // 模拟加载评论数据（从 webpage1/2.json 读取并转换）
-        const mockCommentResults = await loadMockComments(currentPage + 2);
+        const mockCommentData = await loadMockComments(nextPage + 1);
+        
         // 追加数据
-        setCommentResults(prev => [...prev, ...mockCommentResults as any]);
-        setCommentList(prev => [...prev, ...mockCommentResults.map((m: any) => ({
+        setCommentResults(prev => [...prev, ...mockCommentData.comments as any]);
+        setCommentList(prev => [...prev, ...mockCommentData.comments.map((m: any) => ({
           id: m.id,
           author: { avatar: m.author.avatar, name: m.author.name, account: (m as any).author.account || '' },
           content: m.content,
@@ -201,11 +214,22 @@ export default function XhsSearchNotePage() {
           likes: m.likes,
           replies: m.replies,
         }))]);
-        setCurrentPage(currentPage + 1);
+        
+        // 更新评论设置中的当前页数
+        setCommentSettings(prev => ({ ...prev, currentPage: nextPage }));
+        setCurrentPage(nextPage);
+        
+        // 使用 API 返回的 has_more 信息
+        setHasMore(mockCommentData.hasMore);
+        setCursor(mockCommentData.cursor);
       }
       
       // 模拟API返回的分页信息
-      setHasMore(true); // 根据实际API返回的has_more字段设置
+      if (activeTab === 'note-search') {
+        // 笔记搜索模式：模拟最多加载3页数据
+        setHasMore(currentPage < 2);
+      }
+      // 评论搜索模式的 hasMore 已经在上面通过 API 响应设置了
       setCursor('next_cursor_token'); // 根据实际API返回的cursor设置
       
       // 模拟搜索延迟
@@ -341,15 +365,27 @@ export default function XhsSearchNotePage() {
               </Button>
             </div>
 
-            <CommentsTable data={commentList} />
+            <CommentsTable 
+              data={commentList} 
+              hasMore={hasMore && commentList.length > 0}
+              loadingMore={loadingMore}
+              onLoadMore={loadMore}
+            />
             <CommentSettingsDialog
               open={commentSettingsOpen}
               onOpenChange={setCommentSettingsOpen}
               onStart={async ({ fetchAll, pages }) => {
+                // 保存设置
+                setCommentSettings({
+                  fetchAll,
+                  totalPages: pages,
+                  currentPage: 0
+                });
+                
                 // 弹窗确认后直接加载 mock 评论
-                const mockComments = await loadMockComments(1);
-                setCommentResults(mockComments as any);
-                setCommentList(mockComments.map((m: any) => ({
+                const mockCommentData = await loadMockComments(1);
+                setCommentResults(mockCommentData.comments as any);
+                setCommentList(mockCommentData.comments.map((m: any) => ({
                   id: m.id,
                   author: { avatar: m.author.avatar, name: m.author.name, account: m.author.account || '' },
                   content: m.content,
@@ -359,6 +395,15 @@ export default function XhsSearchNotePage() {
                   likes: m.likes,
                   replies: m.replies,
                 })));
+                
+                // 根据设置决定是否显示 load more
+                if (fetchAll) {
+                  setHasMore(false); // 采集全部时不显示 load more
+                } else {
+                  // 采集页数时，使用 API 返回的 has_more 信息
+                  setHasMore(mockCommentData.hasMore);
+                }
+                setCurrentPage(0);
               }}
             />
           </TabsContent>

@@ -35,6 +35,9 @@ export interface CommentListItem {
 
 interface CommentsTableProps {
   data: CommentListItem[]
+  hasMore?: boolean
+  loadingMore?: boolean
+  onLoadMore?: () => void
 }
 
 const columnHelper = createColumnHelper<CommentListItem>()
@@ -186,7 +189,7 @@ function CommentBulkActions({
   );
 }
 
-export function CommentsTable({ data }: CommentsTableProps) {
+export function CommentsTable({ data, hasMore = false, loadingMore = false, onLoadMore }: CommentsTableProps) {
   const t = useTranslations('Xhs.CommentList')
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxSlides, setLightboxSlides] = useState<LightboxSlide[]>([])
@@ -371,6 +374,26 @@ export function CommentsTable({ data }: CommentsTableProps) {
         index={lightboxIndex}
         onClose={() => setLightboxOpen(false)}
       />
+      
+      {onLoadMore && hasMore && (
+        <div className="flex justify-center mt-4">
+          <Button 
+            onClick={onLoadMore} 
+            disabled={loadingMore} 
+            variant="outline" 
+            className="flex items-center gap-2"
+          >
+            {loadingMore ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+                <span>{t('loading')}</span>
+              </>
+            ) : (
+              <span>{t('loadMore')}</span>
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
